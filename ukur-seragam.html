@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengukuran Seragam Mandiri - SMPIT & SMAIT Insan Mandiri Greenville</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root { --orange:#F28C28; --blue:#67C8F6; --navy:#183B56; --bg:#F4F7FA; }
+    body { background:var(--bg); font-family:'Montserrat',sans-serif !important; color:var(--navy); }
+    .app-card { background:#fff; border-radius:20px; box-shadow:0 10px 30px rgba(24,59,86,.08); }
+    .header-banner { background:linear-gradient(135deg,var(--navy),#102a40); color:#fff; padding:2rem; border-bottom:5px solid var(--orange); }
+    .school-logo { width:84px; height:84px; object-fit:contain; filter:drop-shadow(0 4px 10px rgba(0,0,0,.35)); }
+    .btn-orange { background:var(--orange); color:#fff; font-weight:700; border-radius:12px; padding:12px 28px; border:0; transition:.25s; }
+    .btn-orange:hover { background:#d9771e; color:#fff; transform:translateY(-2px); box-shadow:0 6px 15px rgba(242,140,40,.3); }
+    .btn-orange:disabled { opacity:.6; transform:none; box-shadow:none; }
+    .btn-outline-navy { border:2px solid var(--navy); color:var(--navy); font-weight:600; border-radius:12px; padding:10px 24px; }
+    .btn-outline-navy:hover { background:var(--navy); color:#fff; }
+    .section-title { border-left:5px solid var(--orange); padding-left:14px; font-weight:800; }
+    .question-card { background:var(--bg); border:1px solid #e2e8f0; border-radius:16px; padding:22px; margin-bottom:18px; }
+    .question-card.invalid { border-color:#dc2626; background:#fef2f2; }
+    .progress-bar-custom { height:10px; border-radius:6px; background:#e2e8f0; overflow:hidden; }
+    .progress-fill { height:100%; width:0; background:linear-gradient(90deg,var(--blue),var(--orange)); transition:width .4s; }
+    .form-control:focus,.form-select:focus { border-color:var(--orange); box-shadow:0 0 0 .25rem rgba(242,140,40,.2); }
+    .guide-tip { background:#EBF8FF; border-left:4px solid var(--blue); border-radius:10px; padding:10px 14px; font-size:.85rem; }
+    @media print { .no-print{display:none !important;} body{background:#fff;} .app-card{box-shadow:none;} }
+  </style>
+</head>
+<body class="py-4">
+<div class="container" style="max-width:900px;">
+  <div class="app-card overflow-hidden">
+
+    <div class="header-banner">
+      <div class="d-flex align-items-center gap-3">
+        <img src="logo_insan_mandiri_new.png" class="school-logo" alt="Logo Insan Mandiri">
+        <div>
+          <div class="text-uppercase fw-bold text-warning small" style="letter-spacing:1px">SPMB TP. 2027/2028</div>
+          <h3 class="fw-bold mb-0" style="font-size:clamp(1.2rem,3.6vw,1.7rem)">PENGUKURAN SERAGAM MANDIRI</h3>
+          <div class="opacity-75 small fw-semibold">SMPIT & SMAIT Insan Mandiri Greenville</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4 p-md-5">
+
+      <!-- LANGKAH 1: IDENTITAS -->
+      <div id="stepIdentitas">
+        <div class="alert alert-warning border-0 shadow-sm d-flex gap-3 p-3 rounded-4 mb-4">
+          <i class="fas fa-ruler-combined fa-2x text-warning mt-1"></i>
+          <div class="small fw-semibold text-dark">
+            Siapkan <strong>meteran kain</strong> dan buku catatan. Ananda memakai baju tipis, berdiri tegak, dan tidak menahan napas. Meteran pas di badan, tidak terlalu ketat atau longgar. Ukur dua kali supaya yakin.
+          </div>
+        </div>
+
+        <h4 class="section-title mb-4">Data Calon Murid</h4>
+        <form id="formIdentitas">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-bold">Nama Lengkap <span class="text-danger">*</span></label>
+              <input type="text" id="studentName" class="form-control form-control-lg" required></div>
+            <div class="col-md-6"><label class="form-label fw-bold">Jenjang <span class="text-danger">*</span></label>
+              <select id="level" class="form-select form-select-lg" required>
+                <option value="">-- Pilih Jenjang --</option>
+                <option value="SMPIT">SMPIT Insan Mandiri Greenville</option>
+                <option value="SMAIT">SMAIT Insan Mandiri Greenville</option></select></div>
+            <div class="col-md-6"><label class="form-label fw-bold">Jenis Kelamin <span class="text-danger">*</span></label>
+              <select id="gender" class="form-select form-select-lg" required>
+                <option value="">-- Pilih --</option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option></select></div>
+            <div class="col-md-6"><label class="form-label fw-bold">Nama Orang Tua / Wali <span class="text-danger">*</span></label>
+              <input type="text" id="parentName" class="form-control form-control-lg" required></div>
+            <div class="col-md-6"><label class="form-label fw-bold">No. WhatsApp Aktif <span class="text-danger">*</span></label>
+              <input type="tel" id="parentWa" class="form-control form-control-lg" placeholder="08xxxxxxxxxx" required></div>
+          </div>
+          <button type="submit" class="btn btn-orange btn-lg w-100 mt-4">Lanjut ke Pengukuran <i class="fas fa-arrow-right ms-2"></i></button>
+        </form>
+      </div>
+
+      <!-- LANGKAH 2: PENGUKURAN -->
+      <div id="stepMeasurement" class="d-none">
+        <div class="mb-4">
+          <div class="d-flex justify-content-between text-muted small mb-2 fw-bold">
+            <span id="categoryProgressLabel"></span><span id="percentLabel"></span>
+          </div>
+          <div class="progress-bar-custom"><div class="progress-fill" id="progressBar"></div></div>
+        </div>
+        <h4 class="section-title mb-2" id="categoryTitle"></h4>
+        <p class="text-muted small mb-4">Isi dalam satuan sentimeter (cm) sesuai petunjuk di tiap bagian.</p>
+        <div id="measurementQuestionsContainer"></div>
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-outline-navy" id="btnPrev" onclick="prevCategory()"><i class="fas fa-arrow-left me-2"></i>Sebelumnya</button>
+          <button type="button" class="btn btn-orange ms-auto" id="btnNext" onclick="nextCategory()">Selanjutnya <i class="fas fa-arrow-right ms-2"></i></button>
+        </div>
+      </div>
+
+      <!-- LANGKAH 3: REKAP -->
+      <div id="stepRekap" class="d-none">
+        <div class="text-center mb-4">
+          <span class="badge bg-success px-3 py-2 rounded-pill mb-2" id="rekapBadge"><i class="fas fa-check-circle me-1"></i> Pengukuran Selesai</span>
+          <h3 class="fw-bold">Rekap Ukuran Seragam</h3>
+          <p class="text-muted small mb-0">Periksa kembali, lalu kirim ke panitia.</p>
+        </div>
+        <div class="card p-4 mb-4 border-0 bg-light rounded-4">
+          <div class="row g-2 small">
+            <div class="col-md-6"><strong>Nama:</strong> <span id="sName"></span></div>
+            <div class="col-md-6"><strong>Jenjang / Gender:</strong> <span id="sLevel"></span></div>
+            <div class="col-md-6"><strong>Orang Tua:</strong> <span id="sParent"></span></div>
+            <div class="col-md-6"><strong>WhatsApp:</strong> <span id="sWa"></span></div>
+          </div>
+        </div>
+        <div class="card p-3 mb-4 border-0 shadow-sm rounded-4">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle small mb-0">
+              <thead class="table-light"><tr><th>Seragam</th><th>Bagian</th><th>Ukuran</th></tr></thead>
+              <tbody id="summaryTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="d-flex flex-wrap gap-3 no-print">
+          <button type="button" class="btn btn-outline-secondary fw-bold flex-fill" id="btnEdit" onclick="editMeasurement()"><i class="fas fa-edit me-2"></i>Edit Ukuran</button>
+          <button type="button" class="btn btn-orange flex-fill" id="btnSend" onclick="submitData()"><i class="fas fa-paper-plane me-2"></i>Kirim ke Panitia</button>
+          <button type="button" class="btn btn-outline-navy flex-fill" onclick="window.print()"><i class="fas fa-file-pdf me-2"></i>Cetak / Simpan PDF</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6OxoaZ6-3ZCXemwrA6kwD7IBoSNjzIzAZmp8pmllzDk1dhS1kwdaJvdp7gbSF2Q/exec';
+  const SHEET_NAME = 'Ukuran Seragam';
+
+  const schemaMale = [
+    { category: "Kemeja Lengan Pendek", fields: [
+      { id:"k1", label:"Lingkar Leher", guide:"Ukur sekeliling pangkal leher, sisakan ruang untuk 1 jari." },
+      { id:"k2", label:"Lebar Bahu", guide:"Ukur dari ujung tulang bahu kiri sampai ujung tulang bahu kanan." },
+      { id:"k3", label:"Lingkar Dada", guide:"Ukur melingkar di bagian dada yang paling penuh, tepat di bawah ketiak." },
+      { id:"k4", label:"Lingkar Pinggang", guide:"Ukur sekeliling pinggang di bagian yang paling kecil." },
+      { id:"k5", label:"Panjang Baju", guide:"Ukur dari pangkal leher dekat bahu turun sampai panjang kemeja yang diinginkan." },
+      { id:"k6", label:"Panjang Lengan Pendek", guide:"Ukur dari ujung bahu turun sampai batas lengan pendek." } ] },
+    { category: "Celana Panjang", fields: [
+      { id:"c1", label:"Lingkar Pinggang Celana", guide:"Ukur sekeliling pinggang, tempat biasa memakai ikat pinggang." },
+      { id:"c2", label:"Lingkar Pinggul", guide:"Ukur melingkar di bagian pinggul yang paling lebar." },
+      { id:"c3", label:"Panjang Celana", guide:"Ukur dari pinggang samping turun lurus sampai mata kaki." },
+      { id:"c4", label:"Panjang Pesak", guide:"Ukur dari pinggang depan melewati selangkangan sampai pinggang belakang." },
+      { id:"c5", label:"Lingkar Paha", guide:"Ukur melingkar di bagian paha atas yang paling besar." },
+      { id:"c6", label:"Lingkar Lutut", guide:"Ukur sekeliling lutut." },
+      { id:"c7", label:"Lingkar Bawah Celana", guide:"Ukur keliling ujung bawah celana yang diinginkan." } ] },
+    { category: "Seragam Olahraga", fields: [
+      { id:"ol1", label:"Lingkar Dada Kaos", guide:"Ukur sekeliling dada, ukuran kaos dibuat sedikit longgar." },
+      { id:"ol2", label:"Lebar Bahu Kaos", guide:"Ukur dari ujung bahu kiri ke kanan." },
+      { id:"ol3", label:"Panjang Kaos Olahraga", guide:"Ukur dari bahu dekat leher turun sampai batas bawah kaos." },
+      { id:"ol4", label:"Panjang Celana Olahraga", guide:"Ukur dari pinggang sampai mata kaki." } ] }
+  ];
+
+  const schemaFemale = [
+    { category: "Kemeja Lengan Panjang", fields: [
+      { id:"kp1", label:"Lingkar Leher", guide:"Ukur sekeliling leher dengan longgar." },
+      { id:"kp2", label:"Lebar Bahu", guide:"Ukur dari ujung bahu kiri ke bahu kanan." },
+      { id:"kp3", label:"Lingkar Dada", guide:"Ukur melingkar di bagian dada yang paling penuh, dengan longgar." },
+      { id:"kp4", label:"Lingkar Pinggang", guide:"Ukur sekeliling pinggang di bagian yang paling kecil." },
+      { id:"kp5", label:"Panjang Baju", guide:"Ukur dari bahu turun sampai menutupi pinggul." },
+      { id:"kp6", label:"Panjang Lengan Panjang", guide:"Ukur dari ujung bahu turun sampai pergelangan tangan." },
+      { id:"kp7", label:"Lingkar Pergelangan Tangan", guide:"Ukur sekeliling pergelangan tangan." } ] },
+    { category: "Rok Panjang", fields: [
+      { id:"r1", label:"Lingkar Pinggang Rok", guide:"Ukur sekeliling pinggang." },
+      { id:"r2", label:"Lingkar Pinggul", guide:"Ukur melingkar di bagian pinggul yang paling lebar." },
+      { id:"r3", label:"Panjang Rok", guide:"Ukur dari pinggang turun sampai menutup mata kaki." },
+      { id:"r4", label:"Lingkar Bawah Rok", guide:"Ukur keliling lebar ujung bawah rok." } ] },
+    { category: "Jilbab Sekolah", fields: [
+      { id:"j1", label:"Lingkar Wajah", guide:"Ukur melingkar dari dahi sampai bawah dagu." },
+      { id:"j2", label:"Panjang Jilbab Depan", guide:"Ukur dari bawah dagu turun sampai dada bagian bawah." },
+      { id:"j3", label:"Panjang Jilbab Belakang", guide:"Ukur dari puncak kepala turun sampai punggung." } ] },
+    { category: "Seragam Olahraga", fields: [
+      { id:"op1", label:"Lingkar Dada Kaos", guide:"Ukur sekeliling dada, ukuran kaos dibuat sedikit longgar." },
+      { id:"op2", label:"Panjang Kaos Tunik Olahraga", guide:"Ukur dari bahu turun sampai menutupi paha." },
+      { id:"op3", label:"Panjang Celana Olahraga", guide:"Ukur dari pinggang sampai mata kaki." } ] }
+  ];
+
+  let student = {}, schema = [], catIdx = 0, results = {}, sent = false;
+  const $ = id => document.getElementById(id);
+
+  $('formIdentitas').addEventListener('submit', e => {
+    e.preventDefault();
+    student = {
+      name: $('studentName').value.trim(), level: $('level').value, gender: $('gender').value,
+      parentName: $('parentName').value.trim(), parentWa: $('parentWa').value.trim()
+    };
+    schema = student.gender === 'L' ? schemaMale : schemaFemale;
+    results = {}; catIdx = 0; sent = false;
+    $('stepIdentitas').classList.add('d-none');
+    $('stepMeasurement').classList.remove('d-none');
+    renderCategory();
+  });
+
+  function renderCategory() {
+    const cat = schema[catIdx];
+    const pct = Math.round(catIdx / schema.length * 100);
+    $('categoryTitle').innerText = cat.category;
+    $('categoryProgressLabel').innerText = `Bagian ${catIdx + 1} dari ${schema.length}`;
+    $('percentLabel').innerText = pct + '%';
+    $('progressBar').style.width = pct + '%';
+    $('measurementQuestionsContainer').innerHTML = cat.fields.map(f => `
+      <div class="question-card" id="card_${f.id}">
+        <label class="fw-bold mb-2" for="input_${f.id}">${f.label} <span class="text-danger">*</span></label>
+        <div class="guide-tip mb-3"><i class="fas fa-lightbulb text-warning me-2"></i>${f.guide}</div>
+        <div class="input-group">
+          <input type="number" inputmode="decimal" step="any" class="form-control form-control-lg measure-input" id="input_${f.id}"
+            data-id="${f.id}" value="${results[f.id] ? results[f.id].val : ''}" placeholder="0" min="5" max="250">
+          <span class="input-group-text fw-bold bg-white">cm</span>
+        </div>
+      </div>`).join('');
+    $('btnPrev').classList.toggle('d-none', catIdx === 0);
+    $('btnNext').innerHTML = catIdx === schema.length - 1 ? 'Lihat Rekap <i class="fas fa-check ms-2"></i>' : 'Selanjutnya <i class="fas fa-arrow-right ms-2"></i>';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function saveCurrent(strict) {
+    let ok = true, first = null;
+    schema[catIdx].fields.forEach(f => {
+      const inp = $('input_' + f.id), v = parseFloat(inp.value);
+      const good = v > 0;
+      if (good) results[f.id] = { val: inp.value, label: f.label, category: schema[catIdx].category };
+      if (strict) {
+        $('card_' + f.id).classList.toggle('invalid', !good);
+        if (!good) { ok = false; first = first || $('card_' + f.id); }
+      }
+    });
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return ok;
+  }
+
+  function nextCategory() {
+    if (!saveCurrent(true)) return;
+    if (catIdx < schema.length - 1) { catIdx++; renderCategory(); } else showSummary();
+  }
+  function prevCategory() { saveCurrent(false); if (catIdx > 0) { catIdx--; renderCategory(); } }
+
+  function showSummary() {
+    $('stepMeasurement').classList.add('d-none');
+    $('stepRekap').classList.remove('d-none');
+    $('sName').innerText = student.name;
+    $('sLevel').innerText = `${student.level} / ${student.gender === 'L' ? 'Laki-laki' : 'Perempuan'}`;
+    $('sParent').innerText = student.parentName; $('sWa').innerText = student.parentWa;
+    $('summaryTableBody').innerHTML = schema.flatMap(c => c.fields).filter(f => results[f.id]).map(f => {
+      const r = results[f.id];
+      return `<tr><td><span class="badge bg-light text-dark border">${r.category}</span></td><td class="fw-semibold">${r.label}</td><td class="fw-bold text-primary">${r.val} cm</td></tr>`;
+    }).join('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function editMeasurement() {
+    $('stepRekap').classList.add('d-none');
+    $('stepMeasurement').classList.remove('d-none');
+    catIdx = 0; renderCategory();
+  }
+
+  async function submitData() {
+    if (sent) return;
+    const btn = $('btnSend');
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Mengirim...';
+    const body = new URLSearchParams();
+    body.append('_sheet', SHEET_NAME);
+    body.append('jenjang', student.level);
+    body.append('nama_murid', student.name);
+    body.append('jenis_kelamin', student.gender === 'L' ? 'Laki-laki' : 'Perempuan');
+    body.append('nama_ortu', student.parentName);
+    body.append('wa_ortu', student.parentWa);
+    schema.forEach(c => c.fields.forEach(f => {
+      if (results[f.id]) body.append(`${c.category} - ${f.label} (cm)`, results[f.id].val);
+    }));
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body });
+      sent = true;
+      btn.innerHTML = '<i class="fas fa-check me-2"></i>Terkirim';
+      $('btnEdit').classList.add('d-none');
+      $('rekapBadge').innerHTML = '<i class="fas fa-check-circle me-1"></i> Berhasil Terkirim ke Panitia';
+      alert('Jazakumullahu khairan. Data ukuran seragam sudah terkirim ke panitia.');
+    } catch (err) {
+      btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Kirim ke Panitia';
+      alert('Pengiriman gagal. Periksa koneksi internet lalu coba lagi.');
+    }
+  }
+</script>
+</body>
+</html>
