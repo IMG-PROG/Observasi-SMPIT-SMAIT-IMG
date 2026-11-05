@@ -3,720 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Observasi Murid Baru - SMPIT & SMAIT IMG</title>
-  <!-- Google Fonts: Montserrat -->
+  <title>SPMB TP. 2027/2028 - SMPIT & SMAIT Insan Mandiri Greenville</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    :root {
-      --primary-color: #1e3a8a;
-      --secondary-color: #0d9488;
-      --accent-color: #f59e0b;
-      --light-bg: #f8fafc;
-    }
-    body {
-      background-color: #f1f5f9;
-      font-family: 'Montserrat', sans-serif !important;
-      color: #334155;
-    }
-    .app-card {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-      border: none;
-    }
-    .header-banner {
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      color: white;
-      border-radius: 16px 16px 0 0;
-      padding: 2.5rem 2rem;
-    }
-    .school-logo {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
-      background: white;
-      padding: 8px;
-      border-radius: 50%;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      margin-bottom: 1rem;
-    }
-    .custom-icon-sm {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-      vertical-align: middle;
-      margin-right: 8px;
-    }
-    .custom-icon-md {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-      vertical-align: middle;
-      margin-right: 10px;
-    }
-    .custom-icon-lg {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-    }
-    .btn-level {
-      padding: 12px 20px;
-      font-weight: 600;
-      border-radius: 12px;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .btn-level img {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-      border-radius: 50%;
-    }
-    .btn-level.active {
-      background-color: var(--accent-color) !important;
-      color: white !important;
-      border-color: var(--accent-color) !important;
-    }
-    .section-title {
-      border-left: 5px solid var(--primary-color);
-      padding-left: 12px;
-      font-weight: 700;
-      color: var(--primary-color);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-    }
-    .question-card {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .form-check-input:checked {
-      background-color: var(--secondary-color);
-      border-color: var(--secondary-color);
-    }
-    .progress-bar-custom {
-      height: 8px;
-      border-radius: 4px;
-      background-color: #e2e8f0;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
-      border-radius: 4px;
-      width: 0%;
-      transition: width 0.4s ease;
-    }
-    @media print {
-      body { background: white; }
-      .no-print { display: none !important; }
-      .app-card { box-shadow: none; border: none; }
-      .print-only { display: block !important; }
-    }
-    .print-only { display: none; }
-  </style>
-
-  <style>
-    /* ===== POLISH: ikon, header, kartu, tombol ===== */
-    :root { --ink:#0f172a; --line:#e2e8f0; }
-
-    /* Ikon PNG berlatar putih -> putihnya melebur ke warna di belakangnya */
-    .custom-icon-sm, .custom-icon-md, .custom-icon-lg {
-      mix-blend-mode: multiply;
-      background: transparent;
-    }
-    .custom-icon-lg { width: 56px; height: 56px; flex-shrink: 0; }
-
-    /* Di header (latar gelap) multiply tidak cocok -> pakai chip putih bulat */
-    .header-icon {
-      mix-blend-mode: normal;
-      background: #fff;
-      padding: 4px;
-      width: 30px; height: 30px;
-      border-radius: 50%;
-      box-shadow: 0 2px 8px rgba(0,0,0,.2);
-    }
-
-    /* Header */
-    .header-banner {
-      position: relative;
-      background:
-        radial-gradient(circle at 12% 0%, rgba(255,255,255,.18), transparent 45%),
-        radial-gradient(circle at 95% 100%, rgba(245,158,11,.28), transparent 40%),
-        linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    }
-    .school-logo {
-      width: 96px; height: 96px;
-      border: 4px solid rgba(255,255,255,.35);
-      box-shadow: 0 8px 24px rgba(0,0,0,.25);
-    }
-    #appHeading { letter-spacing: .3px; line-height: 1.3; font-size: clamp(1.15rem, 3.4vw, 1.6rem); }
-
-    /* Kartu utama */
-    .app-card { box-shadow: 0 20px 45px -15px rgba(15,23,42,.25); }
-    .alert-info {
-      background: #ecfeff; color: #164e63;
-      border-left: 5px solid var(--secondary-color) !important;
-      border-radius: 14px;
-    }
-
-    /* Pilihan jenjang: foto jpg dibulatkan dengan ring putih */
-    .btn-level {
-      padding: 14px 20px;
-      border: 2px solid var(--line);
-      background: #fff;
-      color: var(--primary-color);
-    }
-    .btn-level img {
-      width: 40px; height: 40px;
-      padding: 3px;
-      background: #fff;
-      border: 2px solid #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,.18);
-      mix-blend-mode: normal;
-    }
-    .btn-level:hover { background: #eff6ff; color: var(--primary-color); border-color: var(--primary-color); transform: translateY(-2px); }
-    .btn-level.active {
-      box-shadow: 0 8px 20px -6px rgba(245,158,11,.7);
-      transform: translateY(-2px);
-    }
-
-    /* Input */
-    .form-control, .form-select { border-radius: 12px; border: 1.5px solid var(--line); }
-    .form-control:focus, .form-select:focus {
-      border-color: var(--secondary-color);
-      box-shadow: 0 0 0 .25rem rgba(13,148,136,.18);
-    }
-
-    /* Tombol utama */
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary-color), #2563eb);
-      border: 0; border-radius: 12px;
-      transition: transform .2s, box-shadow .2s;
-    }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 20px -8px rgba(30,58,138,.6); background: linear-gradient(135deg, #1e40af, #2563eb); }
-    .btn-success { background: linear-gradient(135deg, var(--secondary-color), #0f766e); border: 0; border-radius: 12px; }
-    .btn-outline-secondary { border-radius: 12px; }
-
-    /* Judul bagian */
-    .section-title {
-      border-left: 0;
-      padding: 10px 14px;
-      background: linear-gradient(90deg, #eff6ff, transparent);
-      border-radius: 12px;
-      gap: 2px;
-    }
-    .section-title .custom-icon-md { background: #fff; border-radius: 10px; padding: 3px; mix-blend-mode: normal; box-shadow: 0 2px 6px rgba(30,58,138,.15); }
-
-    /* Kartu soal */
-    .question-card {
-      background: #fff;
-      border: 1.5px solid var(--line);
-      border-left: 5px solid var(--secondary-color);
-      border-radius: 14px;
-      box-shadow: 0 2px 6px rgba(15,23,42,.04);
-    }
-    .question-card .bg-white { background: #f8fafc !important; border-radius: 10px !important; }
-
-    /* Progress */
-    .progress-bar-custom { height: 10px; border-radius: 6px; overflow: hidden; }
-    .progress-fill { border-radius: 6px; }
-
-    /* Pindah bagian: transisi singkat (menjawab aksi klik Selanjutnya) */
-    .step-content:not(.d-none) { animation: stepIn .35s ease; }
-    @keyframes stepIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-    @media (prefers-reduced-motion: reduce) { .step-content:not(.d-none) { animation: none; } .btn-level, .btn-primary { transition: none; } }
-
-    @media (max-width: 576px) {
-      .header-banner { padding: 2rem 1.25rem; }
-      .btn-level { font-size: .9rem; padding: 12px; }
-      .custom-icon-lg { width: 44px; height: 44px; }
-    }
-  </style>
-
-  <style>
-    /* ikon sekarang PNG transparan -> tidak perlu trik blend / chip putih */
-    .custom-icon-sm,.custom-icon-md,.custom-icon-lg{mix-blend-mode:normal;border-radius:50%;}
-    .header-icon{background:transparent;padding:0;width:28px;height:28px;box-shadow:0 2px 6px rgba(0,0,0,.25);}
-    .section-title .custom-icon-md{background:transparent;padding:0;box-shadow:0 3px 8px rgba(249,115,22,.35);}
-    .custom-icon-lg{box-shadow:0 4px 12px rgba(249,115,22,.3);}
-    .btn-level img{width:48px;height:48px;padding:0;background:transparent;border:0;box-shadow:none;border-radius:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));}
-    .btn-level{font-weight:700;}
-  </style>
-
-  <style>
-    /* logo bintang: tanpa lingkaran putih, ikut bentuk aslinya */
-    .school-logo{background:transparent;padding:0;border:0;border-radius:0;width:104px;height:104px;
-      box-shadow:none;filter:drop-shadow(0 6px 14px rgba(0,0,0,.28));margin-bottom:1.1rem;}
+    :root { --primary:#1e3a8a; --teal:#0d9488; --amber:#f59e0b; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:'Montserrat',sans-serif; color:var(--ink); background:#eef3f9; min-height:100vh; }
+    .wrap { max-width:760px; margin:0 auto; padding:20px 16px 40px; }
+    header { text-align:center; color:#fff; padding:36px 20px 70px; border-radius:24px;
+      background: radial-gradient(circle at 12% 0%, rgba(255,255,255,.18), transparent 45%),
+                  radial-gradient(circle at 95% 100%, rgba(245,158,11,.28), transparent 40%),
+                  linear-gradient(135deg, var(--primary), var(--teal)); }
+    header img { width:92px; height:92px; object-fit:contain; filter:drop-shadow(0 6px 14px rgba(0,0,0,.3)); }
+    .eyebrow { margin:14px 0 4px; font-size:.78rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; opacity:.85; }
+    h1 { margin:0 0 6px; font-size:clamp(1.3rem,4.6vw,1.8rem); line-height:1.3; font-weight:800; }
+    header p { margin:0; font-size:.88rem; opacity:.9; }
+    main { margin-top:-44px; display:grid; gap:14px; }
+    .card { display:flex; align-items:center; gap:16px; background:#fff; border:2px solid transparent; border-radius:18px;
+      padding:18px; text-decoration:none; color:inherit; box-shadow:0 8px 24px -10px rgba(15,23,42,.25); transition:transform .2s, border-color .2s, box-shadow .2s; }
+    .card:hover, .card:focus-visible { transform:translateY(-3px); border-color:var(--amber); box-shadow:0 14px 28px -10px rgba(15,23,42,.3); outline:none; }
+    .card img { width:64px; height:64px; flex-shrink:0; border-radius:50%; box-shadow:0 4px 12px rgba(249,115,22,.3); }
+    .num { flex-shrink:0; width:30px; height:30px; border-radius:50%; background:var(--primary); color:#fff; font-weight:800; font-size:.9rem; display:grid; place-items:center; }
+    .body { flex:1; min-width:0; }
+    .tag { display:inline-block; font-size:.7rem; font-weight:700; padding:3px 10px; border-radius:20px; margin-bottom:6px; }
+    .tag.murid { background:#dbeafe; color:#1e40af; }
+    .tag.ortu { background:#ccfbf1; color:#115e59; }
+    .body h2 { margin:0 0 4px; font-size:1.05rem; font-weight:800; }
+    .body p { margin:0; font-size:.82rem; color:var(--muted); line-height:1.5; }
+    .go { flex-shrink:0; font-size:1.4rem; color:var(--primary); font-weight:800; }
+    .note { margin-top:22px; padding:14px 16px; border-radius:14px; background:#fff7ed; border-left:5px solid var(--amber); font-size:.82rem; line-height:1.6; color:#7c2d12; }
+    footer { text-align:center; margin-top:26px; font-size:.75rem; color:var(--muted); }
+    @media (max-width:480px) { .card { padding:14px; gap:12px; } .card img { width:52px; height:52px; } .num { display:none; } }
+    @media (prefers-reduced-motion:reduce) { .card { transition:none; } }
   </style>
 </head>
-<body class="py-4">
+<body>
+  <div class="wrap">
+    <header>
+      <img src="logo_insan_mandiri_new.png" alt="Logo Insan Mandiri">
+      <div class="eyebrow">SPMB TP. 2027/2028</div>
+      <h1>SMPIT & SMAIT<br>Insan Mandiri Greenville</h1>
+      <p>Silakan pilih menu sesuai yang diminta panitia</p>
+    </header>
 
-<div class="container" style="max-width: 900px;">
-  <div class="app-card overflow-hidden">
-    
-    <!-- HEADER -->
-    <div class="header-banner text-center position-relative">
-      <!-- LOGO UTAMA -->
-      <img src="logo_insan_mandiri_new.png" class="school-logo" alt="Logo Insan Mandiri">
-      
-      <h5 class="text-uppercase tracking-wider opacity-75 mb-1 fw-semibold" style="letter-spacing: 1px;">Penerimaan Murid Baru TP. 2027/2028</h5>
-      <h2 class="fw-bold mb-2" id="appHeading">OBSERVASI KOGNITIF, NON-KOGNITIF & GAYA BELAJAR</h2>
-      <p class="mb-0 text-light opacity-90 small d-flex align-items-center justify-content-center">
-        <img src="Sistem_Penilaian_Interaktif_IMG.png" class="custom-icon-sm header-icon" alt="Icon System">
-        Sistem Penilaian Interaktif Insan Mandiri Group (IMG)
-      </p>
+    <main>
+      <a class="card" href="tes-observasi.html">
+        <span class="num">1</span>
+        <img src="Sistem_Penilaian_Interaktif_IMG.png" alt="">
+        <div class="body">
+          <span class="tag murid">Dikerjakan oleh Calon Murid</span>
+          <h2>Tes Observasi</h2>
+          <p>Tes akademik, non-akademik, dan gaya belajar. Dikerjakan langsung oleh ananda.</p>
+        </div>
+        <span class="go" aria-hidden="true">›</span>
+      </a>
+
+      <a class="card" href="wawancara-ortu.html">
+        <span class="num">2</span>
+        <img src="petunjuk.png" alt="">
+        <div class="body">
+          <span class="tag ortu">Diisi oleh Orang Tua</span>
+          <h2>Wawancara Orang Tua</h2>
+          <p>Data ananda dan keluarga, kebiasaan di rumah, serta harapan orang tua.</p>
+        </div>
+        <span class="go" aria-hidden="true">›</span>
+      </a>
+
+      <a class="card" href="ukur-seragam.html">
+        <span class="num">3</span>
+        <img src="akademik.png" alt="">
+        <div class="body">
+          <span class="tag ortu">Diisi oleh Orang Tua</span>
+          <h2>Ukur Seragam</h2>
+          <p>Pengukuran seragam dari rumah. Siapkan meteran kain sebelum mulai.</p>
+        </div>
+        <span class="go" aria-hidden="true">›</span>
+      </a>
+    </main>
+
+    <div class="note">
+      <strong>Catatan:</strong> Gunakan nama lengkap yang sama di setiap menu agar data ananda mudah dicocokkan oleh panitia. Setiap menu dikirim terpisah, jadi pastikan muncul tulisan berhasil terkirim di akhir.
     </div>
-
-    <div class="p-4 p-md-5">
-
-      <!-- PRE-INSTRUCTIONS & LEVEL SELECTOR -->
-      <div id="setupStep" class="mb-4">
-        <div class="alert alert-info border-0 shadow-sm d-flex align-items-center gap-3 p-3">
-          <img src="petunjuk.png" class="custom-icon-lg" alt="Petunjuk Icon">
-          <div>
-            <strong>Petunjuk Pengerjaan:</strong>
-            <ol class="mb-0 ps-3 small">
-              <li>Berdoalah terlebih dahulu sebelum mengerjakan soal.</li>
-              <li>Kerjakanlah terlebih dahulu soal yang kamu anggap paling mudah.</li>
-              <li>Kerjakanlah soal-soal tersebut dengan jujur dan teliti.</li>
-              <li>Periksa kembali hasil pekerjaanmu sebelum dikirim.</li>
-            </ol>
-          </div>
-        </div>
-
-        <label class="form-label fw-bold text-dark mb-2">Pilih Jenjang Observasi:</label>
-        <div class="d-flex gap-3 mb-4">
-          <button type="button" class="btn btn-outline-primary btn-level flex-fill active" id="btnSmp" onclick="selectLevel('SMP')">
-            <img src="smp.png" alt="SMP Icon"> SMPIT IMG
-          </button>
-          <button type="button" class="btn btn-outline-primary btn-level flex-fill" id="btnSma" onclick="selectLevel('SMA')">
-            <img src="sma.png" alt="SMA Icon"> SMAIT IMG
-          </button>
-        </div>
-
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label fw-semibold d-flex align-items-center">
-              <img src="nama_lengkap.png" class="custom-icon-sm" alt="Name Icon">
-              Nama Lengkap Murid <span class="text-danger ms-1">*</span>
-            </label>
-            <input type="text" id="studentName" class="form-control form-control-lg" placeholder="Masukkan nama lengkap" required>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold d-flex align-items-center">
-              <img src="asal_sekolah.png" class="custom-icon-sm" alt="School Icon">
-              Asal Sekolah <span class="text-danger ms-1">*</span>
-            </label>
-            <input type="text" id="studentSchool" class="form-control form-control-lg" placeholder="Masukkan sekolah asal" required>
-          </div>
-        </div>
-        
-        <button type="button" class="btn btn-primary btn-lg w-100 mt-4 fw-bold shadow-sm" onclick="startTest()">
-          Mulai Observasi Sekarang
-        </button>
-      </div>
-
-      <!-- FORM UTAMA -->
-      <form id="my-form">
-        <input type="hidden" name="jenjang" id="fs_jenjang">
-        <input type="hidden" name="nama_murid" id="fs_nama">
-        <input type="hidden" name="asal_sekolah" id="fs_sekolah">
-        <input type="hidden" name="hasil_observasi_lengkap" id="fs_detail_pesan">
-
-        <!-- MAIN FORM TEST -->
-        <div id="testArea" class="d-none">
-          
-          <!-- PROGRESS BAR -->
-          <div class="mb-4">
-            <div class="d-flex justify-content-between text-muted small mb-1 fw-bold">
-              <span id="currentStepLabel">Bagian 1: Kognitif</span>
-              <span id="progressPercent">33%</span>
-            </div>
-            <div class="progress-bar-custom">
-              <div class="progress-fill" id="progressBar"></div>
-            </div>
-          </div>
-            
-          <!-- STEP 1: KOGNITIF -->
-          <div id="step1" class="step-content">
-            <h4 class="section-title">
-              <img src="akademik.png" class="custom-icon-md" alt="Akademik Icon">
-              BAGIAN I: OBSERVASI KOGNITIF
-            </h4>
-            
-            <!-- SOAL SMP -->
-            <div id="smpKognitif">
-              <div class="question-card">
-                <label class="fw-bold d-block mb-2">1. Soal Matematika (Perhitungan & Cara)</label>
-                <p class="text-muted small">Pada hari Minggu, ibu berbelanja ke pasar. Ia membeli 5 kg jeruk. 1 kg jeruk berisi 15 buah. Jeruk tersebut akan dimasukkan pada 3 kantong plastik dengan isi yang sama banyak. Hitunglah berapa banyak jeruk tiap kantong plastik!</p>
-                <textarea class="form-control" name="smp_k1" rows="3" placeholder="Tuliskan cara penyelesaian dan jawaban akhir..."></textarea>
-              </div>
-
-              <div class="question-card">
-                <label class="fw-bold d-block mb-2">2. Pemahaman Teks Bacaan</label>
-                <p class="small bg-white p-3 rounded border">"Sepulang sekolah, sebaiknya kamu langsung pulang ke rumah. Jika ingin pergi ke tempat lain, mintalah izin terlebih dahulu kepada orang tua atau guru..."</p>
-                <label class="form-label small font-italic">Pernyataan yang sesuai dengan teks tersebut adalah ....</label>
-                <div class="form-check mb-2"><input class="form-check-input" type="radio" name="smp_k2" value="A"><label class="form-check-label">Meminta izin sebaiknya dilakukan sebelum bepergian.</label></div>
-                <div class="form-check mb-2"><input class="form-check-input" type="radio" name="smp_k2" value="B"><label class="form-check-label">Trotoar ada di sebelah kanan dan kiri jalan raya.</label></div>
-                <div class="form-check mb-2"><input class="form-check-input" type="radio" name="smp_k2" value="C"><label class="form-check-label">Menyebrang jalan raya lebih aman di zebra cross.</label></div>
-                <div class="form-check"><input class="form-check-input" type="radio" name="smp_k2" value="D"><label class="form-check-label">Bel pulang sekolah berbunyi pada siang hari pukul 13.00 WIB.</label></div>
-              </div>
-
-              <div class="question-card">
-                <label class="fw-bold d-block mb-2">3. Analisis Karakter</label>
-                <p class="small bg-white p-3 rounded border">"Rian sudah bermain game sejak pukul 10 siang hingga 4 sore..."</p>
-                <label class="form-label small">Watak/karakter dari Rian pada penggalan cerita tersebut adalah ....</label>
-                <input type="text" class="form-control" name="smp_k3" placeholder="Jawab watak/karakter Rian">
-              </div>
-
-              <div class="question-card">
-                <label class="fw-bold d-block mb-2">4. Klasifikasi Kata</label>
-                <div class="row g-2 align-items-center mb-2"><div class="col-4 fw-semibold">Alpukat</div><div class="col-8"><select class="form-select" name="smp_k4_1"><option value="">-- Pilih --</option><option value="Buah">Buah</option><option value="Minum">Minum</option><option value="Makanan">Makanan</option><option value="Permainan">Permainan</option><option value="Sayuran">Sayuran</option></select></div></div>
-                <div class="row g-2 align-items-center mb-2"><div class="col-4 fw-semibold">Roti</div><div class="col-8"><select class="form-select" name="smp_k4_2"><option value="">-- Pilih --</option><option value="Buah">Buah</option><option value="Minum">Minum</option><option value="Makanan">Makanan</option><option value="Permainan">Permainan</option><option value="Sayuran">Sayuran</option></select></div></div>
-                <div class="row g-2 align-items-center mb-2"><div class="col-4 fw-semibold">Kopi</div><div class="col-8"><select class="form-select" name="smp_k4_3"><option value="">-- Pilih --</option><option value="Buah">Buah</option><option value="Minum">Minum</option><option value="Makanan">Makanan</option><option value="Permainan">Permainan</option><option value="Sayuran">Sayuran</option></select></div></div>
-                <div class="row g-2 align-items-center mb-2"><div class="col-4 fw-semibold">Mengayun</div><div class="col-8"><select class="form-select" name="smp_k4_4"><option value="">-- Pilih --</option><option value="Buah">Buah</option><option value="Minum">Minum</option><option value="Makanan">Makanan</option><option value="Permainan">Permainan</option><option value="Sayuran">Sayuran</option></select></div></div>
-                <div class="row g-2 align-items-center"><div class="col-4 fw-semibold">Kentang</div><div class="col-8"><select class="form-select" name="smp_k4_5"><option value="">-- Pilih --</option><option value="Buah">Buah</option><option value="Minum">Minum</option><option value="Makanan">Makanan</option><option value="Permainan">Permainan</option><option value="Sayuran">Sayuran</option></select></div></div>
-              </div>
-
-              <div class="question-card">
-                <label class="fw-bold d-block mb-2">5. Pengetahuan Al-Qur'an</label>
-                <p class="small bg-white p-3 rounded border">Artinya: <em>“Dan dengan nikmat Tuhanmu hendaklah engkau nyatakan (dengan bersyukur).”</em></p>
-                <div class="form-check mb-2"><input class="form-check-input" type="radio" name="smp_k5" value="QS. An-Naba ayat 10"><label class="form-check-label">QS. An-Naba ayat 10</label></div>
-                <div class="form-check mb-2"><input class="form-check-input" type="radio" name="smp_k5" value="QS. Al-Baqarah ayat 5"><label class="form-check-label">QS. Al-Baqarah ayat 5</label></div>
-                <div class="form-check mb-2"><input class="form-check-input" type="radio" name="smp_k5" value="QS. Al-Ikhlas ayat 3"><label class="form-check-label">QS. Al-Ikhlas ayat 3</label></div>
-                <div class="form-check"><input class="form-check-input" type="radio" name="smp_k5" value="QS. Ad-Duha ayat 11"><label class="form-check-label">QS. Ad-Duha ayat 11</label></div>
-              </div>
-            </div>
-
-            <!-- SOAL SMA -->
-            <div id="smaKognitif" class="d-none">
-              <div id="smaQuestionsContainer"></div>
-            </div>
-
-          </div>
-
-          <!-- STEP 2: NON-KOGNITIF -->
-          <div id="step2" class="step-content d-none">
-            <h4 class="section-title">
-              <img src="non_akademik.png" class="custom-icon-md" alt="Non-Akademik Icon">
-              BAGIAN II: OBSERVASI NON-KOGNITIF
-            </h4>
-            
-            <div class="question-card">
-              <label class="fw-bold d-block mb-2">Studi Kasus 1: Adab & Etika</label>
-              <p class="small bg-white p-3 rounded border">Faiza merupakan salah satu murid perempuan dari Sekolah Insan Mandiri. Faiza pergi ke Plaza Senayan bersama keluarganya pada hari Sabtu. Saat Faiza dan keluarganya sedang makan di Restoran Steak, tanpa disengaja Faiza melihat teman sekelasnya bernama Sinta tidak memakai hijab dan berjalan berdua dengan teman laki-laki di kelasnya bernama Ahmad. Apalagi mereka berjalan sambil makan es krim.</p>
-              <label class="form-label small fw-semibold">Apa saja kesalahan yang kamu ketahui setelah mencermati teks di atas?</label>
-              <textarea class="form-control" name="nk_1" rows="3" placeholder="Tuliskan analisis kesalahan..."></textarea>
-            </div>
-
-            <div class="question-card">
-              <label class="fw-bold d-block mb-2">Studi Kasus 2: Penanganan Perundungan (Bullying)</label>
-              <p class="small bg-white p-3 rounded border">Andi merupakan anak yang lugu, pendiam dan kurang pandai bersosialisasi. Ia gemar membaca dan menggambar aneka transportasi umum. Di dalam kelas yang sama, Rizal merupakan anak yang aktif dan banyak bicara, namun tidak banyak disukai oleh teman–temannya karena sering berkata buruk dan kotor serta terkadang bertindak kasar. Saat di jam istirahat, Andi yang sedang menggambar di kelas tiba–tiba dihampiri oleh Rizal dan beberapa temannya, lalu mereka mengambil paksa dan merobek buku gambar milik Andi. Rizal juga menarik kerah seragam Andi sambil mengancam agar tidak mengadukan hal ini ke pihak guru. Andi terlihat sangat ketakutan dan menuruti perintah Rizal tersebut.</p>
-              <label class="form-label small fw-semibold">Apa yang akan kamu lakukan, jika melihat tindakan pembulian di sekolah atau pun di kelasmu?</label>
-              <textarea class="form-control" name="nk_2" rows="3" placeholder="Tuliskan sikap & tindakanmu..."></textarea>
-            </div>
-
-            <div class="question-card">
-              <label class="fw-bold d-block mb-2">Studi Kasus 3: Tekanan Teman Sebaya</label>
-              <p class="small bg-white p-3 rounded border">Robi, Alan dan Burhan merupakan murid SMP Cahaya Terang. Mereka pernah dipanggil oleh Kepala Sekolah karena peraturan Sekolah yaitu merokok di sekitar Sekolah. Beberapa hari kemudian, Raihan teman sekelasnya melihat Robi, Alan dan Burhan sedang merokok secara diam-diam di warung dekat Sekolah. Lalu, mereka melihat Raihan saat melewati warung dan otomatis mengajak Raihan untuk memasak/merokok bersama.</p>
-              <label class="form-label small fw-semibold">Apa tindakanmu jika menjadi Raihan?</label>
-              <textarea class="form-control" name="nk_3" rows="3" placeholder="Tuliskan tindakan yang akan diambil..."></textarea>
-            </div>
-
-            <div class="question-card">
-              <label class="fw-bold d-block mb-2">Studi Kasus 4: Kejujuran & Integritas</label>
-              <p class="small bg-white p-3 rounded border">Afkar merupakan salah satu murid yang gemar bersedekah. Pada hari Jumat, Afkar membawa uang lebih untuk infaq di Masjid. Namun pada saat ingin berangkat Solat Jumat di Masjid, Afkar kehilangan sejumlah uangnya yang ia simpan di dalam tasnya. Afkar merasa yakin bahwa ia menyimpan uangnya di dalam tas. Sepulang solat Jumat, Afkar mengadukan kehilangan uangnya ke pihak guru. Lalu, guru tersebut melakukan pemeriksaan tas dan kantong seragam tiap murid. Namun sayangnya tidak menghasilkan hasil karena tidak ditemukannya bukti dan orang yang mengambil uang Afkar tersebut.<br><br>Beberapa hari kemudian, salah satu teman sekelas Afkar bernama Alim menyampaikan bahwa ia sempat melihat Dani mengambil sesuatu di dalam tas Afkar. Alim pun sempat mengambil foto Dani sambil mengambil uang di dalam tasnya Afkar.</p>
-              <label class="form-label small fw-semibold">Apa tindakan yang harus dilakukan Afkar setelah mengetahui bahwa Dani adalah orang yang mencuri uangnya untuk infaq di Masjid?</label>
-              <textarea class="form-control" name="nk_4" rows="3" placeholder="Tuliskan tindakan terbaik..."></textarea>
-            </div>
-          </div>
-
-          <!-- STEP 3: GAYA BELAJAR -->
-          <div id="step3" class="step-content d-none">
-            <h4 class="section-title">
-              <img src="gaya-belajar.png" class="custom-icon-md" alt="Gaya Belajar Icon">
-              BAGIAN III: TES GAYA BELAJAR
-            </h4>
-            <div id="styleQuestionsContainer"></div>
-          </div>
-
-          <!-- NAVIGATION BUTTONS -->
-          <div class="d-flex justify-content-between mt-4">
-            <button type="button" class="btn btn-outline-secondary px-4 fw-bold d-none" id="btnPrev" onclick="changeStep(-1)">
-              Sebelumnya
-            </button>
-            <button type="button" class="btn btn-primary px-4 fw-bold ms-auto" id="btnNext" onclick="changeStep(1)">
-              Selanjutnya
-            </button>
-            <button type="submit" class="btn btn-success px-4 fw-bold d-none" id="btnSubmit" data-fs-submit-btn>
-              Selesai & Kirim ke Panitia
-            </button>
-          </div>
-
-        </div>
-      </form>
-
-      <!-- NOTIFIKASI SUKSES / ERROR -->
-      <div data-fs-success class="alert alert-success mt-3 d-none text-center fw-bold">
-        Data observasi berhasil dikirim ke panitia!
-      </div>
-      <div data-fs-error class="alert alert-danger mt-3 d-none"></div>
-
-      <!-- STEP 4: RESULT DASHBOARD -->
-      <div id="resultArea" class="d-none">
-        <div class="text-center mb-4">
-          <div class="badge bg-success p-2 mb-2">Berhasil Diproses & Terkirim!</div>
-          <h3 class="fw-bold">Laporan Hasil Observasi Murid Baru</h3>
-          <p class="text-muted" id="resHeaderInfo">SMPIT / SMAIT IMG - TP. 2027/2028</p>
-        </div>
-
-        <div class="card p-3 mb-4 bg-light border-0">
-          <div class="row">
-            <div class="col-md-6"><strong>Nama Lengkap:</strong> <span id="resName">-</span></div>
-            <div class="col-md-6"><strong>Asal Sekolah:</strong> <span id="resSchool">-</span></div>
-          </div>
-        </div>
-
-        <!-- STYLE RESULT -->
-        <div class="card p-4 mb-4 border-0 shadow-sm">
-          <h5 class="fw-bold text-primary mb-3">
-            <img src="gaya-belajar.png" class="custom-icon-sm" alt="Gaya Belajar Icon">
-            Profil Gaya Belajar
-          </h5>
-          <div class="row align-items-center">
-            <div class="col-md-5 text-center">
-              <canvas id="styleChart" style="max-height: 220px;"></canvas>
-            </div>
-            <div class="col-md-7">
-              <div class="p-3 rounded bg-light">
-                <h6 class="fw-bold mb-1">Gaya Belajar Dominan: <span id="resDominantStyle" class="text-success">...</span></h6>
-                <p id="resStyleDesc" class="small text-muted mb-0"></p>
-              </div>
-              <div class="mt-3 small">
-                <div class="d-flex justify-content-between mb-1"><span>Visual</span> <strong id="resVisualP">0%</strong></div>
-                <div class="d-flex justify-content-between mb-1"><span>Auditori</span> <strong id="resAuditoriP">0%</strong></div>
-                <div class="d-flex justify-content-between"><span>Kinestetik</span> <strong id="resKinestetikP">0%</strong></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex gap-3 no-print">
-          <button class="btn btn-outline-secondary flex-fill fw-bold" onclick="resetForm()">Ulangi Tes</button>
-          <button class="btn btn-primary flex-fill fw-bold" onclick="window.print()">Cetak / Simpan PDF</button>
-        </div>
-
-      </div>
-
-    </div>
+    <footer>© SMPIT & SMAIT Insan Mandiri Greenville</footer>
   </div>
-</div>
-
-<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
-<script>
-  let selectedLevel = 'SMP';
-  let currentStep = 1;
-  let chartInstance = null;
-
-  const smaQuestions = [
-    { type: 'pg', q: '1. Sinonim dari kata "Donasi" adalah ....', opts: ['Permintaan', 'Hambatan', 'Bantuan', 'Hadiah'], ans: 2 },
-    { type: 'pg', q: '2. Sinonim dari kata "Akurat" adalah ....', opts: ['Cepat', 'Tepat', 'Tajam', 'Cermat'], ans: 1 },
-    { type: 'pg', q: '3. Kata yang memiliki hubungan seperti "Kaki : Berjalan" adalah ....', opts: ['Telinga : Mendengar', 'Mata : Melihat', 'Tangan : Mengetik', 'Hidung : Mencium'], ans: 0 },
-    { type: 'pg', q: '4. "Pisau : Memotong = Pulpen : ..."', opts: ['Menulis', 'Menggambar', 'Membaca', 'Menghapus'], ans: 0 },
-    { type: 'pg', q: '5. Antonim dari kata "Fana" adalah ....', opts: ['Sementara', 'Dunia', 'Sekarang', 'Abadi'], ans: 3 },
-    { type: 'pg', q: '6. Perbandingan usia Andi & Budi 3:4. Jumlah 56 tahun, usia Budi adalah ....', opts: ['24 tahun', '28 tahun', '32 tahun', '36 tahun'], ans: 2 },
-    { type: 'pg', q: '7. Pukul 07.00, maka 250 menit kemudian adalah pukul …. ', opts: ['10.50', '11.10', '11.30', '12.10'], ans: 1 },
-    { type: 'pg', q: '8. 13% dari 250 adalah...', opts: ['28', '32,5', '34', '36,5'], ans: 1 },
-    { type: 'pg', q: '9. Kelanjutan barisan bilangan 25, 100, 75, 90, 125, ..., ...', opts: ['80, 100', '175, 80', '80, 175', '100, 175'], ans: 2 },
-    { type: 'pg', q: '10. 23,7 - 13,9 + 4,6 =...', opts: ['9,4', '11,4', '12,4', '14,4'], ans: 3 },
-    { type: 'pg', q: '11. They ________ in the library when I last saw them.', opts: ['were studying', 'studying', 'studied', 'are studying'], ans: 0 },
-    { type: 'pg', q: '12. The teacher asked the students ________ quietly during the exam.', opts: ['to work', 'working', 'work', 'works'], ans: 0 },
-    { type: 'pg', q: '13. Choose the correct spelling.', opts: ['Proffessional', 'Profesional', 'Professional', 'Professhionale'], ans: 2 },
-    { type: 'pg', q: '14. She is not _________ to attend the meeting.', opts: ['can', 'able', 'can’t', 'ability'], ans: 1 },
-    { type: 'pg', q: '15. They __________ their vacation in Bali last year.', opts: ['spending', 'spent', 'spend', 'spended'], ans: 1 },
-    { type: 'table', q: '16. Complete the irregular verbs below (Drive, Give, Think, Write, Forget):', headers: ['Verb 1', 'Verb 2', 'Verb 3'], rows: ['drive', 'give', 'think', 'write', 'forget'] },
-    { type: 'text', q: '17. Arrange these words into a good sentence!\n"come – the – Would – you – to – like – party – to –?"' },
-    { type: 'text', q: '18. Hasil dari 28 + 36 : (–4) adalah ....' },
-    { type: 'text', q: '19. Rafa diberikan amanah untuk berbelanja ke pasar. Ia diminta untuk membeli 5 kg jeruk. Setiap 1 kg jeruk berisi 15 buah. Jeruk tersebut akan dimasukkan ke dalam 3 kantong plastik dengan isi sama banyak. Hitunglah berapa banyak jeruk tiap kantong plastik tersebut! (Tuliskan cara penyelesaiannya)' },
-    { type: 'text', q: '20. Perhatikan penggalan cerita berikut:\n"Surya sudah bermain game sejak pukul 10 pagi hingga 4 sore. Berarti sudah 6 jam Surya bermain game online. Juga meninggalkan kewajiban solat Dzuhurnya. Ibu segera menghampiri Surya dan mengambil handphone dari tangan Surya. Surya pun terlihat marah dan membentak ibunya."\n\nWatak/karakter dari Surya pada penggalan cerita tersebut adalah ....' }
-  ];
-
-  const styleQuestions = [
-    { q: "1. Ketika aku bercerita, aku memilih untuk ....", a: "menulisnya", b: "menceritakannya dengan suara keras", c: "mempraktikkannya" },
-    { q: "2. Yang aku lakukan ketika aku marah adalah ....", a: "mengemukakan muka marah", b: "berteriak atau mengamuk", c: "menghentakkan kaki/membanting benda" },
-    { q: "3. Yang lebih aku suka adalah ....", a: "gambar/lukisan", b: "musik/menyanyi", c: "menari/olahraga" },
-    { q: "4. Ketika cemas/khawatir, saya ....", a: "membayangkan hasil terburuk", b: "banyak bicara dalam hati", c: "tidak bisa duduk tenang" },
-    { q: "5. Saya paling mudah mengingat ....", a: "wajah orang & lingkungan", b: "suara & kata orang", c: "suatu kejadian & tindakan" },
-    { q: "6. Petunjuk cara melakukan sesuatu:", a: "melihat gambar", b: "minta dijelaskan kata-kata", c: "minta contoh langsung" },
-    { q: "7. Di sekolah, kebiasaanku:", a: "memperhatikan wajah guru", b: "mendengarkan penjelasan", c: "tidak bisa diam" },
-    { q: "8. Memahami sesuatu dengan:", a: "melihat", b: "mendengar", c: "melakukan" },
-    { q: "9. Saat merangkai mainan:", a: "mengikuti gambar", b: "mendengar instruksi", c: "langsung merakit" },
-    { q: "10. Saat akan ulangan, mudah hafal jika:", a: "membaca buku/catatan", b: "membaca bersuara keras", c: "berjalan bolak-balik" }
-  ];
-
-  function selectLevel(lvl) {
-    selectedLevel = lvl;
-    document.getElementById('btnSmp').classList.toggle('active', lvl === 'SMP');
-    document.getElementById('btnSma').classList.toggle('active', lvl === 'SMA');
-    document.getElementById('appHeading').innerText = `OBSERVASI KOGNITIF, NON-KOGNITIF & GAYA BELAJAR ${lvl}IT IMG`;
-  }
-
-  function renderSmaQuestions() {
-    const container = document.getElementById('smaQuestionsContainer');
-    container.innerHTML = '';
-    smaQuestions.forEach((q, idx) => {
-      let html = `<div class="question-card"><label class="fw-bold d-block mb-2" style="white-space: pre-line;">${q.q}</label>`;
-      if (q.type === 'pg') {
-        q.opts.forEach((opt, oIdx) => {
-          html += `<div class="form-check mb-1"><input class="form-check-input" type="radio" name="sma_q_${idx}" value="${opt}"><label class="form-check-label">${opt}</label></div>`;
-        });
-      } else if (q.type === 'text') {
-        html += `<textarea class="form-control" name="sma_q_${idx}" rows="3" placeholder="Tuliskan jawaban..."></textarea>`;
-      } else if (q.type === 'table') {
-        html += `<div class="table-responsive"><table class="table table-bordered bg-white small"><thead><tr><th>Verb 1</th><th>Verb 2</th><th>Verb 3</th></tr></thead><tbody>`;
-        q.rows.forEach((r, rIdx) => {
-          html += `<tr><td><strong>${r}</strong></td><td><input type="text" class="form-control form-control-sm" name="sma_q_${idx}_v2_${rIdx}"></td><td><input type="text" class="form-control form-control-sm" name="sma_q_${idx}_v3_${rIdx}"></td></tr>`;
-        });
-        html += `</tbody></table></div>`;
-      }
-      container.innerHTML += html + `</div>`;
-    });
-  }
-
-  function renderStyleQuestions() {
-    const container = document.getElementById('styleQuestionsContainer');
-    container.innerHTML = '';
-    styleQuestions.forEach((q, idx) => {
-      container.innerHTML += `
-        <div class="question-card">
-          <label class="fw-bold d-block mb-2">${q.q}</label>
-          <div class="form-check mb-1"><input class="form-check-input" type="radio" name="style_${idx}" value="A"><label class="form-check-label">A. ${q.a}</label></div>
-          <div class="form-check mb-1"><input class="form-check-input" type="radio" name="style_${idx}" value="B"><label class="form-check-label">B. ${q.b}</label></div>
-          <div class="form-check"><input class="form-check-input" type="radio" name="style_${idx}" value="C"><label class="form-check-label">C. ${q.c}</label></div>
-        </div>`;
-    });
-  }
-
-  function startTest() {
-    const name = document.getElementById('studentName').value.trim();
-    const school = document.getElementById('studentSchool').value.trim();
-    if (!name || !school) { alert('Harap isi Nama Lengkap dan Asal Sekolah terlebih dahulu!'); return; }
-
-    document.getElementById('setupStep').classList.add('d-none');
-    document.getElementById('testArea').classList.remove('d-none');
-    
-    if (selectedLevel === 'SMP') {
-      document.getElementById('smpKognitif').classList.remove('d-none');
-      document.getElementById('smaKognitif').classList.add('d-none');
-    } else {
-      document.getElementById('smpKognitif').classList.add('d-none');
-      document.getElementById('smaKognitif').classList.remove('d-none');
-      renderSmaQuestions();
-    }
-    renderStyleQuestions();
-    updateStepUI();
-  }
-
-  function changeStep(dir) {
-    currentStep += dir;
-    if (currentStep < 1) currentStep = 1;
-    if (currentStep > 3) currentStep = 3;
-    updateStepUI();
-  }
-
-  function updateStepUI() {
-    document.querySelectorAll('.step-content').forEach(el => el.classList.add('d-none'));
-    document.getElementById(`step${currentStep}`).classList.remove('d-none');
-
-    const labels = ["Bagian 1: Kognitif", "Bagian 2: Non-Kognitif", "Bagian 3: Tes Gaya Belajar"];
-    const percents = ["33%", "66%", "100%"];
-    document.getElementById('currentStepLabel').innerText = labels[currentStep - 1];
-    document.getElementById('progressPercent').innerText = percents[currentStep - 1];
-    document.getElementById('progressBar').style.width = percents[currentStep - 1];
-
-    document.getElementById('btnPrev').classList.toggle('d-none', currentStep === 1);
-    document.getElementById('btnNext').classList.toggle('d-none', currentStep === 3);
-    document.getElementById('btnSubmit').classList.toggle('d-none', currentStep !== 3);
-  }
-
-  document.getElementById('my-form').addEventListener('submit', function(e) {
-    let countA = 0, countB = 0, countC = 0;
-    for (let i = 0; i < 10; i++) {
-      const radios = document.getElementsByName(`style_${i}`);
-      for (let r of radios) {
-        if (r.checked) {
-          if (r.value === 'A') countA++;
-          if (r.value === 'B') countB++;
-          if (r.value === 'C') countC++;
-        }
-      }
-    }
-
-    const total = countA + countB + countC || 1;
-    let dominant = "Visual";
-    if (countB > countA && countB >= countC) dominant = "Auditori";
-    else if (countC > countA && countC > countB) dominant = "Kinestetik";
-
-    document.getElementById('fs_jenjang').value = selectedLevel;
-    document.getElementById('fs_nama').value = document.getElementById('studentName').value;
-    document.getElementById('fs_sekolah').value = document.getElementById('studentSchool').value;
-    document.getElementById('fs_detail_pesan').value = `Jenjang: ${selectedLevel} | Gaya Belajar: ${dominant} (Visual: ${Math.round((countA/total)*100)}%, Auditori: ${Math.round((countB/total)*100)}%, Kinestetik: ${Math.round((countC/total)*100)}%)`;
-
-    setTimeout(() => {
-      document.getElementById('resName').innerText = document.getElementById('studentName').value;
-      document.getElementById('resSchool').innerText = document.getElementById('studentSchool').value;
-      document.getElementById('resHeaderInfo').innerText = `${selectedLevel}IT IMG - TP. 2027/2028`;
-      document.getElementById('resDominantStyle').innerText = dominant;
-      document.getElementById('resStyleDesc').innerText = `Dominan ${dominant}.`;
-      document.getElementById('resVisualP').innerText = `${Math.round((countA/total)*100)}%`;
-      document.getElementById('resAuditoriP').innerText = `${Math.round((countB/total)*100)}%`;
-      document.getElementById('resKinestetikP').innerText = `${Math.round((countC/total)*100)}%`;
-
-      const ctx = document.getElementById('styleChart').getContext('2d');
-      if (chartInstance) chartInstance.destroy();
-      chartInstance = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Visual', 'Auditori', 'Kinestetik'],
-          datasets: [{ data: [countA, countB, countC], backgroundColor: ['#1e3a8a', '#0d9488', '#f59e0b'] }]
-        },
-        options: { plugins: { legend: { position: 'bottom' } } }
-      });
-
-      document.getElementById('testArea').classList.add('d-none');
-      document.getElementById('resultArea').classList.remove('d-none');
-    }, 500);
-  });
-
-  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-  formspree('initForm', { formElement: '#my-form', formId: 'xdeebpoq' });
-
-  // ===== Kirim rekap ke Google Sheets (Google Drive) =====
-  // Tempel URL Web App dari Google Apps Script di sini (lihat panduan). Kosongkan = fitur nonaktif.
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6OxoaZ6-3ZCXemwrA6kwD7IBoSNjzIzAZmp8pmllzDk1dhS1kwdaJvdp7gbSF2Q/exec';
-
-  document.getElementById('my-form').addEventListener('submit', function () {
-    if (!GOOGLE_SCRIPT_URL) return;
-    const body = new URLSearchParams(new FormData(this));
-    fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body, keepalive: true })
-      .catch(err => console.error('Gagal kirim ke Google Sheets:', err));
-  });
-
-  function resetForm() {
-    document.getElementById('my-form').reset();
-    currentStep = 1;
-    document.getElementById('resultArea').classList.add('d-none');
-    document.getElementById('setupStep').classList.remove('d-none');
-  }
-</script>
-
 </body>
 </html>
