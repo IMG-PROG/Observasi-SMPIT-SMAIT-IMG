@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wawancara Orang Tua - SMPIT & SMAIT Insan Mandiri Greenville</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #0d9488;
+      --accent-color: #f59e0b;
+      --light-bg: #f8fafc;
+    }
+    body {
+      background-color: #f1f5f9;
+      font-family: 'Montserrat', sans-serif !important;
+      color: #334155;
+    }
+    .app-card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      border: none;
+    }
+    .header-banner {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border-radius: 16px 16px 0 0;
+      padding: 2.5rem 2rem;
+    }
+    .school-logo {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      background: white;
+      padding: 8px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-bottom: 1rem;
+    }
+    .custom-icon-sm {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    .custom-icon-md {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    .custom-icon-lg {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+    .btn-level {
+      padding: 12px 20px;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-level img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+    .btn-level.active {
+      background-color: var(--accent-color) !important;
+      color: white !important;
+      border-color: var(--accent-color) !important;
+    }
+    .section-title {
+      border-left: 5px solid var(--primary-color);
+      padding-left: 12px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .question-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .form-check-input:checked {
+      background-color: var(--secondary-color);
+      border-color: var(--secondary-color);
+    }
+    .progress-bar-custom {
+      height: 8px;
+      border-radius: 4px;
+      background-color: #e2e8f0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    @media print {
+      body { background: white; }
+      .no-print { display: none !important; }
+      .app-card { box-shadow: none; border: none; }
+      .print-only { display: block !important; }
+    }
+    .print-only { display: none; }
+  </style><style>
+    /* ===== POLISH: ikon, header, kartu, tombol ===== */
+    :root { --ink:#0f172a; --line:#e2e8f0; }
+
+    /* Ikon PNG berlatar putih -> putihnya melebur ke warna di belakangnya */
+    .custom-icon-sm, .custom-icon-md, .custom-icon-lg {
+      mix-blend-mode: multiply;
+      background: transparent;
+    }
+    .custom-icon-lg { width: 56px; height: 56px; flex-shrink: 0; }
+
+    /* Di header (latar gelap) multiply tidak cocok -> pakai chip putih bulat */
+    .header-icon {
+      mix-blend-mode: normal;
+      background: #fff;
+      padding: 4px;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+
+    /* Header */
+    .header-banner {
+      position: relative;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(255,255,255,.18), transparent 45%),
+        radial-gradient(circle at 95% 100%, rgba(245,158,11,.28), transparent 40%),
+        linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    }
+    .school-logo {
+      width: 96px; height: 96px;
+      border: 4px solid rgba(255,255,255,.35);
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+    }
+    #appHeading { letter-spacing: .3px; line-height: 1.3; font-size: clamp(1.15rem, 3.4vw, 1.6rem); }
+
+    /* Kartu utama */
+    .app-card { box-shadow: 0 20px 45px -15px rgba(15,23,42,.25); }
+    .alert-info {
+      background: #ecfeff; color: #164e63;
+      border-left: 5px solid var(--secondary-color) !important;
+      border-radius: 14px;
+    }
+
+    /* Pilihan jenjang: foto jpg dibulatkan dengan ring putih */
+    .btn-level {
+      padding: 14px 20px;
+      border: 2px solid var(--line);
+      background: #fff;
+      color: var(--primary-color);
+    }
+    .btn-level img {
+      width: 40px; height: 40px;
+      padding: 3px;
+      background: #fff;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.18);
+      mix-blend-mode: normal;
+    }
+    .btn-level:hover { background: #eff6ff; color: var(--primary-color); border-color: var(--primary-color); transform: translateY(-2px); }
+    .btn-level.active {
+      box-shadow: 0 8px 20px -6px rgba(245,158,11,.7);
+      transform: translateY(-2px);
+    }
+
+    /* Input */
+    .form-control, .form-select { border-radius: 12px; border: 1.5px solid var(--line); }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 .25rem rgba(13,148,136,.18);
+    }
+
+    /* Tombol utama */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), #2563eb);
+      border: 0; border-radius: 12px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 20px -8px rgba(30,58,138,.6); background: linear-gradient(135deg, #1e40af, #2563eb); }
+    .btn-success { background: linear-gradient(135deg, var(--secondary-color), #0f766e); border: 0; border-radius: 12px; }
+    .btn-outline-secondary { border-radius: 12px; }
+
+    /* Judul bagian */
+    .section-title {
+      border-left: 0;
+      padding: 10px 14px;
+      background: linear-gradient(90deg, #eff6ff, transparent);
+      border-radius: 12px;
+      gap: 2px;
+    }
+    .section-title .custom-icon-md { background: #fff; border-radius: 10px; padding: 3px; mix-blend-mode: normal; box-shadow: 0 2px 6px rgba(30,58,138,.15); }
+
+    /* Kartu soal */
+    .question-card {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-left: 5px solid var(--secondary-color);
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(15,23,42,.04);
+    }
+    .question-card .bg-white { background: #f8fafc !important; border-radius: 10px !important; }
+
+    /* Progress */
+    .progress-bar-custom { height: 10px; border-radius: 6px; overflow: hidden; }
+    .progress-fill { border-radius: 6px; }
+
+    /* Pindah bagian: transisi singkat (menjawab aksi klik Selanjutnya) */
+    .step-content:not(.d-none) { animation: stepIn .35s ease; }
+    @keyframes stepIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .step-content:not(.d-none) { animation: none; } .btn-level, .btn-primary { transition: none; } }
+
+    @media (max-width: 576px) {
+      .header-banner { padding: 2rem 1.25rem; }
+      .btn-level { font-size: .9rem; padding: 12px; }
+      .custom-icon-lg { width: 44px; height: 44px; }
+    }
+  </style><style>
+    /* ikon sekarang PNG transparan -> tidak perlu trik blend / chip putih */
+    .custom-icon-sm,.custom-icon-md,.custom-icon-lg{mix-blend-mode:normal;border-radius:50%;}
+    .header-icon{background:transparent;padding:0;width:28px;height:28px;box-shadow:0 2px 6px rgba(0,0,0,.25);}
+    .section-title .custom-icon-md{background:transparent;padding:0;box-shadow:0 3px 8px rgba(249,115,22,.35);}
+    .custom-icon-lg{box-shadow:0 4px 12px rgba(249,115,22,.3);}
+    .btn-level img{width:48px;height:48px;padding:0;background:transparent;border:0;box-shadow:none;border-radius:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));}
+    .btn-level{font-weight:700;}
+  </style><style>
+    /* logo bintang: tanpa lingkaran putih, ikut bentuk aslinya */
+    .school-logo{background:transparent;padding:0;border:0;border-radius:0;width:104px;height:104px;
+      box-shadow:none;filter:drop-shadow(0 6px 14px rgba(0,0,0,.28));margin-bottom:1.1rem;}
+  </style>
+<style>.is-invalid-group{outline:2px solid #dc2626;outline-offset:6px;border-radius:8px}.hint{color:#dc2626;font-size:.8rem;display:none}</style>
+</head><body class="py-4">
+<div class="container" style="max-width:900px"><div class="app-card overflow-hidden">
+<div class="header-banner text-center position-relative">
+ <img src="logo_insan_mandiri_new.png" class="school-logo" alt="Logo Insan Mandiri">
+ <h5 class="text-uppercase opacity-75 mb-1 fw-semibold" style="letter-spacing:1px">Penerimaan Murid Baru TP. 2027/2028</h5>
+ <h2 class="fw-bold mb-2" id="appHeading">WAWANCARA ORANG TUA</h2>
+ <p class="mb-0 text-light opacity-90 small">SMPIT & SMAIT Insan Mandiri Greenville</p>
+</div>
+<div class="p-4 p-md-5">
+ <div id="formArea">
+  <div class="alert alert-info border-0 shadow-sm small mb-4">Assalamu’alaikum Warahmatullahi Wabarakatuh. Mohon Bapak/Ibu mengisi setiap bagian dengan lengkap dan benar. Estimasi waktu pengisian ±10 menit.</div>
+  <div class="mb-4"><div class="d-flex justify-content-between text-muted small mb-1 fw-bold"><span id="stepLabel"></span><span id="stepPct"></span></div>
+  <div class="progress-bar-custom"><div class="progress-fill" id="bar"></div></div></div>
+  <form id="f" novalidate><input type="hidden" name="_sheet" value="Wawancara Ortu"><div id="steps"></div></form>
+  <div class="d-flex justify-content-between mt-4">
+   <button type="button" class="btn btn-outline-secondary px-4 fw-bold d-none" id="prev">Sebelumnya</button>
+   <button type="button" class="btn btn-primary px-4 fw-bold ms-auto" id="next">Selanjutnya</button>
+   <button type="button" class="btn btn-success px-4 fw-bold d-none" id="send">Kirim Data</button>
+  </div>
+ </div>
+ <div id="done" class="text-center d-none py-4"><div class="badge bg-success p-2 mb-3">Berhasil Terkirim</div>
+  <h3 class="fw-bold">Jazakumullahu khairan</h3><p class="text-muted mb-4">Data wawancara sudah kami terima.</p>
+  <button class="btn btn-outline-secondary fw-bold" onclick="location.reload()">Isi untuk murid lain</button></div>
+</div></div></div>
+<script>
+const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycby6OxoaZ6-3ZCXemwrA6kwD7IBoSNjzIzAZmp8pmllzDk1dhS1kwdaJvdp7gbSF2Q/exec';
+const SECTIONS=[{"title": "Bagian 1: Data Anak & Orang Tua", "icon": "nama_lengkap.png", "fields": [{"name": "nama_calon_siswa", "label": "Nama Lengkap Calon Siswa", "type": "text", "req": 1}, {"name": "nama_panggilan", "label": "Nama Panggilan", "type": "text", "req": 1}, {"name": "jenis_kelamin", "label": "Jenis Kelamin", "type": "radio", "opts": ["Laki-laki", "Perempuan"], "req": 1}, {"name": "tempat_tanggal_lahir", "label": "Tempat, Tanggal Lahir", "type": "text", "req": 1, "ph": "Contoh: Bekasi, 12 Mei 2014"}, {"name": "asal_sekolah", "label": "Asal Sekolah / Madrasah", "type": "text", "req": 1}, {"name": "nama_ayah", "label": "Nama Ayah", "type": "text", "req": 1}, {"name": "pekerjaan_ayah", "label": "Pekerjaan Ayah", "type": "text", "req": 1}, {"name": "nama_ibu", "label": "Nama Ibu", "type": "text", "req": 1}, {"name": "pekerjaan_ibu", "label": "Pekerjaan Ibu", "type": "text", "req": 1}, {"name": "nomor_hp", "label": "Nomor HP yang dapat dihubungi", "type": "tel", "req": 1, "ph": "08xxxxxxxxxx"}, {"name": "alamat", "label": "Alamat Lengkap Rumah", "type": "area", "req": 1}]}, {"title": "Bagian 2: Wawancara Orang Tua", "icon": "petunjuk.png", "fields": [{"name": "w1_kedekatan", "label": "1. Bagaimana kedekatan Bapak/Ibu dengan ananda?", "type": "radio", "opts": ["Sangat dekat", "Cukup dekat", "Kadang berjarak", "Kurang dekat"], "req": 1}, {"name": "w2_kebiasaan_harian", "label": "2. Ceritakan kebiasaan harian ananda di rumah: belajar, ibadah, tidur, bermain (seperti bangun subuh, puasa sunah, jadwal ngaji).", "type": "area", "req": 1}, {"name": "w3_hobi", "label": "3. Apa hobi atau minat utama ananda?", "type": "area", "req": 1}, {"name": "w4_cara_menegur", "label": "4. Bagaimana cara Bapak/Ibu menegur atau menasihati anak jika berbuat salah?", "type": "area", "req": 1}, {"name": "w5_rutinitas", "label": "5. Apakah ada rutinitas khusus di rumah? (shalat berjamaah, muraja’ah, membaca Qur’an, olahraga, dll.)", "type": "area", "req": 1}, {"name": "w6_gadget", "label": "6. Bagaimana aturan penggunaan gadget di rumah?", "type": "area", "req": 1}, {"name": "w7_merokok", "label": "7. Apakah ananda pernah merokok?", "type": "radio", "opts": ["Pernah", "Tidak Pernah"], "req": 1}, {"name": "w8_perilaku", "label": "8. Apakah ananda pernah menunjukkan perilaku yang perlu perhatian khusus (mudah marah, malas, sulit diatur, dll.)?", "type": "radio", "opts": ["Pernah", "Tidak Pernah"], "req": 1}, {"name": "w9_sikap_ortu", "label": "9. Jika pernah, mohon jelaskan bagaimana sikap orang tua dalam mengatasinya.", "type": "area"}, {"name": "w10_dukungan", "label": "10. Apakah Bapak/Ibu bersedia mendukung kegiatan sekolah (menjadi panitia, pembicara, atau membantu acara)?", "type": "radio", "opts": ["Sangat bersedia", "Bersedia", "Tergantung waktu", "Tidak bersedia"], "req": 1}, {"name": "w11_keahlian", "label": "11. Jika bersedia, keahlian apa yang bisa Bapak/Ibu bagikan untuk sekolah?", "type": "area"}, {"name": "w12_harapan", "label": "12. Harapan Bapak/Ibu terhadap sekolah dan pendidikan ananda di SMPIT Insan Mandiri Greenville", "type": "area", "req": 1}, {"name": "w13_hal_khusus", "label": "13. Apakah ada hal khusus yang perlu sekolah ketahui tentang ananda? (kesehatan, kebiasaan, kebutuhan khusus, dll.)", "type": "area"}]}];
+let cur=0;const $=id=>document.getElementById(id);
+function fieldHtml(f){
+ const r=f.req?' <span class="text-danger">*</span>':'';
+ let h=`<div class="question-card" data-name="${f.name}" data-req="${f.req?1:0}"><label class="fw-bold d-block mb-2">${f.label}${r}</label>`;
+ if(f.type==='radio') h+=f.opts.map(o=>`<div class="form-check mb-1"><input class="form-check-input" type="radio" name="${f.name}" value="${o}"><label class="form-check-label">${o}</label></div>`).join('');
+ else if(f.type==='area') h+=`<textarea class="form-control" name="${f.name}" rows="3" placeholder="${f.ph||'Tuliskan jawaban...'}"></textarea>`;
+ else h+=`<input class="form-control" type="${f.type==='number'?'number':f.type}" ${f.type==='number'?'inputmode="decimal" min="0" step="any"':''} name="${f.name}" placeholder="${f.ph||''}">`;
+ return h+`<div class="hint mt-1">Mohon diisi.</div></div>`;}
+$('steps').innerHTML=SECTIONS.map((s,i)=>`<div class="step-content ${i?'d-none':''}" id="s${i}"><h4 class="section-title"><img src="${s.icon}" class="custom-icon-md" alt=""> ${s.title.toUpperCase()}</h4>${s.intro||''}${s.fields.map(fieldHtml).join('')}</div>`).join('');
+function valid(i){let ok=true,first=null;
+ document.querySelectorAll('#s'+i+' .question-card').forEach(c=>{
+  let good=true;if(c.dataset.req==='1'){const el=c.querySelectorAll('input,textarea');
+   good=el[0].type==='radio'?[...el].some(x=>x.checked):el[0].value.trim()!=='';}
+  c.classList.toggle('is-invalid-group',!good);c.querySelector('.hint').style.display=good?'none':'block';
+  if(!good){ok=false;first=first||c;}});
+ if(first)first.scrollIntoView({behavior:'smooth',block:'center'});return ok;}
+function show(){document.querySelectorAll('.step-content').forEach((e,i)=>e.classList.toggle('d-none',i!==cur));
+ const n=SECTIONS.length,p=Math.round((cur+1)/n*100);$('stepLabel').innerText=SECTIONS[cur].title;$('stepPct').innerText=p+'%';$('bar').style.width=p+'%';
+ $('prev').classList.toggle('d-none',cur===0);$('next').classList.toggle('d-none',cur===n-1);$('send').classList.toggle('d-none',cur!==n-1);window.scrollTo({top:0,behavior:'smooth'});}
+$('next').onclick=()=>{if(valid(cur)){cur++;show();}};$('prev').onclick=()=>{cur--;show();};
+$('send').onclick=async()=>{if(!valid(cur))return;$('send').disabled=true;$('send').innerText='Mengirim...';
+ try{await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',body:new URLSearchParams(new FormData($('f')))});
+  $('formArea').classList.add('d-none');$('done').classList.remove('d-none');window.scrollTo(0,0);}
+ catch(e){alert('Pengiriman gagal. Periksa koneksi internet lalu coba lagi.');$('send').disabled=false;$('send').innerText='Kirim Data';}};
+show();
+</script></body></html>
