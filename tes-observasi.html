@@ -256,6 +256,13 @@
     .school-logo{background:transparent;padding:0;border:0;border-radius:0;width:104px;height:104px;
       box-shadow:none;filter:drop-shadow(0 6px 14px rgba(0,0,0,.28));margin-bottom:1.1rem;}
   </style>
+<style>
+  .header-banner{position:relative}
+  .btn-menu{position:absolute;top:12px;left:12px;z-index:5;display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:20px;
+    background:rgba(255,255,255,.2);color:#fff;font:700 .78rem 'Montserrat',sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(4px)}
+  .btn-menu:hover{background:rgba(255,255,255,.35);color:#fff}
+  @media print{.btn-menu{display:none !important}}
+</style>
 </head>
 <body class="py-4">
 
@@ -264,6 +271,7 @@
     
     <!-- HEADER -->
     <div class="header-banner text-center position-relative">
+      <a href="index.html" class="btn-menu no-print" onclick="return keMenu()">&#8249; Menu</a>
       <!-- LOGO UTAMA -->
       <img src="logo_insan_mandiri_new.png" class="school-logo" alt="Logo Insan Mandiri">
       
@@ -509,9 +517,10 @@
           </div>
         </div>
 
-        <div class="d-flex gap-3 no-print">
+        <div class="d-flex flex-wrap gap-3 no-print">
           <button class="btn btn-outline-secondary flex-fill fw-bold" onclick="resetForm()">Ulangi Observasi</button>
           <button class="btn btn-primary flex-fill fw-bold" onclick="window.print()">Cetak / Simpan PDF</button>
+          <a href="index.html" class="btn btn-success flex-fill fw-bold">Kembali ke Menu</a>
         </div>
 
       </div>
@@ -718,5 +727,10 @@
   }
 </script>
 
+<script>
+function keMenu(){const t=document.getElementById('testArea'),r=document.getElementById('resultArea');
+  const berjalan=t&&!t.classList.contains('d-none')&&r.classList.contains('d-none');
+  return !berjalan||confirm('Kembali ke menu? Isian yang belum dikirim akan hilang.');}
+</script>
 </body>
 </html>

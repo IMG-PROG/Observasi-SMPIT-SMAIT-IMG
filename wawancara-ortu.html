@@ -246,9 +246,17 @@
       box-shadow:none;filter:drop-shadow(0 6px 14px rgba(0,0,0,.28));margin-bottom:1.1rem;}
   </style>
 <style>.is-invalid-group{outline:2px solid #dc2626;outline-offset:6px;border-radius:8px}.hint{color:#dc2626;font-size:.8rem;display:none}</style>
+<style>
+  .header-banner{position:relative}
+  .btn-menu{position:absolute;top:12px;left:12px;z-index:5;display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:20px;
+    background:rgba(255,255,255,.2);color:#fff;font:700 .78rem 'Montserrat',sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(4px)}
+  .btn-menu:hover{background:rgba(255,255,255,.35);color:#fff}
+  @media print{.btn-menu{display:none !important}}
+</style>
 </head><body class="py-4">
 <div class="container" style="max-width:900px"><div class="app-card overflow-hidden">
 <div class="header-banner text-center position-relative">
+<a href="index.html" class="btn-menu no-print" onclick="return keMenu()">&#8249; Menu</a>
  <img src="logo_insan_mandiri_new.png" class="school-logo" alt="Logo Insan Mandiri">
  <h5 class="text-uppercase opacity-75 mb-1 fw-semibold" style="letter-spacing:1px">Penerimaan Murid Baru TP. 2027/2028</h5>
  <h2 class="fw-bold mb-2" id="appHeading">WAWANCARA ORANG TUA</h2>
@@ -268,7 +276,8 @@
  </div>
  <div id="done" class="text-center d-none py-4"><div class="badge bg-success p-2 mb-3">Berhasil Terkirim</div>
   <h3 class="fw-bold">Jazakumullahu khairan</h3><p class="text-muted mb-4">Data wawancara sudah kami terima.</p>
-  <button class="btn btn-outline-secondary fw-bold" onclick="location.reload()">Isi untuk murid lain</button></div>
+  <a href="index.html" class="btn btn-success fw-bold me-2 mb-2">Kembali ke Menu</a>
+  <button class="btn btn-outline-secondary fw-bold mb-2" onclick="location.reload()">Isi untuk murid lain</button></div>
 </div></div></div>
 <script>
 const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycby6OxoaZ6-3ZCXemwrA6kwD7IBoSNjzIzAZmp8pmllzDk1dhS1kwdaJvdp7gbSF2Q/exec';
@@ -298,4 +307,9 @@ $('send').onclick=async()=>{if(!valid(cur))return;$('send').disabled=true;$('sen
   $('formArea').classList.add('d-none');$('done').classList.remove('d-none');window.scrollTo(0,0);}
  catch(e){alert('Pengiriman gagal. Periksa koneksi internet lalu coba lagi.');$('send').disabled=false;$('send').innerText='Kirim Data';}};
 show();
-</script></body></html>
+</script><script>
+function keMenu(){const d=document.getElementById('done');
+  const berjalan=typeof cur!=='undefined'&&cur>0&&d.classList.contains('d-none');
+  return !berjalan||confirm('Kembali ke menu? Isian yang belum dikirim akan hilang.');}
+</script>
+</body></html>

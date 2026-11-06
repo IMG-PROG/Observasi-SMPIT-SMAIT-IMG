@@ -27,12 +27,20 @@
     .guide-tip { background:#EBF8FF; border-left:4px solid var(--blue); border-radius:10px; padding:10px 14px; font-size:.85rem; }
     @media print { .no-print{display:none !important;} body{background:#fff;} .app-card{box-shadow:none;} }
   </style>
+<style>
+  .header-banner{position:relative}
+  .btn-menu{position:absolute;top:12px;left:12px;z-index:5;display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:20px;
+    background:rgba(255,255,255,.2);color:#fff;font:700 .78rem 'Montserrat',sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(4px)}
+  .btn-menu:hover{background:rgba(255,255,255,.35);color:#fff}
+  @media print{.btn-menu{display:none !important}}
+</style>
 </head>
 <body class="py-4">
 <div class="container" style="max-width:900px;">
   <div class="app-card overflow-hidden">
 
-    <div class="header-banner">
+    <div class="header-banner" style="padding-top:2.8rem">
+    <a href="index.html" class="btn-menu no-print" onclick="return keMenu()">&#8249; Menu</a>
       <div class="d-flex align-items-center gap-3">
         <img src="logo_insan_mandiri_new.png" class="school-logo" alt="Logo Insan Mandiri">
         <div>
@@ -130,6 +138,7 @@
           <button type="button" class="btn btn-outline-secondary fw-bold flex-fill" id="btnEdit" onclick="editMeasurement()"><i class="fas fa-edit me-2"></i>Edit Ukuran</button>
           <button type="button" class="btn btn-orange flex-fill" id="btnSend" onclick="submitData()"><i class="fas fa-paper-plane me-2"></i>Kirim ke Panitia</button>
           <button type="button" class="btn btn-outline-navy flex-fill" onclick="window.print()"><i class="fas fa-file-pdf me-2"></i>Cetak / Simpan PDF</button>
+          <a href="index.html" id="btnMenuAkhir" class="btn btn-outline-navy flex-fill d-none"><i class="fas fa-home me-2"></i>Kembali ke Menu</a>
         </div>
       </div>
 
@@ -291,7 +300,7 @@
       await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body });
       sent = true;
       btn.innerHTML = '<i class="fas fa-check me-2"></i>Terkirim';
-      $('btnEdit').classList.add('d-none');
+      $('btnEdit').classList.add('d-none'); $('btnMenuAkhir').classList.remove('d-none');
       $('rekapBadge').innerHTML = '<i class="fas fa-check-circle me-1"></i> Berhasil Terkirim ke Panitia';
       alert('Jazakumullahu khairan. Data ukuran seragam sudah terkirim ke panitia.');
     } catch (err) {
@@ -299,6 +308,11 @@
       alert('Pengiriman gagal. Periksa koneksi internet lalu coba lagi.');
     }
   }
+</script>
+<script>
+function keMenu(){const m=document.getElementById('stepMeasurement'),r=document.getElementById('stepRekap');
+  const berjalan=(!m.classList.contains('d-none')||!r.classList.contains('d-none'))&&!(typeof sent!=='undefined'&&sent);
+  return !berjalan||confirm('Kembali ke menu? Isian yang belum dikirim akan hilang.');}
 </script>
 </body>
 </html>
