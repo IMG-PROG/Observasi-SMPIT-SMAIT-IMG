@@ -45,6 +45,14 @@
 
     <div class="p-4 p-md-5">
 
+      <!-- Tampil bila belum waktunya -->
+      <div id="closedBox" class="text-center py-4 d-none">
+        <div class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3">Segera dibuka</div>
+        <h3 class="fw-bold">Pengukuran seragam belum dibuka</h3>
+        <p class="text-muted mb-4">Pengukuran seragam dilaksanakan setelah Idul Fitri. Mohon menunggu informasi dari panitia.</p>
+        <a href="index.html" class="btn btn-orange">Kembali ke Menu</a>
+      </div>
+
       <!-- LANGKAH 1: IDENTITAS -->
       <div id="stepIdentitas">
         <div class="alert alert-warning border-0 shadow-sm d-flex gap-3 p-3 rounded-4 mb-4">
@@ -132,6 +140,13 @@
 <script>
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6OxoaZ6-3ZCXemwrA6kwD7IBoSNjzIzAZmp8pmllzDk1dhS1kwdaJvdp7gbSF2Q/exec';
   const SHEET_NAME = 'Ukuran Seragam';
+  // Terbuka otomatis mulai tanggal ini (TAHUN-BULAN-TANGGAL). Harus sama dengan di index.html.
+  const BUKA_UKUR_SERAGAM = '2027-03-16';
+  // Panitia bisa menguji lewat ukur-seragam.html?preview=1
+  if (new Date() < new Date(BUKA_UKUR_SERAGAM + 'T00:00:00+07:00') && !new URLSearchParams(location.search).has('preview')) {
+    document.getElementById('closedBox').classList.remove('d-none');
+    document.getElementById('stepIdentitas').classList.add('d-none');
+  }
 
   const schemaMale = [
     { category: "Kemeja Lengan Pendek", fields: [

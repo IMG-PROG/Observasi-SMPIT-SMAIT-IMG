@@ -35,6 +35,9 @@
     footer { text-align:center; margin-top:26px; font-size:.75rem; color:var(--muted); }
     @media (max-width:480px) { .card { padding:14px; gap:12px; } .card img { width:52px; height:52px; } .num { display:none; } }
     @media (prefers-reduced-motion:reduce) { .card { transition:none; } }
+      .card.locked { opacity:.62; cursor:not-allowed; filter:grayscale(.35); }
+    .card.locked:hover { transform:none; border-color:transparent; box-shadow:0 8px 24px -10px rgba(15,23,42,.25); }
+    .tag.soon { background:#fef3c7; color:#92400e; }
   </style>
 </head>
 <body>
@@ -69,7 +72,7 @@
         <span class="go" aria-hidden="true">›</span>
       </a>
 
-      <a class="card" href="ukur-seragam.html">
+      <a class="card" href="ukur-seragam.html" id="kartuSeragam">
         <span class="num">3</span>
         <img src="ukur_seragam.png" alt="">
         <div class="body">
@@ -84,6 +87,22 @@
     <div class="note">
       <strong>Catatan:</strong> Gunakan nama lengkap yang sama di setiap menu agar data ananda mudah dicocokkan oleh panitia. Setiap menu dikirim terpisah, jadi pastikan muncul tulisan berhasil terkirim di akhir.
     </div>
+    <script>
+      // Menu Ukur Seragam otomatis terbuka mulai tanggal ini (format TAHUN-BULAN-TANGGAL). Ubah sesuai jadwal panitia.
+      const BUKA_UKUR_SERAGAM = '2027-03-16';
+      (function () {
+        const buka = new Date(BUKA_UKUR_SERAGAM + 'T00:00:00+07:00');
+        if (new Date() >= buka) return;
+        const k = document.getElementById('kartuSeragam');
+        k.classList.add('locked');
+        k.setAttribute('aria-disabled', 'true');
+        k.removeAttribute('href');
+        k.querySelector('.tag').className = 'tag soon';
+        k.querySelector('.tag').textContent = 'Segera dibuka';
+        k.querySelector('p').textContent = 'Dibuka setelah Idul Fitri. Mohon menunggu informasi dari panitia.';
+        k.querySelector('.go').textContent = '';
+      })();
+    </script>
     <footer>© SMPIT & SMAIT Insan Mandiri Greenville</footer>
   </div>
 </body>
