@@ -29,7 +29,7 @@
 
     /* ===== LEMBAR RAPOR (A4) ===== */
     .scroller { overflow-x:auto; padding:0 8px 30px; }
-    .sheet { width:210mm; min-height:297mm; margin:0 auto; background:#fff; padding:11mm 12mm; position:relative;
+    .sheet { width:210mm; min-height:297mm; margin:0 auto; background:#fff; padding:8mm 12mm 8mm; position:relative;
       border:3px solid var(--blue); border-radius:4px; box-shadow:0 10px 30px -12px rgba(24,59,86,.3); }
     .sheet::before, .sheet::after { content:""; position:absolute; width:46px; height:46px; border:5px solid var(--orange); }
     .sheet::before { top:-3px; left:-3px; border-right:0; border-bottom:0; border-top-left-radius:4px; }
@@ -38,12 +38,12 @@
     .head { display:grid; grid-template-columns:34mm 1fr 34mm; align-items:center; gap:6px; padding-bottom:9px; border-bottom:3px solid var(--blue); position:relative; }
     .head::after { content:""; position:absolute; left:0; bottom:-3px; width:34mm; height:3px; background:var(--orange); }
     .brand { text-align:center; }
-    .brand img { width:19mm; height:19mm; object-fit:contain; display:block; margin:0 auto 2px; }
+    .brand img { width:17mm; height:17mm; object-fit:contain; display:block; margin:0 auto 2px; }
     .brand b { display:block; font-size:6.5pt; line-height:1.25; font-weight:800; letter-spacing:.3px; }
     .title { text-align:center; font-weight:800; font-size:17pt; line-height:1.2; letter-spacing:.5px; }
     .title span { color:var(--orange); }
 
-    .info { display:grid; grid-template-columns:1fr 1fr; gap:6px 22px; margin:14px 0 12px; font-size:9.5pt; }
+    .info { display:grid; grid-template-columns:1fr 1fr; gap:6px 22px; margin:10px 0 9px; font-size:9.5pt; }
     .info div { display:grid; grid-template-columns:27mm 1fr; align-items:end; gap:6px; }
     .info b { font-weight:700; }
     .info span { border-bottom:1.5px solid var(--blue); padding-bottom:1px; font-weight:600; min-height:1.3em; }
@@ -55,7 +55,7 @@
     .body { padding:9px 12px; font-size:9.3pt; line-height:1.65; text-align:justify; }
     .cols { display:grid; gap:9px; margin-bottom:9px; }
     .cols.c2 { grid-template-columns:1fr 1.6fr; } .cols.c2b { grid-template-columns:1fr 1fr; }
-    .tall { min-height:50mm; } .mid { min-height:26mm; }
+    .tall { min-height:45mm; } .mid { min-height:26mm; }
     .gaya { display:grid; place-items:center; text-align:center; font-weight:800; font-size:15pt; letter-spacing:2px; color:var(--orange); min-height:34mm; }
     .box + .box { margin-top:9px; }
     .cols .box + .box { margin-top:0; }
@@ -67,8 +67,8 @@
     .bar .ic.r { left:auto; right:12px; }
     .li { width:5mm; height:5mm; vertical-align:middle; margin-right:5px; }
     .info div { grid-template-columns:34mm 1fr; }
-    .head .side { text-align:center; } .head .side img { width:20mm; height:20mm; object-fit:contain; }
-    .gaya { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:8px 8px; min-height:50mm; }
+    .head .side { text-align:center; } .head .side img { width:18mm; height:18mm; object-fit:contain; }
+    .gaya { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:8px 8px; min-height:45mm; }
     .gname { font-weight:800; font-size:13pt; letter-spacing:2px; color:var(--orange); }
     .leg { letter-spacing:0; width:100%; display:grid; gap:3px; font-size:8pt; font-weight:600; padding:0 4px; }
     .leg div { display:flex; justify-content:space-between; align-items:center; }
@@ -91,6 +91,11 @@
       .empty { visibility:hidden; }
       [contenteditable]:focus { outline:none; }
     }
+      .sheet { display:flex; flex-direction:column; }
+    .ttd { margin-top:auto; align-self:flex-end; width:82mm; text-align:center; font-size:9.5pt; padding-top:8px; line-height:1.4; }
+    .ttd img { height:15mm; width:auto; max-width:100%; display:block; margin:2px auto 0; }
+    .ttd b { display:block; font-weight:800; text-decoration:underline; text-underline-offset:2px; }
+    .ttd span { display:block; font-size:8.5pt; font-weight:600; color:var(--muted); }
   </style>
 </head>
 <body>
@@ -111,10 +116,11 @@
   <div class="sep">2. Identitas</div>
   <div class="grid">
     <div><label for="nama">Nama</label><input id="nama" placeholder="Nama lengkap"></div>
-    <div><label for="program">Program</label><input id="program" list="listProgram" value="Fullday"><datalist id="listProgram"><option>Fullday</option></datalist></div>
+    <div><label for="program">Program</label><select id="program"><option value=""></option><option>Fullday</option><option>Boarding</option></select></div>
     <div><label for="asal">Asal Sekolah</label><input id="asal"></div>
     <div><label for="jk">Jenis Kelamin</label><select id="jk"><option value=""></option><option>Laki-laki</option><option>Perempuan</option></select></div>
     <div><label for="tp">T.P.</label><input id="tp" value="2027/2028"></div>
+    <div><label for="tgl">Tanggal Rapor</label><input type="date" id="tgl"></div>
     <div><label for="gaya">Gaya Belajar</label><select id="gaya"><option value=""></option><option>Visual</option><option>Auditori</option><option>Kinestetik</option></select></div>
     <div><label for="pV">Visual (%)</label><input type="number" id="pV" min="0" max="100"></div>
     <div><label for="pA">Auditori (%)</label><input type="number" id="pA" min="0" max="100"></div>
@@ -140,7 +146,7 @@
 
   <div class="head">
     <div class="brand"><img src="logo_insan_mandiri_new.png" alt="Logo"><b>SMPIT &amp; SMAIT<br>INSAN MANDIRI<br>GREENVILLE</b></div>
-    <div class="title">LAPORAN<br>HASIL OBSERVASI MURID<br><span>T.P. <span id="rTP" style="color:inherit"></span></span></div>
+    <div class="title">LAPORAN<br>HASIL OBSERVASI MURID<br><span>T.P. <span id="rTP" style="color:inherit" contenteditable="true"></span></span></div>
     <div class="side"><img src="observasi.png" alt=""></div>
   </div>
 
@@ -157,15 +163,23 @@
   </div>
 
   <div class="box"><div class="bar"><img class="ic" src="akademik.png" alt="">Hasil Akademik dan Non Akademik<img class="ic r" src="non_akademik.png" alt=""></div>
-    <div class="body" style="font-size:10pt"><div class="meters" id="rMAkad"></div><div class="txt" style="min-height:24mm" id="rAkademik" contenteditable="true"></div></div></div>
+    <div class="body" style="font-size:10pt"><div class="meters" id="rMAkad"></div><div class="txt" style="min-height:19mm" id="rAkademik" contenteditable="true"></div></div></div>
 
   <div class="cols c2b" style="margin-top:9px">
-    <div class="box"><div class="bar"><svg class="ic" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#FF7420"/><path d="M13 21c6-3 13-3 19 1v22c-6-4-13-4-19-1zM51 21c-6-3-13-3-19 1v22c6-4 13-4 19-1z" fill="#fff"/></svg>Hasil Tahfidz</div><div class="body"><div class="meters" id="rMTahfidz"></div><div class="txt" style="min-height:26mm" id="rTahfidz" contenteditable="true"></div></div></div>
-    <div class="box"><div class="bar"><svg class="ic" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#FF7420"/><path d="M20 34a12 12 0 0 1 24 0z" fill="#fff"/><rect x="18" y="34" width="28" height="15" fill="#fff"/><path d="M28 49v-7a4 4 0 0 1 8 0v7z" fill="#FF7420"/><rect x="31" y="17" width="2" height="5" fill="#fff"/></svg>Shalat</div><div class="body"><div class="meters" id="rMShalat"></div><div class="txt" style="min-height:26mm" id="rShalat" contenteditable="true"></div></div></div>
+    <div class="box"><div class="bar"><svg class="ic" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#FF7420"/><path d="M13 21c6-3 13-3 19 1v22c-6-4-13-4-19-1zM51 21c-6-3-13-3-19 1v22c6-4 13-4 19-1z" fill="#fff"/></svg>Hasil Tahfidz</div><div class="body"><div class="meters" id="rMTahfidz"></div><div class="txt" style="min-height:21mm" id="rTahfidz" contenteditable="true"></div></div></div>
+    <div class="box"><div class="bar"><svg class="ic" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#FF7420"/><path d="M20 34a12 12 0 0 1 24 0z" fill="#fff"/><rect x="18" y="34" width="28" height="15" fill="#fff"/><path d="M28 49v-7a4 4 0 0 1 8 0v7z" fill="#FF7420"/><rect x="31" y="17" width="2" height="5" fill="#fff"/></svg>Shalat</div><div class="body"><div class="meters" id="rMShalat"></div><div class="txt" style="min-height:21mm" id="rShalat" contenteditable="true"></div></div></div>
   </div>
 
   <div class="box"><div class="bar"><img class="ic" src="wawancara_ortu.png" alt="">Hasil Wawancara</div>
-    <div class="body" style="font-size:10pt"><div class="meters" id="rMWaw"></div><div class="txt" style="min-height:14mm" id="rWaw" contenteditable="true"></div></div></div>
+    <div class="body" style="font-size:10pt"><div class="meters" id="rMWaw"></div><div class="txt" style="min-height:10mm" id="rWaw" contenteditable="true"></div></div></div>
+
+
+  <div class="ttd">
+    <div id="rTanggal" contenteditable="true"></div>
+    <img src="tanda_tangan.png" alt="Tanda tangan">
+    <b>Dr. H. Karim Santoso., S.Pd., M.Si.</b>
+    <span>Presiden Direktur<br>Sekolah Insan Mandiri Indonesia</span>
+  </div>
 
 </div></div>
 
@@ -220,7 +234,7 @@
     if (!text && el.hasAttribute('contenteditable')) el.textContent = '(belum diisi)';
   }
   function renderInfo() {
-    setText($('rTP'), $('tp').value); $('rTP').classList.remove('empty');
+    $('rTP').textContent = $('tp').value;
     setText($('rNama'), $('nama').value); setText($('rAsal'), $('asal').value);
     setText($('rProgram'), $('program').value); setText($('rJK'), $('jk').value);
     ['rNama','rAsal','rProgram','rJK'].forEach(i => $(i).classList.remove('empty'));
@@ -267,7 +281,7 @@
   ['nAkad','nNon'].forEach(i => $(i).addEventListener('change', renderAkad));
   $('gaya').addEventListener('change', renderGaya);
   ['nama','asal','program','tp'].forEach(i => $(i).addEventListener('input', renderInfo));
-  $('jk').addEventListener('change', renderInfo);
+  $('jk').addEventListener('change', renderInfo); $('program').addEventListener('change', renderInfo);
   ['rAkademik','rTahfidz','rShalat','rWaw','rGayaTeks'].forEach(i => $(i).addEventListener('focus', () => { if ($(i).classList.contains('empty')) { $(i).textContent = ''; $(i).classList.remove('empty'); } }));
 
   // ===== Ambil data murid dari Google Sheets =====
@@ -295,7 +309,13 @@
     renderInfo(); renderGaya();
   });
 
-  renderInfo(); renderGaya(); renderAkad(); renderMeters();
+  function renderTanggal() {
+    const v = $('tgl').value, d = v ? new Date(v + 'T00:00:00') : null;
+    $('rTanggal').textContent = 'Bekasi, ' + (d ? d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '');
+  }
+  const t0 = new Date(); $('tgl').value = `${t0.getFullYear()}-${String(t0.getMonth() + 1).padStart(2, '0')}-${String(t0.getDate()).padStart(2, '0')}`;
+  $('tgl').addEventListener('input', renderTanggal);
+  renderInfo(); renderGaya(); renderAkad(); renderMeters(); renderTanggal();
   ['rTahfidz','rShalat','rWaw'].forEach(i => setText($(i), ''));
 </script>
 </body>
