@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapor Hasil Observasi Murid - Insan Mandiri Greenville</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --blue:#67C8F6; --blue-soft:#DDF2FC; --orange:#F28C28; --orange-soft:#FFF1E2; --navy:#183B56; --muted:#64748b; --line:#cfe9f6; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:'Montserrat',sans-serif; color:var(--navy); background:#f4f9fc; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+    /* ===== PANEL GURU (tidak ikut tercetak) ===== */
+    .panel { max-width:210mm; margin:16px auto; background:#fff; border:2px solid var(--line); border-radius:16px; padding:18px 20px; }
+    .panel h1 { margin:0 0 4px; font-size:1.1rem; font-weight:800; }
+    .panel .hint { margin:0 0 14px; font-size:.78rem; color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px 14px; }
+    label { display:block; font-size:.72rem; font-weight:700; margin-bottom:3px; }
+    input, select { width:100%; padding:8px 10px; border:1.5px solid var(--line); border-radius:10px; font:500 .85rem 'Montserrat',sans-serif; color:var(--navy); background:#fff; }
+    input:focus, select:focus { outline:none; border-color:var(--orange); box-shadow:0 0 0 3px rgba(242,140,40,.18); }
+    .sep { margin:14px 0 8px; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--orange); }
+    .row { display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end; }
+    .row > div { flex:1; min-width:180px; }
+    button { font:700 .85rem 'Montserrat',sans-serif; border:0; border-radius:10px; padding:9px 18px; cursor:pointer; }
+    .btn-blue { background:var(--blue); color:#fff; } .btn-orange { background:var(--orange); color:#fff; }
+    #status { font-size:.78rem; margin-top:6px; min-height:1.1em; }
+    #status.ok { color:#0f766e; } #status.err { color:#dc2626; }
+    .actions { margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* ===== LEMBAR RAPOR (A4) ===== */
+    .scroller { overflow-x:auto; padding:0 8px 30px; }
+    .sheet { width:210mm; min-height:297mm; margin:0 auto; background:#fff; padding:11mm 12mm; position:relative;
+      border:3px solid var(--blue); border-radius:4px; box-shadow:0 10px 30px -12px rgba(24,59,86,.3); }
+    .sheet::before, .sheet::after { content:""; position:absolute; width:46px; height:46px; border:5px solid var(--orange); }
+    .sheet::before { top:-3px; left:-3px; border-right:0; border-bottom:0; border-top-left-radius:4px; }
+    .sheet::after { bottom:-3px; right:-3px; border-left:0; border-top:0; border-bottom-right-radius:4px; }
+
+    .head { display:grid; grid-template-columns:34mm 1fr 34mm; align-items:center; gap:6px; padding-bottom:9px; border-bottom:3px solid var(--blue); position:relative; }
+    .head::after { content:""; position:absolute; left:0; bottom:-3px; width:34mm; height:3px; background:var(--orange); }
+    .brand { text-align:center; }
+    .brand img { width:19mm; height:19mm; object-fit:contain; display:block; margin:0 auto 2px; }
+    .brand b { display:block; font-size:6.5pt; line-height:1.25; font-weight:800; letter-spacing:.3px; }
+    .title { text-align:center; font-weight:800; font-size:17pt; line-height:1.2; letter-spacing:.5px; }
+    .title span { color:var(--orange); }
+
+    .info { display:grid; grid-template-columns:1fr 1fr; gap:6px 22px; margin:14px 0 12px; font-size:9.5pt; }
+    .info div { display:grid; grid-template-columns:27mm 1fr; align-items:end; gap:6px; }
+    .info b { font-weight:700; }
+    .info span { border-bottom:1.5px solid var(--blue); padding-bottom:1px; font-weight:600; min-height:1.3em; }
+
+    .box { border:2px solid var(--blue); border-radius:8px; overflow:hidden; background:#fff; }
+    .bar { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--blue-soft); border-bottom:2px solid var(--blue);
+      border-left:9px solid var(--orange); padding:5px 10px; font-weight:800; font-size:10.5pt; letter-spacing:.4px; text-transform:uppercase; }
+    .bar i { font-style:normal; color:var(--orange); font-size:12pt; }
+    .body { padding:9px 12px; font-size:9.3pt; line-height:1.65; text-align:justify; }
+    .cols { display:grid; gap:9px; margin-bottom:9px; }
+    .cols.c2 { grid-template-columns:1fr 1.6fr; } .cols.c2b { grid-template-columns:1fr 1fr; }
+    .tall { min-height:50mm; } .mid { min-height:26mm; }
+    .gaya { display:grid; place-items:center; text-align:center; font-weight:800; font-size:15pt; letter-spacing:2px; color:var(--orange); min-height:34mm; }
+    .box + .box { margin-top:9px; }
+    .cols .box + .box { margin-top:0; }
+    [contenteditable]:focus { outline:2px dashed var(--orange); outline-offset:2px; }
+    .empty { color:#94a3b8; font-style:italic; }
+
+    .bar { position:relative; }
+    .bar .ic { position:absolute; left:14px; top:50%; transform:translateY(-50%); width:7.5mm; height:7.5mm; }
+    .bar .ic.r { left:auto; right:12px; }
+    .li { width:5mm; height:5mm; vertical-align:middle; margin-right:5px; }
+    .info div { grid-template-columns:34mm 1fr; }
+    .head .side { text-align:center; } .head .side img { width:20mm; height:20mm; object-fit:contain; }
+    .gaya { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:8px 8px; min-height:50mm; }
+    .gname { font-weight:800; font-size:13pt; letter-spacing:2px; color:var(--orange); }
+    .leg { letter-spacing:0; width:100%; display:grid; gap:3px; font-size:8pt; font-weight:600; padding:0 4px; }
+    .leg div { display:flex; justify-content:space-between; align-items:center; }
+    .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
+    .meters { display:grid; grid-template-columns:repeat(auto-fit,minmax(45mm,1fr)); gap:8px 16px; margin-bottom:8px; }
+    .meters:empty { display:none; }
+    .mlabel { display:flex; justify-content:space-between; font-size:8pt; font-weight:700; margin-bottom:3px; }
+    .mlabel b { color:var(--orange); }
+    .cells { display:grid; grid-template-columns:repeat(4,1fr); gap:3px; }
+    .cells i { height:9px; border-radius:6px; background:var(--blue-soft); border:1px solid var(--line); }
+    .cells i.on { background:var(--orange); border-color:var(--orange); }
+    .txt { min-height:16mm; }
+    @media (max-width:820px) { .sheet { zoom:.5; } }
+    @media print {
+      @page { size:A4; margin:0; }
+      body { background:#fff; }
+      .no-print { display:none !important; }
+      .scroller { padding:0; overflow:visible; }
+      .sheet { margin:0; box-shadow:none; zoom:1; border-radius:0; }
+      .empty { visibility:hidden; }
+      [contenteditable]:focus { outline:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================= PANEL GURU ================= -->
+<div class="panel no-print">
+  <h1>Pembuat Rapor Hasil Observasi</h1>
+  <p class="hint">Pilih penilaian di bawah, kalimat rapor tersusun otomatis. Teks di lembar rapor bisa diklik dan diedit langsung sebelum dicetak.</p>
+
+  <div class="sep">1. Ambil data murid dari Google Sheets (opsional)</div>
+  <div class="row">
+    <div><label for="kunci">Kunci akses</label><input type="password" id="kunci" placeholder="Kunci dari panitia" autocomplete="off"></div>
+    <button class="btn-blue" id="btnMuat" type="button">Muat Data Murid</button>
+    <div><label for="pilihMurid">Pilih murid</label><select id="pilihMurid" disabled><option value="">-- muat data dulu --</option></select></div>
+  </div>
+  <div id="status"></div>
+
+  <div class="sep">2. Identitas</div>
+  <div class="grid">
+    <div><label for="nama">Nama</label><input id="nama" placeholder="Nama lengkap"></div>
+    <div><label for="program">Program</label><input id="program" list="listProgram" value="Fullday"><datalist id="listProgram"><option>Fullday</option></datalist></div>
+    <div><label for="asal">Asal Sekolah</label><input id="asal"></div>
+    <div><label for="jk">Jenis Kelamin</label><select id="jk"><option value=""></option><option>Laki-laki</option><option>Perempuan</option></select></div>
+    <div><label for="tp">T.P.</label><input id="tp" value="2027/2028"></div>
+    <div><label for="gaya">Gaya Belajar</label><select id="gaya"><option value=""></option><option>Visual</option><option>Auditori</option><option>Kinestetik</option></select></div>
+    <div><label for="pV">Visual (%)</label><input type="number" id="pV" min="0" max="100"></div>
+    <div><label for="pA">Auditori (%)</label><input type="number" id="pA" min="0" max="100"></div>
+    <div><label for="pK">Kinestetik (%)</label><input type="number" id="pK" min="0" max="100"></div>
+  </div>
+
+  <div class="sep">3. Penilaian</div>
+  <div class="grid">
+    <div><label for="nAkad">Akademik</label><select id="nAkad" class="nilai"></select></div>
+    <div><label for="nNon">Non-akademik</label><select id="nNon" class="nilai"></select></div>
+    <div><label for="nTahfidz">Tahfidz</label><select id="nTahfidz" class="nilai"></select></div>
+    <div><label for="nShalat">Shalat</label><select id="nShalat" class="nilai"></select></div>
+    <div><label for="nWaw">Wawancara (komunikasi)</label><select id="nWaw" class="nilai"></select></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-orange" type="button" onclick="window.print()">Cetak / Simpan PDF</button>
+  </div>
+</div>
+
+<!-- ================= LEMBAR RAPOR ================= -->
+<div class="scroller"><div class="sheet" id="sheet">
+
+  <div class="head">
+    <div class="brand"><img src="logo_insan_mandiri_new.png" alt="Logo"><b>SMPIT &amp; SMAIT<br>INSAN MANDIRI<br>GREENVILLE</b></div>
+    <div class="title">LAPORAN<br>HASIL OBSERVASI MURID<br><span>T.P. <span id="rTP" style="color:inherit"></span></span></div>
+    <div class="side"><img src="observasi.png" alt=""></div>
+  </div>
+
+  <div class="info">
+    <div><b><img class="li" src="nama_lengkap.png" alt="">Nama</b><span id="rNama"></span></div>
+    <div><b><img class="li" src="asal_sekolah.png" alt="">Asal Sekolah</b><span id="rAsal"></span></div>
+    <div><b><img class="li" src="Sistem_Penilaian_Interaktif_IMG.png" alt="">Program</b><span id="rProgram"></span></div>
+    <div><b><img class="li" src="nama_lengkap.png" alt="">Jenis Kelamin</b><span id="rJK"></span></div>
+  </div>
+
+  <div class="cols c2">
+    <div class="box"><div class="bar"><img class="ic" src="gaya-belajar.png" alt="">Gaya Belajar</div><div class="gaya tall" id="rGaya"></div></div>
+    <div class="box"><div class="bar"><img class="ic" src="petunjuk.png" alt="">Penjelasan</div><div class="body tall" id="rGayaTeks" contenteditable="true"></div></div>
+  </div>
+
+  <div class="box"><div class="bar"><img class="ic" src="akademik.png" alt="">Hasil Akademik dan Non Akademik<img class="ic r" src="non_akademik.png" alt=""></div>
+    <div class="body" style="font-size:10pt"><div class="meters" id="rMAkad"></div><div class="txt" style="min-height:24mm" id="rAkademik" contenteditable="true"></div></div></div>
+
+  <div class="cols c2b" style="margin-top:9px">
+    <div class="box"><div class="bar"><svg class="ic" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#FF7420"/><path d="M13 21c6-3 13-3 19 1v22c-6-4-13-4-19-1zM51 21c-6-3-13-3-19 1v22c6-4 13-4 19-1z" fill="#fff"/></svg>Hasil Tahfidz</div><div class="body"><div class="meters" id="rMTahfidz"></div><div class="txt" style="min-height:26mm" id="rTahfidz" contenteditable="true"></div></div></div>
+    <div class="box"><div class="bar"><svg class="ic" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#FF7420"/><path d="M20 34a12 12 0 0 1 24 0z" fill="#fff"/><rect x="18" y="34" width="28" height="15" fill="#fff"/><path d="M28 49v-7a4 4 0 0 1 8 0v7z" fill="#FF7420"/><rect x="31" y="17" width="2" height="5" fill="#fff"/></svg>Shalat</div><div class="body"><div class="meters" id="rMShalat"></div><div class="txt" style="min-height:26mm" id="rShalat" contenteditable="true"></div></div></div>
+  </div>
+
+  <div class="box"><div class="bar"><img class="ic" src="wawancara_ortu.png" alt="">Hasil Wawancara</div>
+    <div class="body" style="font-size:10pt"><div class="meters" id="rMWaw"></div><div class="txt" style="min-height:14mm" id="rWaw" contenteditable="true"></div></div></div>
+
+</div></div>
+
+<script>
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6OxoaZ6-3ZCXemwrA6kwD7IBoSNjzIzAZmp8pmllzDk1dhS1kwdaJvdp7gbSF2Q/exec';
+  const $ = id => document.getElementById(id);
+  const LEVELS = ['Sangat Baik', 'Baik', 'Cukup', 'Perlu Bimbingan'];
+
+  // ===== Kalimat usulan (silakan koreksi) =====
+  const GAYA_TEKS = {
+    Visual: "Gaya belajar yang lebih mudah menyerap informasi dengan melihat, seperti gambar, diagram, warna, dan tulisan. Ciri-cirinya antara lain; senang membaca dan mencatat, lebih mudah mengingat apa yang dilihat daripada yang didengar, menyukai kerapian, serta mudah terganggu oleh gerakan di sekitarnya.",
+    Auditori: "Gaya belajar yang lebih mudah menyerap informasi dengan mendengarkan. Ciri-cirinya antara lain; senang mendengarkan penjelasan dan berdiskusi, mudah mengingat apa yang diucapkan, suka membaca dengan bersuara, serta mudah terganggu oleh suara bising di sekitarnya.",
+    Kinestetik: "Gaya belajar yang lebih mudah menyerap informasi dengan bergerak, berbuat, dan menyentuh sesuatu yang memberikan informasi tertentu agar dapat mengingatnya. Ciri-cirinya diantara lain; senang belajar dengan metode praktik, menyukai aktivitas yang melibatkan gerakan tubuh, seperti permainan dan aktivitas fisik, menghafal dengan berjalan atau melihat, dan sulit untuk berdiam diri atau duduk manis, serta selalu ingin bergerak."
+  };
+  const AKAD = {
+    'Sangat Baik': "sangat baik, sehingga mampu dalam memahami teks atau instruksi yang tercantum pada lembar soal yang telah disediakan",
+    'Baik': "baik, sehingga cukup mampu memahami teks atau instruksi yang tercantum pada lembar soal yang telah disediakan",
+    'Cukup': "cukup, sehingga ananda memahami teks atau instruksi pada lembar soal dengan bantuan dan pengulangan",
+    'Perlu Bimbingan': "perlu bimbingan, sehingga ananda masih memerlukan pendampingan dalam memahami teks atau instruksi pada lembar soal"
+  };
+  const NON = {
+    'Sangat Baik': "sangat baik, sehingga mampu memahami teks berupa pernyataan, serta menyampaikan pendapat maupun solusi dalam menyelesaikan masalah pada teks.",
+    'Baik': "baik, sehingga cukup mampu memahami teks berupa pernyataan, serta menyampaikan pendapat maupun solusi dalam menyelesaikan masalah pada teks.",
+    'Cukup': "cukup, sehingga ananda perlu dibantu dalam menyampaikan pendapat maupun solusi dalam menyelesaikan masalah pada teks.",
+    'Perlu Bimbingan': "perlu bimbingan, sehingga ananda masih memerlukan pendampingan dalam menyampaikan pendapat maupun solusi atas masalah pada teks."
+  };
+  const TAHFIDZ = {
+    'Sangat Baik': "Hasil observasi Tahfizh ananda sangat baik, sehingga mampu membaca al-Qur'an dengan tartil dan hukum tajwid yang benar.",
+    'Baik': "Hasil observasi Tahfizh ananda baik. Ananda mampu membaca al-Qur'an dengan cukup lancar dan hukum tajwid yang umumnya benar.",
+    'Cukup': "Hasil observasi Tahfizh ananda cukup. Ananda masih perlu melatih kelancaran bacaan dan hukum tajwid.",
+    'Perlu Bimbingan': "Hasil observasi Tahfizh ananda perlu bimbingan. Ananda memerlukan pendampingan dalam membaca al-Qur'an dan mengenal hukum tajwid."
+  };
+  const SHALAT = {
+    'Sangat Baik': "Hasil observasi Shalat ananda sangat baik. Ananda mampu melaksanakan shalat dengan gerakan dan bacaan yang benar serta tertib.",
+    'Baik': "Hasil observasi Shalat ananda baik. Ananda mampu melaksanakan shalat sesuai dengan gerakan dan bacaan.",
+    'Cukup': "Hasil observasi Shalat ananda cukup. Ananda perlu melatih ketepatan gerakan dan bacaan shalat.",
+    'Perlu Bimbingan': "Hasil observasi Shalat ananda perlu bimbingan. Ananda memerlukan pendampingan dalam gerakan dan bacaan shalat."
+  };
+  const WAW = {
+    'Sangat Baik': "Ananda memiliki kemampuan komunikasi yang sangat baik.",
+    'Baik': "Ananda memiliki kemampuan komunikasi yang baik.",
+    'Cukup': "Ananda memiliki kemampuan komunikasi yang cukup baik.",
+    'Perlu Bimbingan': "Ananda masih perlu bimbingan dalam berkomunikasi."
+  };
+
+  // isi pilihan nilai
+  document.querySelectorAll('.nilai').forEach(s => { s.innerHTML = '<option value=""></option>' + LEVELS.map(l => `<option>${l}</option>`).join(''); });
+
+  function setText(el, text) {
+    el.textContent = text || '';
+    el.classList.toggle('empty', !text);
+    if (!text && el.hasAttribute('contenteditable')) el.textContent = '(belum diisi)';
+  }
+  function renderInfo() {
+    setText($('rTP'), $('tp').value); $('rTP').classList.remove('empty');
+    setText($('rNama'), $('nama').value); setText($('rAsal'), $('asal').value);
+    setText($('rProgram'), $('program').value); setText($('rJK'), $('jk').value);
+    ['rNama','rAsal','rProgram','rJK'].forEach(i => $(i).classList.remove('empty'));
+  }
+  function renderGaya() {
+    const g = $('gaya').value, v = +$('pV').value || 0, a = +$('pA').value || 0, k = +$('pK').value || 0, tot = v + a + k;
+    let h = g ? `<div class="gname">${g.toUpperCase()}</div>` : '';
+    if (tot > 0) {
+      const segs = [['Visual', v, '#67C8F6'], ['Auditori', a, '#2F9BD6'], ['Kinestetik', k, '#F28C28']];
+      const C = 2 * Math.PI * 34; let off = 0, circles = '';
+      segs.forEach(sg => { const len = C * sg[1] / tot; if (len > 0) circles += `<circle cx="50" cy="50" r="34" fill="none" stroke="${sg[2]}" stroke-width="15" stroke-dasharray="${len} ${C - len}" stroke-dashoffset="${-off}" transform="rotate(-90 50 50)"/>`; off += len; });
+      const dom = g ? (segs.find(x => x[0] === g) || segs[0])[1] : Math.max(v, a, k);
+      h += `<svg width="34mm" height="34mm" viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" fill="none" stroke="#DDF2FC" stroke-width="15"/>${circles}<text x="50" y="56" text-anchor="middle" font-size="17" font-weight="800" fill="#183B56" font-family="Montserrat,sans-serif">${Math.round(dom / tot * 100)}%</text></svg>`;
+      h += '<div class="leg">' + segs.map(sg => `<div><span><i class="dot" style="background:${sg[2]}"></i>${sg[0]}</span><b>${Math.round(sg[1] / tot * 100)}%</b></div>`).join('') + '</div>';
+    }
+    $('rGaya').innerHTML = h; $('rGaya').classList.toggle('empty', !h);
+    setText($('rGayaTeks'), g ? GAYA_TEKS[g] : '');
+  }
+  const RANK = { 'Perlu Bimbingan': 1, 'Cukup': 2, 'Baik': 3, 'Sangat Baik': 4 };
+  function meter(label, level) {
+    if (!level) return '';
+    const n = RANK[level];
+    return `<div class="meter"><div class="mlabel"><span>${label}</span><b>${level}</b></div><div class="cells">${[1,2,3,4].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('')}</div></div>`;
+  }
+  function renderMeters() {
+    $('rMAkad').innerHTML = meter('Akademik', $('nAkad').value) + meter('Non-akademik', $('nNon').value);
+    $('rMTahfidz').innerHTML = meter('Penilaian', $('nTahfidz').value);
+    $('rMShalat').innerHTML = meter('Penilaian', $('nShalat').value);
+    $('rMWaw').innerHTML = meter('Komunikasi', $('nWaw').value);
+  }
+  document.querySelectorAll('.nilai').forEach(el => el.addEventListener('change', renderMeters));
+  ['pV','pA','pK'].forEach(i => $(i).addEventListener('input', renderGaya));
+  function renderAkad() {
+    const a = $('nAkad').value, n = $('nNon').value;
+    if (!a && !n) return setText($('rAkademik'), '');
+    const p = [];
+    if (a) p.push(`Hasil observasi akademik ananda ${AKAD[a]}`);
+    if (n) p.push(`${a ? 'sedangkan h' : 'H'}asil observasi non-akademik ananda ${NON[n]}`);
+    let t = p.join(', '); if (!/[.]$/.test(t)) t += '.';
+    setText($('rAkademik'), t);
+  }
+  const bind = (sel, map, out) => $(sel).addEventListener('change', () => setText($(out), map[$(sel).value]));
+  bind('nTahfidz', TAHFIDZ, 'rTahfidz'); bind('nShalat', SHALAT, 'rShalat'); bind('nWaw', WAW, 'rWaw');
+  ['nAkad','nNon'].forEach(i => $(i).addEventListener('change', renderAkad));
+  $('gaya').addEventListener('change', renderGaya);
+  ['nama','asal','program','tp'].forEach(i => $(i).addEventListener('input', renderInfo));
+  $('jk').addEventListener('change', renderInfo);
+  ['rAkademik','rTahfidz','rShalat','rWaw','rGayaTeks'].forEach(i => $(i).addEventListener('focus', () => { if ($(i).classList.contains('empty')) { $(i).textContent = ''; $(i).classList.remove('empty'); } }));
+
+  // ===== Ambil data murid dari Google Sheets =====
+  let daftar = [];
+  $('btnMuat').addEventListener('click', async () => {
+    const key = $('kunci').value.trim(), st = $('status');
+    if (!key) { st.className = 'err'; st.textContent = 'Isi kunci akses dulu.'; return; }
+    st.className = ''; st.textContent = 'Memuat data...';
+    try {
+      const res = await fetch(GOOGLE_SCRIPT_URL + '?action=murid&key=' + encodeURIComponent(key));
+      const j = await res.json();
+      if (!j.ok) throw new Error(j.error || 'Gagal memuat data.');
+      daftar = j.murid || [];
+      $('pilihMurid').innerHTML = '<option value="">-- pilih murid (' + daftar.length + ') --</option>' +
+        daftar.map((m, i) => `<option value="${i}">${m.nama} (${m.jenjang || '-'})</option>`).join('');
+      $('pilihMurid').disabled = false;
+      st.className = 'ok'; st.textContent = 'Berhasil memuat ' + daftar.length + ' murid.';
+    } catch (e) { st.className = 'err'; st.textContent = e.message; }
+  });
+  $('pilihMurid').addEventListener('change', () => {
+    const m = daftar[$('pilihMurid').value]; if (!m) return;
+    $('nama').value = m.nama || ''; $('asal').value = m.asal_sekolah || '';
+    $('jk').value = m.jenis_kelamin || ''; $('gaya').value = m.gaya || '';
+    $('pV').value = m.pv ?? ''; $('pA').value = m.pa ?? ''; $('pK').value = m.pk ?? '';
+    renderInfo(); renderGaya();
+  });
+
+  renderInfo(); renderGaya(); renderAkad(); renderMeters();
+  ['rTahfidz','rShalat','rWaw'].forEach(i => setText($(i), ''));
+</script>
+</body>
+</html>
