@@ -93,6 +93,9 @@
     }
       .sheet { display:flex; flex-direction:column; }
     .ttd { margin-top:auto; align-self:flex-end; width:82mm; text-align:center; font-size:9.5pt; padding-top:8px; line-height:1.4; }
+    .ttd { position:relative; }
+    .ttd > * { position:relative; z-index:1; }
+    .ttd > img.cap { position:absolute; z-index:0; left:6mm; top:2.5mm; height:18mm; width:auto; margin:0; opacity:.85; mix-blend-mode:multiply; transform:rotate(-6deg); }
     .ttd img { height:15mm; width:auto; max-width:100%; display:block; margin:2px auto 0; }
     .ttd b { display:block; font-weight:800; text-decoration:underline; text-underline-offset:2px; }
     .ttd span { display:block; font-size:8.5pt; font-weight:600; color:var(--muted); }
@@ -175,6 +178,7 @@
 
 
   <div class="ttd">
+    <img class="cap" src="cap_yayasan.png" alt="">
     <div id="rTanggal" contenteditable="true"></div>
     <img src="tanda_tangan.png" alt="Tanda tangan">
     <b>Dr. H. Karim Santoso., S.Pd., M.Si.</b>
