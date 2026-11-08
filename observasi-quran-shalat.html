@@ -71,7 +71,7 @@
         <div><label for="nama">Nama Lengkap Murid *</label><input id="nama" list="listMurid" placeholder="Ketik atau pilih nama" autocomplete="off"><datalist id="listMurid"></datalist></div>
         <div><label for="jenjang">Jenjang</label><select id="jenjang"><option>SMPIT</option><option>SMAIT</option></select></div>
         <div><label for="tanggal">Tanggal Observasi</label><input type="date" id="tanggal"></div>
-        <div><label for="observer">Nama Guru / Penguji *</label><input id="observer" placeholder="Nama penguji"></div>
+        <div><label for="observer">Nama Guru / Penguji *</label><input id="observer" list="listGuru" placeholder="Pilih atau ketik nama guru" autocomplete="off"><datalist id="listGuru"></datalist></div>
       </div>
     </div>
 
@@ -187,7 +187,8 @@
     try {
       const r = await fetch(GOOGLE_SCRIPT_URL + '?action=murid&key=' + encodeURIComponent(k)); const j = await r.json();
       if (!j.ok) throw new Error(j.error || 'Kunci tidak diterima.');
-      KEY = k; daftar = j.murid || [];
+      KEY = k; daftar = (j.murid || []).sort((a, b) => a.nama.localeCompare(b.nama, 'id'));
+      $('listGuru').innerHTML = (j.guru || []).map(n => `<option value="${n.replace(/"/g, '&quot;')}">`).join('');
       $('listMurid').innerHTML = daftar.map(m => `<option value="${m.nama.replace(/"/g, '&quot;')}">`).join('');
       $('loginBox').classList.add('hide'); $('app').classList.remove('hide'); $('bar').classList.remove('hide');
       $('tanggal').value = hariIni(); $('observer').value = localStorage.getItem('observer_lisan') || '';
