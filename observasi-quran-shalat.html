@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Observasi Al-Qur'an & Shalat - Insan Mandiri Greenville</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --blue:#67C8F6; --blue-soft:#DDF2FC; --line:#cfe9f6; --orange:#F28C28; --navy:#183B56; --muted:#64748b; --green:#16a34a; --red:#e11d48; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:'Montserrat',sans-serif; background:#f4f9fc; color:var(--navy); padding-bottom:90px; }
+    .wrap { max-width:860px; margin:0 auto; padding:14px; }
+    header { background:#fff; border:2px solid var(--line); border-radius:18px; padding:14px 16px; display:flex; gap:14px; align-items:center; border-left:8px solid var(--orange); }
+    header img { width:54px; height:54px; object-fit:contain; }
+    header small { font-weight:800; font-size:.68rem; letter-spacing:1px; text-transform:uppercase; color:var(--orange); }
+    header h1 { margin:2px 0 0; font-size:1.05rem; line-height:1.3; }
+    .card { background:#fff; border:2px solid var(--line); border-radius:16px; padding:16px; margin-top:12px; }
+    .card h2 { margin:0 0 10px; font-size:.95rem; }
+    label { display:block; font-size:.72rem; font-weight:700; margin:0 0 4px; }
+    input, select, textarea { width:100%; padding:10px 12px; border:1.5px solid var(--line); border-radius:10px; font:500 .88rem 'Montserrat',sans-serif; color:var(--navy); background:#fff; }
+    textarea { min-height:70px; resize:vertical; }
+    input:focus, select:focus, textarea:focus { outline:none; border-color:var(--orange); box-shadow:0 0 0 3px rgba(242,140,40,.18); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px 12px; }
+    button { font:700 .85rem 'Montserrat',sans-serif; border:0; border-radius:10px; cursor:pointer; }
+    .btn { padding:12px 20px; background:var(--orange); color:#fff; } .btn:disabled { opacity:.55; }
+    .btn.blue { background:var(--blue); }
+    .err { color:var(--red); font-size:.8rem; margin-top:8px; min-height:1em; }
+    .tabs { display:flex; gap:6px; margin-top:12px; position:sticky; top:0; z-index:5; background:#f4f9fc; padding:6px 0; overflow-x:auto; }
+    .tab { flex:1; min-width:120px; padding:10px 8px; background:#fff; border:2px solid var(--line); color:var(--muted); white-space:nowrap; }
+    .tab.on { background:var(--blue-soft); border-color:var(--blue); color:var(--navy); box-shadow:inset 0 -4px 0 var(--orange); }
+    .sec { font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.8px; background:var(--blue-soft); border-left:6px solid var(--orange); padding:7px 10px; border-radius:6px; margin:14px 0 6px; }
+    .item { display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between; align-items:center; padding:9px 4px; border-bottom:1px solid #eef5fa; }
+    .item > span { flex:1 1 220px; font-size:.82rem; font-weight:600; }
+    .tg { display:flex; gap:6px; }
+    .tg button { min-width:46px; padding:8px 10px; background:#eef5fa; color:var(--muted); }
+    .tg button.on { color:#fff; }
+    .tg button.on.c4,.tg button.on.sm { background:var(--green); } .tg button.on.c3 { background:#0ea5e9; } .tg button.on.mb,.tg button.on.c2 { background:#f59e0b; } .tg button.on.bt,.tg button.on.c1 { background:var(--red); }
+    .legend { font-size:.75rem; color:var(--muted); font-weight:600; margin-bottom:6px; }
+    .qs { display:grid; grid-template-columns:34px 1fr auto; gap:8px; align-items:center; margin-top:8px; }
+    .bar { position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:2px solid var(--line); padding:10px 14px; display:flex; gap:10px; align-items:center; z-index:10; }
+    .bar .prog { flex:1; font-size:.75rem; font-weight:700; color:var(--muted); }
+    .bar .prog b { color:var(--orange); }
+    .hide { display:none !important; }
+    .sum { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; }
+    .toast { position:fixed; left:50%; top:16px; transform:translateX(-50%); background:#0f766e; color:#fff; padding:12px 20px; border-radius:12px; font-weight:700; font-size:.85rem; z-index:50; box-shadow:0 10px 30px rgba(0,0,0,.25); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img src="logo_insan_mandiri_new.png" alt="Logo">
+    <div><small>Aplikasi Guru</small><h1>Observasi Al-Qur'an &amp; Shalat<br><span style="font-weight:600;font-size:.8rem">SMPIT &amp; SMAIT Insan Mandiri Greenville</span></h1></div>
+  </header>
+
+  <!-- MASUK -->
+  <div class="card" id="loginBox">
+    <h2>Masuk</h2>
+    <p style="font-size:.8rem;color:var(--muted);margin:0 0 12px">Masukkan kunci akses dari panitia. Nilai murid bersifat pribadi, jadi aplikasi ini hanya untuk guru.</p>
+    <label for="kunci">Kunci akses</label>
+    <input type="password" id="kunci" autocomplete="off" placeholder="Kunci dari panitia">
+    <div style="margin-top:12px"><button class="btn" id="btnMasuk" type="button">Masuk</button></div>
+    <div class="err" id="loginErr"></div>
+  </div>
+
+  <!-- APLIKASI -->
+  <div id="app" class="hide">
+    <div class="card">
+      <h2>Identitas Murid</h2>
+      <div class="grid">
+        <div><label for="nama">Nama Lengkap Murid *</label><input id="nama" list="listMurid" placeholder="Ketik atau pilih nama" autocomplete="off"><datalist id="listMurid"></datalist></div>
+        <div><label for="jenjang">Jenjang</label><select id="jenjang"><option>SMPIT</option><option>SMAIT</option></select></div>
+        <div><label for="tanggal">Tanggal Observasi</label><input type="date" id="tanggal"></div>
+        <div><label for="observer">Nama Guru / Penguji *</label><input id="observer" placeholder="Nama penguji"></div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" data-tab="quran" type="button">1. Al-Qur'an</button>
+      <button class="tab" data-tab="sholat" type="button">2. Shalat &amp; Wudhu</button>
+      <button class="tab" data-tab="ringkas" type="button">3. Ringkasan</button>
+    </div>
+
+    <div id="tab-quran" class="card"></div>
+    <div id="tab-sholat" class="card hide"></div>
+    <div id="tab-ringkas" class="card hide"></div>
+  </div>
+</div>
+
+<div class="bar hide" id="bar">
+  <div class="prog">Terisi <b id="cnt">0</b> dari <b id="tot">0</b> penilaian</div>
+  <button class="btn" id="btnSimpan" type="button">Simpan ke Spreadsheet</button>
+</div>
+
+<script>
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6OxoaZ6-3ZCXemwrA6kwD7IBoSNjzIzAZmp8pmllzDk1dhS1kwdaJvdp7gbSF2Q/exec';
+  const SHEET_NAME = 'Observasi Quran Shalat';
+  const $ = id => document.getElementById(id);
+  let KEY = '', daftar = [], ov = { t: '', s: '' };
+  const S = {};   // semua nilai dan isian
+
+  // ===== Daftar isian (sama dengan lembar penilaian guru) =====
+  const WUDHU = [['wudhu_urutan','1. Peragaan sesuai dengan urutan wudhu'],['wudhu_membasuh_tangan','2a. Membasuh tangan dengan menyela-nyela jari tangan'],['wudhu_hidung','2b. Membersihkan lubang hidung dengan tangan kiri'],['wudhu_gigi','2c. Membersihkan gigi dengan tangan kanan'],['wudhu_muka','2d. Membasuh muka dengan meratakan keseluruhan wajah'],['wudhu_siku','2e. Menggosok-gosok tangan sampai siku'],['wudhu_kelingking','2f. Menyela-nyela jari kaki dengan jari kelingking tangan kiri'],['wudhu_mata_kaki','2g. Meratakan keseluruhan kaki sampai mata kaki'],['wudhu_mendahulukan_kanan','2h. Mendahulukan anggota badan sebelah kanan'],['wudhu_doa',"3. Melafalkan do'a sesudah wudhu"]];
+  const GERAKAN = [['gerakan_takbir','a. Takbir'],['gerakan_bersedekap','b. Berdiri dan bersedekap'],['gerakan_ruku',"c. Ruku' dan Thuma'ninah"],['gerakan_itidal',"d. I'tidal"],['gerakan_sujud','e. Sujud'],['gerakan_iftirasy','f. Duduk Iftirasy'],['gerakan_tawaruk','g. Duduk Tawaruk']];
+  const BACAAN = [['bacaan_takbir','a. Takbir'],['bacaan_iftitah',"b. Do'a Iftitah"],['bacaan_alfatihah','c. Surat Al-Fatihah'],['bacaan_surat_pendek','d. Surat Pendek'],['bacaan_ruku',"e. Ruku'"],['bacaan_itidal',"f. I'tidal"],['bacaan_sujud',"g. Do'a Sujud"],['bacaan_duduk_dua_sujud','h. Duduk di antara dua sujud'],['bacaan_tahiyat_akhir','i. Tahiyat Akhir'],['bacaan_salam','j. Salam']];
+  const ADAB = [['adab_sholat','Adab Shalat']];
+  const SHALAT_ITEMS = [...WUDHU, ...GERAKAN, ...BACAAN, ...ADAB].map(x => x[0]);
+  const QURAN_ITEMS = ['kualitas_bacaan','makhroj_huruf','ghunnah_dengung','imla'];
+  const NILAI4 = { A:'Sangat Baik', B:'Baik', C:'Cukup', D:'Perlu Bimbingan' };
+
+  // ===== Komponen tombol pilihan =====
+  const tg = (name, opts, kind) => `<div class="tg" data-name="${name}">` + opts.map((o, i) => {
+    const cls = kind === 'abcd' ? 'c' + (4 - i) : o.toLowerCase();
+    return `<button type="button" data-val="${o}" class="${cls}">${o}</button>`; }).join('') + '</div>';
+  const row = (name, label, kind) => `<div class="item"><span>${label}</span>${tg(name, kind === 'abcd' ? ['A','B','C','D'] : ['SM','MB','BT'], kind)}</div>`;
+
+  $('tab-quran').innerHTML = `
+    <div class="legend">Skala: A = Sangat Baik, B = Baik, C = Cukup, D = Perlu Bimbingan</div>
+    <div class="sec">1. Tahsin Al-Qur'an</div>
+    <label for="tahsin_sampai">Tahsin sampai surat / ayat</label><input id="tahsin_sampai" data-f placeholder="Contoh: Q.S. Al-Baqarah: 1-15 / Iqro 6 hal 12">
+    ${row('kualitas_bacaan','a. Kualitas bacaan','abcd')}${row('makhroj_huruf','b. Makhroj huruf','abcd')}${row('ghunnah_dengung','c. Ghunnah / dengung','abcd')}
+    <label for="catatan_tahsin" style="margin-top:8px">Catatan tahsin</label><textarea id="catatan_tahsin" data-f></textarea>
+    <div class="sec">2. Tahfidz Al-Qur'an</div>
+    <label for="tahfidz_juz">Juz</label><input id="tahfidz_juz" data-f placeholder="Contoh: 30">
+    ${['a','b','c','d'].map(k => `<div class="qs"><b style="font-size:.8rem">${k}.</b><input data-f id="qs_${k}" placeholder="Nama surat ${k.toUpperCase()}">${tg('rating_qs_' + k, ['A','B','C','D'], 'abcd')}</div>`).join('')}
+    <label for="catatan_tahfidz" style="margin-top:10px">Catatan tahfidz</label><textarea id="catatan_tahfidz" data-f></textarea>
+    <div class="sec">3. Menulis / Imla</div>
+    ${row('imla','Nilai imla','abcd')}
+    <label for="catatan_menulis" style="margin-top:8px">Catatan menulis</label><textarea id="catatan_menulis" data-f></textarea>`;
+
+  $('tab-sholat').innerHTML = `
+    <div class="legend">SM = Sudah Membudaya &nbsp;|&nbsp; MB = Mulai Terlihat &nbsp;|&nbsp; BT = Belum Terlihat</div>
+    <div class="sec">I. Wudhu</div>${WUDHU.map(x => row(x[0], x[1], 'sm')).join('')}
+    <div class="sec">II. Shalat: 1. Gerakan</div>${GERAKAN.map(x => row(x[0], x[1], 'sm')).join('')}
+    <div class="sec">II. Shalat: 2. Bacaan</div>${BACAAN.map(x => row(x[0], x[1], 'sm')).join('')}
+    <div class="sec">II. Shalat: 3. Adab shalat</div>${ADAB.map(x => row(x[0], x[1], 'sm')).join('')}
+    <label for="catatan_sholat" style="margin-top:10px">Catatan tambahan wudhu &amp; shalat</label><textarea id="catatan_sholat" data-f placeholder="Catatan khusus tentang gerakan wudhu atau kelancaran bacaan shalat"></textarea>`;
+
+  // ===== Interaksi =====
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.tg button'); if (!b) return;
+    const g = b.parentElement; S[g.dataset.name] = b.dataset.val;
+    g.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    hitung();
+  });
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === t));
+    ['quran','sholat','ringkas'].forEach(k => $('tab-' + k).classList.toggle('hide', k !== t.dataset.tab));
+    if (t.dataset.tab === 'ringkas') ringkasan();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }));
+
+  // ===== Penghitungan saran nilai untuk rapor =====
+  const lvl4 = a => a >= 3.5 ? 'Sangat Baik' : a >= 2.5 ? 'Baik' : a >= 1.5 ? 'Cukup' : 'Perlu Bimbingan';
+  const lvl3 = a => a >= 2.7 ? 'Sangat Baik' : a >= 2.2 ? 'Baik' : a >= 1.6 ? 'Cukup' : 'Perlu Bimbingan';
+  function saran() {
+    const q = ['kualitas_bacaan','makhroj_huruf','ghunnah_dengung','rating_qs_a','rating_qs_b','rating_qs_c','rating_qs_d']
+      .filter(k => !(k.startsWith('rating_qs_') && !$('qs_' + k.slice(-1)).value.trim()))
+      .map(k => ({ A:4, B:3, C:2, D:1 })[S[k]]).filter(Boolean);
+    const s = SHALAT_ITEMS.map(k => ({ SM:3, MB:2, BT:1 })[S[k]]).filter(Boolean);
+    const avg = a => a.reduce((x, y) => x + y, 0) / a.length;
+    return { tahfidz: q.length ? lvl4(avg(q)) : '', shalat: s.length ? lvl3(avg(s)) : '' };
+  }
+  function hitung() {
+    const items = [...QURAN_ITEMS, ...SHALAT_ITEMS];
+    $('tot').textContent = items.length; $('cnt').textContent = items.filter(k => S[k]).length;
+  }
+  function ringkasan() {
+    const s = saran(), opt = v => ['', 'Sangat Baik','Baik','Cukup','Perlu Bimbingan'].map(o => `<option ${o === v ? 'selected' : ''}>${o}</option>`).join('');
+    $('tab-ringkas').innerHTML = `
+      <h2>Nilai untuk Rapor</h2>
+      <p style="font-size:.8rem;color:var(--muted);margin:0 0 12px">Saran dihitung otomatis dari rata-rata nilai yang sudah diisi. Guru boleh mengubahnya sebelum disimpan.</p>
+      <div class="sum">
+        <div><label for="nilai_tahfidz">Nilai Tahfidz (untuk rapor)</label><select id="nilai_tahfidz">${opt(ov.t || s.tahfidz)}</select><div style="font-size:.7rem;color:var(--muted);margin-top:4px">Saran: ${s.tahfidz || '-'} (dari tahsin dan tahfidz)</div></div>
+        <div><label for="nilai_shalat">Nilai Shalat (untuk rapor)</label><select id="nilai_shalat">${opt(ov.s || s.shalat)}</select><div style="font-size:.7rem;color:var(--muted);margin-top:4px">Saran: ${s.shalat || '-'} (dari wudhu dan shalat)</div></div>
+      </div>
+      <p style="font-size:.78rem;margin:14px 0 0"><b>Cek sebelum simpan:</b> pastikan nama murid dan nama guru sudah terisi, lalu tekan <b>Simpan ke Spreadsheet</b>.</p>`;
+    $('nilai_tahfidz').addEventListener('change', e => { ov.t = e.target.value; });
+    $('nilai_shalat').addEventListener('change', e => { ov.s = e.target.value; });
+  }
+
+  // ===== Masuk: cek kunci dan muat daftar nama murid =====
+  async function masuk() {
+    const k = $('kunci').value.trim(), err = $('loginErr'); err.textContent = '';
+    if (!k) { err.textContent = 'Isi kunci akses.'; return; }
+    $('btnMasuk').disabled = true; $('btnMasuk').textContent = 'Memeriksa...';
+    try {
+      const r = await fetch(GOOGLE_SCRIPT_URL + '?action=murid&key=' + encodeURIComponent(k)); const j = await r.json();
+      if (!j.ok) throw new Error(j.error || 'Kunci tidak diterima.');
+      KEY = k; daftar = j.murid || [];
+      $('listMurid').innerHTML = daftar.map(m => `<option value="${m.nama.replace(/"/g, '&quot;')}">`).join('');
+      $('loginBox').classList.add('hide'); $('app').classList.remove('hide'); $('bar').classList.remove('hide');
+      $('tanggal').value = hariIni(); $('observer').value = localStorage.getItem('observer_lisan') || '';
+      hitung(); ringkasan();
+    } catch (e) { err.textContent = (e.message === 'Failed to fetch') ? 'Tidak bisa terhubung. Periksa internet, lalu coba lagi.' : e.message; }
+    $('btnMasuk').disabled = false; $('btnMasuk').textContent = 'Masuk';
+  }
+  const hariIni = () => { const t = new Date(); return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`; };
+  $('btnMasuk').addEventListener('click', masuk);
+  $('kunci').addEventListener('keydown', e => { if (e.key === 'Enter') masuk(); });
+  $('nama').addEventListener('change', () => { const m = daftar.find(x => x.nama.toLowerCase() === $('nama').value.trim().toLowerCase()); if (m && m.jenjang) $('jenjang').value = m.jenjang; });
+
+  // ===== Simpan =====
+  function toast(t) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 3500); }
+  $('btnSimpan').addEventListener('click', async () => {
+    const nama = $('nama').value.trim(), obs = $('observer').value.trim();
+    if (!nama) { alert('Isi nama murid dulu.'); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    if (!obs) { alert('Isi nama guru / penguji dulu.'); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    const kosong = [...QURAN_ITEMS, ...SHALAT_ITEMS].filter(k => !S[k]).length;
+    if (kosong && !confirm(kosong + ' penilaian belum diisi. Tetap simpan?')) return;
+    ringkasan(); const sr = saran();
+    const nT = $('nilai_tahfidz').value || sr.tahfidz, nS = $('nilai_shalat').value || sr.shalat;
+    const body = new URLSearchParams();
+    body.append('_sheet', SHEET_NAME); body.append('_key', KEY);
+    body.append('tanggal', $('tanggal').value); body.append('jenjang', $('jenjang').value);
+    body.append('nama_murid', nama); body.append('observer', obs);
+    document.querySelectorAll('[data-f]').forEach(el => body.append(el.id, el.value.trim()));
+    Object.keys(S).forEach(k => body.append(k, S[k]));
+    body.append('nilai_tahfidz', nT); body.append('nilai_shalat', nS);
+    localStorage.setItem('observer_lisan', obs);
+    const btn = $('btnSimpan'); btn.disabled = true; btn.textContent = 'Menyimpan...';
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body });
+      toast('Tersimpan: ' + nama);
+      Object.keys(S).forEach(k => delete S[k]);
+      document.querySelectorAll('.tg button').forEach(b => b.classList.remove('on'));
+      document.querySelectorAll('[data-f]').forEach(el => el.value = '');
+      $('nama').value = ''; ov = { t: '', s: '' }; hitung(); ringkasan();
+      document.querySelector('.tab[data-tab="quran"]').click();
+    } catch (e) { alert('Gagal menyimpan. Periksa internet lalu coba lagi. Data di layar belum hilang.'); }
+    btn.disabled = false; btn.textContent = 'Simpan ke Spreadsheet';
+  });
+</script>
+</body>
+</html>
