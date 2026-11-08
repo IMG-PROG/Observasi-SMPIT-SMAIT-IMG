@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tes Observasi Murid Baru | SMPIT–SMAIT IMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--blue:#67C8F6;--blue-dark:#0F6FA8;--orange:#F28C28;--soft:#EAF6FE;--ink:#334155}
+body{background:#EEF6FB;font-family:'Montserrat',sans-serif;color:var(--ink)}
+.shell{max-width:860px;margin:0 auto;padding:16px}
+.app-card{background:#fff;border-radius:18px;box-shadow:0 10px 25px -8px rgba(15,111,168,.25);overflow:hidden}
+.banner{background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;padding:26px 22px;text-align:center}
+.banner img{width:84px;height:84px;object-fit:contain;background:#fff;padding:8px;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,.15);margin-bottom:10px}
+.banner h1{font-size:1.25rem;font-weight:800;margin:0}.banner p{margin:4px 0 0;font-size:.85rem;opacity:.95}
+.body-pad{padding:24px 22px}
+.btn-or{background:var(--orange);border:0;color:#fff;font-weight:700;border-radius:12px;padding:10px 22px}
+.btn-or:hover{background:#d97a1c;color:#fff}.btn-or:disabled{opacity:.6}
+.pin-in{letter-spacing:.35em;font-weight:700;text-align:center}
+.timer-bar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:2px solid var(--soft);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.timer{font-size:1.4rem;font-weight:800;color:var(--blue-dark);font-variant-numeric:tabular-nums}
+.timer.low{color:#c0392b;animation:kedip 1s infinite}
+@keyframes kedip{50%{opacity:.45}}
+.save-st{font-size:.78rem;font-weight:600}.save-ok{color:#198754}.save-wait{color:#b26a00}.save-err{color:#c0392b}
+.prog{height:8px;background:var(--soft);border-radius:8px;overflow:hidden}.prog>div{height:100%;background:var(--orange);width:0;transition:width .3s}
+.section-title{font-weight:800;color:var(--blue-dark);font-size:1.05rem;margin:4px 0 14px}
+.qcard{background:#F8FBFE;border:1px solid #D7EAF7;border-radius:14px;padding:16px;margin-bottom:14px}
+.qcard.done{border-color:#9AD6B0;background:#F5FBF7}
+.qtext{white-space:pre-line;font-weight:600;margin-bottom:10px}
+.qimg{max-width:100%;border-radius:10px;border:1px solid #D7EAF7;margin-bottom:10px;background:#fff}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid #D7EAF7;border-radius:10px;background:#fff;margin-bottom:7px;cursor:pointer}
+.opt:hover{border-color:var(--blue)}.opt input{margin-top:4px}
+.qnum{display:inline-block;background:var(--orange);color:#fff;font-weight:800;border-radius:8px;padding:1px 9px;margin-right:6px;font-size:.85rem}
+.tbl-in td,.tbl-in th{padding:5px 6px;font-size:.88rem}
+.tbl-in input{min-width:80px}
+.notice{border-radius:12px;padding:14px 16px;background:var(--soft);border:1px solid #BFE3F7}
+.big{font-size:2.2rem;font-weight:800;color:var(--blue-dark);font-variant-numeric:tabular-nums}
+@media(max-width:576px){.shell{padding:8px}.body-pad{padding:18px 14px}}
+</style>
+</head>
+<body>
+<div class="shell">
+ <div class="app-card">
+  <div class="banner">
+    <img src="logo_insan_mandiri_new.png" alt="" onerror="this.style.display='none'">
+    <h1>Tes Observasi Murid Baru</h1>
+    <p>SMPIT–SMAIT Insan Mandiri Greenville</p>
+  </div>
+  <div id="view"></div>
+ </div>
+ <p class="text-center small text-muted mt-3">Jika ada kendala, hubungi panitia SPMB.</p>
+</div>
+
+<script>
+/* ============ Pengaturan ============ */
+const SUPABASE_URL = 'https://aovswqzqyuasbjedoczb.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zrvLsRnhx5SGIp7hiD67aA_PLXSDIoS'; // kunci publik (aman dipasang di halaman)
+const AUTOSAVE_MS = 20000;
+
+/* ============ Alat bantu ============ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); if(v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); }catch(e){ return null; } }
+function sess(k, v){ try{ if(v === undefined) return sessionStorage.getItem(k); if(v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); }catch(e){ return null; } }
+async function rpc(name, args){
+  try{
+    const r = await fetch(SUPABASE_URL + '/rest/v1/rpc/' + name, {
+      method:'POST', headers:{'Content-Type':'application/json', apikey:SUPABASE_KEY, Authorization:'Bearer ' + SUPABASE_KEY},
+      body: JSON.stringify(args || {})
+    });
+    if(!r.ok) return {ok:false, net:true, pesan:'Terjadi kendala pada server (kode ' + r.status + ').'};
+    const d = await r.json();
+    return (d && typeof d === 'object') ? d : {ok:false, net:true, pesan:'Balasan server tidak dikenal.'};
+  }catch(e){
+    return {ok:false, net:true, pesan:'Tidak ada koneksi internet. Periksa jaringan lalu coba lagi.'};
+  }
+}
+function fmtJam(d){ const s = Math.max(0, Math.floor(d)), h = Math.floor(s/3600), m = Math.floor(s%3600/60), x = s%60;
+  const p = n => String(n).padStart(2,'0'); return (h ? h + ':' + p(m) : p(m)) + ':' + p(x); }
+function fmtHitung(d){ const s = Math.max(0, Math.floor(d)), h = Math.floor(s/3600), m = Math.floor(s%3600/60), x = s%60;
+  const p = n => String(n).padStart(2,'0'); return p(h) + ':' + p(m) + ':' + p(x); }
+function gambarUrl(p){ return SUPABASE_URL + '/storage/v1/object/public/gambar-soal/' + String(p).split('/').map(encodeURIComponent).join('/'); }
+
+/* ============ Status aplikasi ============ */
+let TOKEN = null, ME = null, TIMER = null, TICK = null, SAVETIMER = null;
+let SOAL = [], JAWAB = {}, DIRTY = {}, SAVING = false, SUBMITTING = false, DEADLINE = 0, STEP = 1, PARTS = [];
+
+function view(html){ $('view').innerHTML = html; window.scrollTo(0, 0); }
+function stopTimers(){ clearInterval(TIMER); clearInterval(TICK); clearInterval(SAVETIMER); TIMER = TICK = SAVETIMER = null; }
+function localKey(){ return 'imgo_dirty_' + (ME ? ME.nomor_peserta : ''); }
+
+/* ============ Layar masuk ============ */
+function tampilLogin(pesan){
+  stopTimers(); TOKEN = null; ME = null; sess('imgo_token', null);
+  view(`<div class="body-pad">
+    <h2 class="section-title">Masuk untuk mengerjakan tes</h2>
+    <p class="small text-muted">Gunakan nomor peserta dan PIN yang dikirim panitia lewat WhatsApp.</p>
+    <form id="fLogin" novalidate autocomplete="off">
+      <div class="mb-3"><label class="form-label fw-semibold" for="inNomor">Nomor peserta</label>
+        <input id="inNomor" class="form-control form-control-lg" placeholder="contoh: SMP-0001" autocapitalize="characters" maxlength="30"></div>
+      <div class="mb-3"><label class="form-label fw-semibold" for="inPin">PIN (6 angka)</label>
+        <input id="inPin" class="form-control form-control-lg pin-in" inputmode="numeric" maxlength="6" placeholder="••••••" type="password"></div>
+      <div id="loginMsg" class="alert alert-danger py-2 ${pesan ? '' : 'd-none'}" role="alert">${esc(pesan || '')}</div>
+      <button class="btn btn-or w-100 btn-lg" id="btnMasuk" type="submit">Masuk</button>
+    </form></div>`);
+  $('fLogin').addEventListener('submit', async e => {
+    e.preventDefault();
+    const nomor = $('inNomor').value.trim().toUpperCase(), pin = $('inPin').value.trim(), m = $('loginMsg');
+    const gagal = t => { m.textContent = t; m.classList.remove('d-none'); };
+    if(!nomor) return gagal('Isi nomor peserta.');
+    if(!/^\d{6}$/.test(pin)) return gagal('PIN harus 6 angka.');
+    $('btnMasuk').disabled = true; $('btnMasuk').textContent = 'Memeriksa...';
+    const r = await rpc('murid_masuk', {p_nomor: nomor, p_pin: pin});
+    $('btnMasuk').disabled = false; $('btnMasuk').textContent = 'Masuk';
+    if(!r.ok || !r.token) return gagal(r.pesan || 'Nomor peserta atau PIN salah.');
+    TOKEN = r.token; ME = {nama: r.nama, nomor_peserta: r.nomor_peserta, jenjang: r.jenjang, gelombang: r.gelombang};
+    sess('imgo_token', TOKEN);
+    await muatStatus();
+  });
+}
+
+/* ============ Layar status ============ */
+async function muatStatus(){
+  view('<div class="body-pad text-center text-muted">Memuat...</div>');
+  const r = await rpc('tes_status', {p_token: TOKEN});
+  if(!r.ok){
+    if(r.net){ return view(`<div class="body-pad text-center"><div class="alert alert-warning">${esc(r.pesan)}</div><button class="btn btn-or" id="btnUlang">Coba lagi</button></div>`), $('btnUlang').addEventListener('click', muatStatus); }
+    return tampilLogin(r.pesan || 'Sesi habis. Silakan masuk lagi.');
+  }
+  ME = {nama: r.nama, nomor_peserta: r.nomor_peserta, jenjang: r.jenjang, gelombang: r.gelombang};
+  if(r.status === 'berjalan') return mulaiTes();
+  if(r.status === 'selesai') return tampilSelesai(r);
+  const sapa = `<h2 class="section-title">Halo, ${esc(r.nama)}</h2><p class="small text-muted mb-3">No. peserta ${esc(r.nomor_peserta)} • ${esc(r.jenjang)}</p>`;
+  const keluar = '<div class="text-center mt-4"><button class="btn btn-link btn-sm" id="btnKeluar">Keluar</button></div>';
+  if(r.status === 'tanpa_jadwal'){
+    view(`<div class="body-pad">${sapa}<div class="notice">Jadwal tesmu belum ditentukan oleh panitia. Silakan tunggu informasi dari panitia, lalu masuk lagi.</div>${keluar}</div>`);
+  }else if(r.status === 'ditutup'){
+    view(`<div class="body-pad">${sapa}<div class="alert alert-warning">Waktu pelaksanaan tesmu sudah ditutup. Silakan hubungi panitia SPMB.</div>${keluar}</div>`);
+  }else if(r.status === 'belum_mulai'){
+    const t0 = performance.now(), awal = r.detik_ke_mulai;
+    view(`<div class="body-pad text-center">${sapa}<div class="notice mb-3">Tes belum dimulai. Soal baru bisa dibuka saat waktunya tiba.</div>
+      <div class="small text-muted">Dimulai dalam</div><div class="big" id="cd">--:--:--</div>
+      <div class="small text-muted mt-2">Durasi tes ${esc(r.durasi_menit)} menit. Halaman ini akan membuka tombol Mulai otomatis.</div>${keluar}</div>`);
+    TICK = setInterval(() => {
+      const sisa = awal - (performance.now() - t0) / 1000;
+      if(sisa <= 0){ stopTimers(); muatStatus(); return; }
+      const c = $('cd'); if(c) c.textContent = fmtHitung(sisa);
+    }, 500);
+  }else if(r.status === 'bisa_mulai'){
+    view(`<div class="body-pad">${sapa}
+      <div class="notice mb-3"><b>Sebelum mulai, baca dulu:</b>
+        <ul class="mb-0 mt-2 small"><li>Waktu mengerjakan <b>${esc(r.durasi_menit)} menit</b>. Waktu berjalan terus walaupun halaman ditutup.</li>
+        <li>Tes terdiri dari 3 bagian: Kognitif, Non-kognitif, dan Gaya Belajar.</li>
+        <li>Jawabanmu tersimpan otomatis. Jika internet putus, buka lagi halaman ini lalu masuk kembali.</li>
+        <li>Setelah dikirim, jawaban tidak bisa diubah. Jangan buka tes di dua perangkat sekaligus.</li></ul></div>
+      <div id="mulaiMsg" class="alert alert-danger py-2 d-none"></div>
+      <button class="btn btn-or btn-lg w-100" id="btnMulai">Mulai Tes Sekarang</button>${keluar}</div>`);
+    $('btnMulai').addEventListener('click', async () => {
+      $('btnMulai').disabled = true; $('btnMulai').textContent = 'Menyiapkan soal...';
+      const ok = await mulaiTes(true);
+      if(!ok){ const m = $('mulaiMsg'); if(m){ m.textContent = ok === false ? (window._pesanMulai || 'Gagal memulai. Coba lagi.') : ''; m.classList.remove('d-none'); } const b = $('btnMulai'); if(b){ b.disabled = false; b.textContent = 'Mulai Tes Sekarang'; } }
+    });
+  }
+  const k = $('btnKeluar'); if(k) k.addEventListener('click', async () => { const t = TOKEN; tampilLogin(); rpc('murid_keluar', {p_token: t}); });
+}
+
+/* ============ Layar selesai ============ */
+function tampilSelesai(r){
+  stopTimers(); store('imgo_dirty_' + (ME && ME.nomor_peserta), null);
+  const g = r.gaya || {visual:0, auditori:0, kinestetik:0};
+  const tot = (g.visual || 0) + (g.auditori || 0) + (g.kinestetik || 0);
+  const pct = n => tot ? Math.round((n || 0) * 100 / tot) : 0;
+  const dom = tot ? (g.visual >= g.auditori && g.visual >= g.kinestetik ? 'Visual' : (g.auditori >= g.kinestetik ? 'Auditori' : 'Kinestetik')) : '-';
+  const desc = {Visual:'Kamu mudah belajar dengan melihat: gambar, warna, diagram, dan tulisan.', Auditori:'Kamu mudah belajar dengan mendengar: penjelasan, diskusi, dan bacaan bersuara.', Kinestetik:'Kamu mudah belajar dengan bergerak dan mencoba langsung.','-':''}[dom];
+  view(`<div class="body-pad text-center">
+    <div class="badge bg-success p-2 mb-2">Tes sudah dikirim</div>
+    <h2 class="section-title">Terima kasih, ${esc(r.nama || (ME && ME.nama) || '')}!</h2>
+    <p class="text-muted">Jawabanmu sudah diterima panitia dan tidak bisa diubah. Hasil seleksi diumumkan oleh panitia SPMB.</p>
+    ${tot ? `<div class="card border-0 shadow-sm p-3 text-start mt-3"><h6 class="fw-bold text-primary">Profil gaya belajarmu</h6>
+      <div class="row align-items-center"><div class="col-sm-5 text-center"><canvas id="gayaChart" style="max-height:200px"></canvas></div>
+      <div class="col-sm-7 mt-3 mt-sm-0"><div class="p-3 rounded" style="background:var(--soft)"><b>Gaya belajar dominan: <span class="text-success">${dom}</span></b><div class="small text-muted">${esc(desc)}</div></div>
+      <div class="small mt-2"><div class="d-flex justify-content-between"><span>Visual</span><b>${pct(g.visual)}%</b></div><div class="d-flex justify-content-between"><span>Auditori</span><b>${pct(g.auditori)}%</b></div><div class="d-flex justify-content-between"><span>Kinestetik</span><b>${pct(g.kinestetik)}%</b></div></div></div></div></div>` : ''}
+    <div class="mt-4"><button class="btn btn-outline-secondary btn-sm" id="btnKeluar">Keluar</button></div></div>`);
+  if(tot && window.Chart){ try{ new Chart($('gayaChart'), {type:'doughnut', data:{labels:['Visual','Auditori','Kinestetik'], datasets:[{data:[g.visual||0, g.auditori||0, g.kinestetik||0], backgroundColor:['#67C8F6','#F28C28','#7bc47f']}]}, options:{plugins:{legend:{position:'bottom'}}}}); }catch(e){} }
+  $('btnKeluar').addEventListener('click', () => { const t = TOKEN; tampilLogin(); rpc('murid_keluar', {p_token: t}); });
+}
+
+/* ============ Mulai / lanjutkan tes ============ */
+async function mulaiTes(dariTombol){
+  const r = await rpc('tes_mulai', {p_token: TOKEN});
+  if(!r.ok){
+    window._pesanMulai = r.pesan;
+    if(r.net){ if(!dariTombol) view(`<div class="body-pad text-center"><div class="alert alert-warning">${esc(r.pesan)}</div><button class="btn btn-or" id="btnUlang">Coba lagi</button></div>`), !dariTombol && $('btnUlang').addEventListener('click', () => mulaiTes()); return false; }
+    if(/Sesi habis/.test(r.pesan || '')){ tampilLogin(r.pesan); return null; }
+    if(r.status){ await muatStatus(); return null; }
+    return false;
+  }
+  if(r.status === 'selesai'){ tampilSelesai(r); return true; }
+  SOAL = r.soal || []; JAWAB = r.jawaban || {}; DIRTY = {}; SUBMITTING = false; SAVING = false; STEP = 1;
+  ME = {nama: r.nama, nomor_peserta: r.nomor_peserta, jenjang: r.jenjang, gelombang: r.gelombang};
+  try{ const lk = JSON.parse(store(localKey()) || '{}'); if(lk && typeof lk === 'object') Object.keys(lk).forEach(id => { if(SOAL.some(s => s.id === id)){ JAWAB[id] = lk[id]; DIRTY[id] = lk[id]; } }); }catch(e){}
+  const t0 = performance.now(); DEADLINE = t0 + (r.sisa_detik || 0) * 1000;
+  PARTS = [
+    {nama:'BAGIAN I: KOGNITIF', soal: SOAL.filter(s => s.kategori !== 'Non-kognitif' && s.kategori !== 'Gaya Belajar')},
+    {nama:'BAGIAN II: OBSERVASI NON-KOGNITIF', soal: SOAL.filter(s => s.kategori === 'Non-kognitif')},
+    {nama:'BAGIAN III: GAYA BELAJAR', soal: SOAL.filter(s => s.kategori === 'Gaya Belajar')}
+  ].filter(p => p.soal.length);
+  if(!PARTS.length){ view('<div class="body-pad"><div class="alert alert-warning">Belum ada soal untuk jenjangmu. Hubungi panitia.</div></div>'); return true; }
+  gambarTes(); mulaiPewaktu();
+  if(Object.keys(DIRTY).length) simpanSekarang();
+  return true;
+}
+
+/* ============ Tampilan soal ============ */
+function gambarTes(){
+  view(`<div class="timer-bar"><div><div class="small text-muted">Sisa waktu</div><div class="timer" id="timer">--:--</div></div>
+      <div class="text-end"><div class="save-st" id="saveSt"></div><div class="small text-muted"><span id="progTxt"></span></div></div>
+      <div class="w-100"><div class="prog"><div id="progBar"></div></div></div></div>
+    <div class="body-pad"><div id="partArea"></div>
+      <div class="d-flex justify-content-between mt-4"><button class="btn btn-outline-secondary fw-bold" id="btnPrev">Sebelumnya</button>
+      <button class="btn btn-or" id="btnNext">Selanjutnya</button></div></div>`);
+  $('btnPrev').addEventListener('click', () => pindah(-1));
+  $('btnNext').addEventListener('click', () => PARTS.length === STEP ? konfirmasiKirim() : pindah(1));
+  tampilBagian();
+}
+function nomorAwal(i){ let n = 0; for(let k = 0; k < i; k++) n += PARTS[k].soal.length; return n; }
+function tampilBagian(){
+  const p = PARTS[STEP - 1], awal = nomorAwal(STEP - 1);
+  $('partArea').innerHTML = `<h3 class="section-title">${esc(p.nama)} <span class="small text-muted fw-normal">(${STEP}/${PARTS.length})</span></h3>` +
+    p.soal.map((s, i) => kartuSoal(s, awal + i + 1)).join('');
+  $('partArea').onchange = $('partArea').oninput = aksiJawab;
+  $('btnPrev').classList.toggle('invisible', STEP === 1);
+  $('btnNext').textContent = STEP === PARTS.length ? 'Selesai & Kirim' : 'Selanjutnya';
+  window.scrollTo(0, 0); hitungProgres();
+}
+function kartuSoal(s, no){
+  const o = s.opsi || {}, j = JAWAB[s.id];
+  let isi = '';
+  if(s.tipe === 'pilihan_ganda'){
+    const pil = (o.pilihan || []);
+    const huruf = s.kategori === 'Gaya Belajar' ? ['A','B','C'] : ['A','B','C','D','E','F'];
+    isi = pil.map((t, i) => `<label class="opt"><input type="radio" name="q_${esc(s.id)}" data-id="${esc(s.id)}" data-tipe="pg" value="${i}" ${j && j.pilihan === i ? 'checked' : ''}><span><b>${huruf[i] || i + 1}.</b> ${esc(t)}</span></label>`).join('');
+  }else if(s.tipe === 'isian'){
+    isi = `<input class="form-control" data-id="${esc(s.id)}" data-tipe="teks" maxlength="500" value="${esc(j && j.teks)}" placeholder="Tulis jawabanmu">`;
+  }else if(s.tipe === 'uraian'){
+    isi = `<textarea class="form-control" rows="4" data-id="${esc(s.id)}" data-tipe="teks" maxlength="5000" placeholder="Tulis jawabanmu">${esc(j && j.teks)}</textarea>`;
+  }else if(s.tipe === 'menjodohkan'){
+    const kol = o.kolom || [], ps = (j && j.pasangan) || [];
+    isi = (o.baris || []).map((b, r) => `<div class="row g-2 align-items-center mb-2"><div class="col-sm-6">${esc(b)}</div><div class="col-sm-6">
+      <select class="form-select" data-id="${esc(s.id)}" data-tipe="jodoh" data-r="${r}"><option value="">– pilih –</option>${kol.map((k, c) => `<option value="${c}" ${ps[r] === c ? 'selected' : ''}>${esc(k)}</option>`).join('')}</select></div></div>`).join('');
+  }else if(s.tipe === 'tabel_isian'){
+    const sel = (j && j.sel) || [];
+    isi = `<div class="table-responsive"><table class="table table-sm tbl-in align-middle"><thead><tr><th>${esc(o.judul_baris || '')}</th>${(o.kolom || []).map(k => `<th>${esc(k)}</th>`).join('')}</tr></thead><tbody>` +
+      (o.baris || []).map((b, r) => `<tr><th>${esc(b)}</th>${(o.kolom || []).map((k, c) => `<td><input class="form-control form-control-sm" data-id="${esc(s.id)}" data-tipe="sel" data-r="${r}" data-c="${c}" maxlength="100" value="${esc(sel[r] && sel[r][c])}"></td>`).join('')}</tr>`).join('') + '</tbody></table></div>';
+  }
+  return `<div class="qcard ${terjawab(s) ? 'done' : ''}" id="qc_${esc(s.id)}"><div class="qtext"><span class="qnum">${no}</span>${esc(s.pertanyaan)}</div>` +
+    (s.gambar_path ? `<img class="qimg" src="${esc(gambarUrl(s.gambar_path))}" alt="Gambar soal" loading="lazy">` : '') + isi + '</div>';
+}
+function terjawab(s){
+  const j = JAWAB[s.id]; if(!j) return false;
+  if(s.tipe === 'pilihan_ganda') return typeof j.pilihan === 'number';
+  if(s.tipe === 'isian' || s.tipe === 'uraian') return !!(j.teks && String(j.teks).trim());
+  if(s.tipe === 'menjodohkan'){ const n = ((s.opsi || {}).baris || []).length; return (j.pasangan || []).filter(x => typeof x === 'number').length > 0 && n > 0; }
+  if(s.tipe === 'tabel_isian') return (j.sel || []).some(r => (r || []).some(x => String(x || '').trim()));
+  return false;
+}
+function aksiJawab(e){
+  const el = e.target, id = el.dataset && el.dataset.id; if(!id) return;
+  const s = SOAL.find(x => x.id === id); if(!s) return;
+  let v;
+  if(el.dataset.tipe === 'pg'){ v = {pilihan: parseInt(el.value, 10)}; }
+  else if(el.dataset.tipe === 'teks'){ v = {teks: el.value}; }
+  else if(el.dataset.tipe === 'jodoh'){
+    const n = ((s.opsi || {}).baris || []).length, ps = ((JAWAB[id] && JAWAB[id].pasangan) || []).slice(0, n);
+    while(ps.length < n) ps.push(null);
+    ps[parseInt(el.dataset.r, 10)] = el.value === '' ? null : parseInt(el.value, 10); v = {pasangan: ps};
+  }else if(el.dataset.tipe === 'sel'){
+    const o = s.opsi || {}, nb = (o.baris || []).length, nk = (o.kolom || []).length;
+    const sel = []; for(let r = 0; r < nb; r++){ const row = []; for(let c = 0; c < nk; c++) row.push(((JAWAB[id] && JAWAB[id].sel && JAWAB[id].sel[r] && JAWAB[id].sel[r][c]) || '')); sel.push(row); }
+    sel[parseInt(el.dataset.r, 10)][parseInt(el.dataset.c, 10)] = el.value; v = {sel: sel};
+  }else return;
+  JAWAB[id] = v; DIRTY[id] = v; cermin();
+  const kc = $('qc_' + id); if(kc) kc.classList.toggle('done', terjawab(s));
+  hitungProgres(); setSaveSt('wait', 'Belum tersimpan');
+}
+function cermin(){ store(localKey(), JSON.stringify(DIRTY)); }
+function hitungProgres(){
+  const n = SOAL.filter(terjawab).length, t = SOAL.length;
+  const a = $('progTxt'); if(a) a.textContent = n + ' dari ' + t + ' soal terjawab';
+  const b = $('progBar'); if(b) b.style.width = (t ? n * 100 / t : 0) + '%';
+}
+function setSaveSt(k, t){ const e = $('saveSt'); if(e){ e.className = 'save-st save-' + k; e.textContent = t; } }
+function pindah(d){
+  const n = STEP + d; if(n < 1 || n > PARTS.length) return;
+  STEP = n; tampilBagian(); simpanSekarang();
+}
+
+/* ============ Pewaktu & simpan otomatis ============ */
+function mulaiPewaktu(){
+  stopTimers();
+  TICK = setInterval(() => {
+    const sisa = (DEADLINE - performance.now()) / 1000, t = $('timer');
+    if(t){ t.textContent = fmtJam(sisa); t.classList.toggle('low', sisa <= 300); }
+    if(sisa <= 0 && !SUBMITTING) kirimAkhir(true);
+  }, 500);
+  SAVETIMER = setInterval(simpanSekarang, AUTOSAVE_MS);
+}
+async function simpanSekarang(){
+  if(SAVING || SUBMITTING || !Object.keys(DIRTY).length) return;
+  SAVING = true; const kirim = Object.assign({}, DIRTY); setSaveSt('wait', 'Menyimpan...');
+  const r = await rpc('tes_simpan', {p_token: TOKEN, p_data: kirim});
+  SAVING = false;
+  if(r.ok){
+    Object.keys(kirim).forEach(id => { if(JSON.stringify(DIRTY[id]) === JSON.stringify(kirim[id])) delete DIRTY[id]; });
+    cermin(); if(typeof r.sisa_detik === 'number') DEADLINE = performance.now() + r.sisa_detik * 1000;
+    setSaveSt(Object.keys(DIRTY).length ? 'wait' : 'ok', Object.keys(DIRTY).length ? 'Belum tersimpan' : 'Tersimpan ✓');
+  }else if(r.net){ setSaveSt('err', 'Gagal menyimpan, mencoba lagi...'); }
+  else if(r.status === 'selesai'){ stopTimers(); tampilSelesai(r); }
+  else if(/Sesi habis/.test(r.pesan || '')){ setSaveSt('err', 'Sesi habis. Muat ulang halaman lalu masuk lagi (jawaban tersimpan di perangkat ini).'); }
+  else setSaveSt('err', r.pesan || 'Gagal menyimpan');
+}
+
+/* ============ Kirim ============ */
+function konfirmasiKirim(){
+  const n = SOAL.filter(terjawab).length, k = SOAL.length - n;
+  const ada = document.getElementById('modalKirim'); if(ada) ada.remove();
+  const d = document.createElement('div'); d.id = 'modalKirim';
+  d.style.cssText = 'position:fixed;inset:0;background:rgba(15,40,60,.55);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px';
+  d.innerHTML = `<div class="app-card body-pad" style="max-width:420px"><h5 class="fw-bold">Kirim jawaban sekarang?</h5>
+    <p class="small">${k ? `Masih ada <b>${k} soal</b> yang belum dijawab. ` : 'Semua soal sudah dijawab. '}Setelah dikirim, jawaban <b>tidak bisa diubah</b>.</p>
+    <div class="d-flex gap-2 justify-content-end"><button class="btn btn-outline-secondary" id="kBatal">Kembali periksa</button><button class="btn btn-or" id="kYa">Ya, kirim</button></div></div>`;
+  document.body.appendChild(d);
+  $('kBatal').addEventListener('click', () => d.remove());
+  $('kYa').addEventListener('click', () => { d.remove(); kirimAkhir(false); });
+}
+async function kirimAkhir(otomatis){
+  if(SUBMITTING) return; SUBMITTING = true;
+  const m = document.getElementById('modalKirim'); if(m) m.remove();
+  view(`<div class="body-pad text-center"><div class="spinner-border text-primary mb-3"></div><p class="fw-semibold">${otomatis ? 'Waktu habis. ' : ''}Mengirim jawabanmu... jangan tutup halaman ini.</p><div id="kirimMsg" class="small text-danger"></div></div>`);
+  stopTimers();
+  for(let i = 0; i < 6; i++){
+    const r = await rpc('tes_kirim', {p_token: TOKEN, p_data: JAWAB});
+    if(r.ok){ tampilSelesai(r); return; }
+    if(!r.net){
+      if(/Sesi habis/.test(r.pesan || '')){ SUBMITTING = false; const e = $('kirimMsg'); if(e) e.textContent = 'Sesi habis. Muat ulang halaman dan masuk lagi.'; return; }
+      const e = $('kirimMsg'); if(e) e.textContent = r.pesan || 'Gagal mengirim.'; break;
+    }
+    const e = $('kirimMsg'); if(e) e.textContent = r.pesan + ' Mencoba lagi...';
+    await new Promise(res => setTimeout(res, 3000));
+  }
+  SUBMITTING = false;
+  view(`<div class="body-pad text-center"><div class="alert alert-warning">Jawaban belum berhasil terkirim. Periksa internet, lalu tekan tombol di bawah. Jawabanmu masih aman di perangkat ini.</div><button class="btn btn-or" id="btnKirimUlang">Kirim ulang</button></div>`);
+  $('btnKirimUlang').addEventListener('click', () => kirimAkhir(otomatis));
+}
+
+window.addEventListener('beforeunload', e => { if(TICK && !SUBMITTING && SOAL.length){ e.preventDefault(); e.returnValue = ''; } });
+
+/* ============ Mulai ============ */
+(async function(){
+  const t = sess('imgo_token');
+  if(t && /^[0-9a-f-]{36}$/i.test(t)){ TOKEN = t; await muatStatus(); }
+  else tampilLogin();
+})();
+</script>
+</body>
+</html>
