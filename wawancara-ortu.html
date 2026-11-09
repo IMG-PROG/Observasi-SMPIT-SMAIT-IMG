@@ -246,28 +246,21 @@
       box-shadow:none;filter:drop-shadow(0 6px 14px rgba(0,0,0,.28));margin-bottom:1.1rem;}
   </style>
 <style>.is-invalid-group{outline:2px solid #dc2626;outline-offset:6px;border-radius:8px}.hint{color:#dc2626;font-size:.8rem;display:none}</style>
-<style>
-  .header-banner{position:relative}
-  .btn-menu{position:absolute;top:12px;left:12px;z-index:5;display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:20px;
-    background:rgba(255,255,255,.2);color:#fff;font:700 .78rem 'Montserrat',sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(4px)}
-  .btn-menu:hover{background:rgba(255,255,255,.35);color:#fff}
-  @media print{.btn-menu{display:none !important}}
-</style>
 </head><body class="py-4">
 <div class="container" style="max-width:900px"><div class="app-card overflow-hidden">
 <div class="header-banner text-center position-relative">
-<a href="index.html" class="btn-menu no-print" onclick="return keMenu()">&#8249; Menu</a>
  <img src="logo_insan_mandiri_new.png" class="school-logo" alt="Logo Insan Mandiri">
  <h5 class="text-uppercase opacity-75 mb-1 fw-semibold" style="letter-spacing:1px">Penerimaan Murid Baru TP. 2027/2028</h5>
  <h2 class="fw-bold mb-2" id="appHeading">WAWANCARA ORANG TUA</h2>
  <p class="mb-0 text-light opacity-90 small">SMPIT & SMAIT Insan Mandiri Greenville</p>
 </div>
 <div class="p-4 p-md-5">
- <div id="formArea">
-  <div class="alert alert-info border-0 shadow-sm small mb-4">Assalamu’alaikum Warahmatullahi Wabarakatuh. Mohon Bapak/Ibu mengisi setiap bagian dengan lengkap dan benar. Estimasi waktu pengisian ±10 menit.</div>
+ <div id="pesanLink" class="d-none text-center py-4"><h4 class="fw-bold" id="pesanJudul"></h4><p class="text-muted mb-0" id="pesanIsi"></p></div>
+ <div id="formArea" class="d-none">
+  <div class="alert alert-info border-0 shadow-sm small mb-4">Assalamu’alaikum Warahmatullahi Wabarakatuh. Mohon Bapak/Ibu mengisi setiap bagian dengan lengkap dan benar. Estimasi waktu pengisian ±15 menit.</div>
   <div class="mb-4"><div class="d-flex justify-content-between text-muted small mb-1 fw-bold"><span id="stepLabel"></span><span id="stepPct"></span></div>
   <div class="progress-bar-custom"><div class="progress-fill" id="bar"></div></div></div>
-  <form id="f" novalidate><input type="hidden" name="_sheet" value="Wawancara Ortu"><div id="steps"></div></form>
+  <form id="f" novalidate><div id="steps"></div></form>
   <div class="d-flex justify-content-between mt-4">
    <button type="button" class="btn btn-outline-secondary px-4 fw-bold d-none" id="prev">Sebelumnya</button>
    <button type="button" class="btn btn-primary px-4 fw-bold ms-auto" id="next">Selanjutnya</button>
@@ -275,26 +268,32 @@
   </div>
  </div>
  <div id="done" class="text-center d-none py-4"><div class="badge bg-success p-2 mb-3">Berhasil Terkirim</div>
-  <h3 class="fw-bold">Jazakumullahu khairan</h3><p class="text-muted mb-4">Data wawancara sudah kami terima.</p>
-  <a href="index.html" class="btn btn-success fw-bold me-2 mb-2">Kembali ke Menu</a>
-  <button class="btn btn-outline-secondary fw-bold mb-2" onclick="location.reload()">Isi untuk murid lain</button></div>
+  <h3 class="fw-bold">Jazakumullahu khairan</h3><p class="text-muted mb-0">Data wawancara sudah kami terima. Anda boleh menutup halaman ini.</p></div>
 </div></div></div>
 <script>
-const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycby6OxoaZ6-3ZCXemwrA6kwD7IBoSNjzIzAZmp8pmllzDk1dhS1kwdaJvdp7gbSF2Q/exec';
+const SUPABASE_URL='https://aovswqzqyuasbjedoczb.supabase.co';
+const SUPABASE_KEY='sb_publishable_zrvLsRnhx5SGIp7hiD67aA_PLXSDIoS';
 const SECTIONS=[{"title": "Bagian 1: Data Anak & Orang Tua", "icon": "nama_lengkap.png", "fields": [{"name": "nama_calon_siswa", "label": "Nama Lengkap Calon Siswa", "type": "text", "req": 1}, {"name": "nama_panggilan", "label": "Nama Panggilan", "type": "text", "req": 1}, {"name": "jenis_kelamin", "label": "Jenis Kelamin", "type": "radio", "opts": ["Laki-laki", "Perempuan"], "req": 1}, {"name": "tempat_tanggal_lahir", "label": "Tempat, Tanggal Lahir", "type": "text", "req": 1, "ph": "Contoh: Bekasi, 12 Mei 2014"}, {"name": "asal_sekolah", "label": "Asal Sekolah / Madrasah", "type": "text", "req": 1}, {"name": "nama_ayah", "label": "Nama Ayah", "type": "text", "req": 1}, {"name": "pekerjaan_ayah", "label": "Pekerjaan Ayah", "type": "text", "req": 1}, {"name": "nama_ibu", "label": "Nama Ibu", "type": "text", "req": 1}, {"name": "pekerjaan_ibu", "label": "Pekerjaan Ibu", "type": "text", "req": 1}, {"name": "nomor_hp", "label": "Nomor HP yang dapat dihubungi", "type": "tel", "req": 1, "ph": "08xxxxxxxxxx"}, {"name": "alamat", "label": "Alamat Lengkap Rumah", "type": "area", "req": 1}]}, {"title": "Bagian 2: Wawancara Orang Tua", "icon": "petunjuk.png", "fields": [{"name": "w1_kedekatan", "label": "1. Bagaimana kedekatan Bapak/Ibu dengan ananda?", "type": "radio", "opts": ["Sangat dekat", "Cukup dekat", "Kadang berjarak", "Kurang dekat"], "req": 1}, {"name": "w2_kebiasaan_harian", "label": "2. Ceritakan kebiasaan harian ananda di rumah: belajar, ibadah, tidur, bermain (seperti bangun subuh, puasa sunah, jadwal ngaji).", "type": "area", "req": 1}, {"name": "w3_hobi", "label": "3. Apa hobi atau minat utama ananda?", "type": "area", "req": 1}, {"name": "w4_cara_menegur", "label": "4. Bagaimana cara Bapak/Ibu menegur atau menasihati anak jika berbuat salah?", "type": "area", "req": 1}, {"name": "w5_rutinitas", "label": "5. Apakah ada rutinitas khusus di rumah? (shalat berjamaah, muraja’ah, membaca Qur’an, olahraga, dll.)", "type": "area", "req": 1}, {"name": "w6_gadget", "label": "6. Bagaimana aturan penggunaan gadget di rumah?", "type": "area", "req": 1}, {"name": "w7_merokok", "label": "7. Apakah ananda pernah merokok?", "type": "radio", "opts": ["Pernah", "Tidak Pernah"], "req": 1}, {"name": "w8_perilaku", "label": "8. Apakah ananda pernah menunjukkan perilaku yang perlu perhatian khusus (mudah marah, malas, sulit diatur, dll.)?", "type": "radio", "opts": ["Pernah", "Tidak Pernah"], "req": 1}, {"name": "w9_sikap_ortu", "label": "9. Jika pernah, mohon jelaskan bagaimana sikap orang tua dalam mengatasinya.", "type": "area"}, {"name": "w10_dukungan", "label": "10. Apakah Bapak/Ibu bersedia mendukung kegiatan sekolah (menjadi panitia, pembicara, atau membantu acara)?", "type": "radio", "opts": ["Sangat bersedia", "Bersedia", "Tergantung waktu", "Tidak bersedia"], "req": 1}, {"name": "w11_keahlian", "label": "11. Jika bersedia, keahlian apa yang bisa Bapak/Ibu bagikan untuk sekolah?", "type": "area"}, {"name": "w12_harapan", "label": "12. Harapan Bapak/Ibu terhadap sekolah dan pendidikan ananda di SMPIT Insan Mandiri Greenville", "type": "area", "req": 1}, {"name": "w13_hal_khusus", "label": "13. Apakah ada hal khusus yang perlu sekolah ketahui tentang ananda? (kesehatan, kebiasaan, kebutuhan khusus, dll.)", "type": "area"}]}];
+const TOKEN=new URLSearchParams(location.search).get('t')||'';
 let cur=0;const $=id=>document.getElementById(id);
+async function rpc(nama,args){
+ const r=await fetch(SUPABASE_URL+'/rest/v1/rpc/'+nama,{method:'POST',headers:{'Content-Type':'application/json',apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY},body:JSON.stringify(args)});
+ if(!r.ok)throw new Error('http '+r.status);return r.json();}
+function pesan(judul,isi){$('formArea').classList.add('d-none');$('done').classList.add('d-none');$('pesanLink').classList.remove('d-none');$('pesanJudul').textContent=judul;$('pesanIsi').textContent=isi;}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function fieldHtml(f){
  const r=f.req?' <span class="text-danger">*</span>':'';
  let h=`<div class="question-card" data-name="${f.name}" data-req="${f.req?1:0}"><label class="fw-bold d-block mb-2">${f.label}${r}</label>`;
- if(f.type==='radio') h+=f.opts.map(o=>`<div class="form-check mb-1"><input class="form-check-input" type="radio" name="${f.name}" value="${o}"><label class="form-check-label">${o}</label></div>`).join('');
- else if(f.type==='area') h+=`<textarea class="form-control" name="${f.name}" rows="3" placeholder="${f.ph||'Tuliskan jawaban...'}"></textarea>`;
- else h+=`<input class="form-control" type="${f.type==='number'?'number':f.type}" ${f.type==='number'?'inputmode="decimal" min="0" step="any"':''} name="${f.name}" placeholder="${f.ph||''}">`;
+ if(f.type==='radio') h+=f.opts.map(o=>`<div class="form-check mb-1"><input class="form-check-input" type="radio" name="${f.name}" value="${esc(o)}"><label class="form-check-label">${esc(o)}</label></div>`).join('');
+ else if(f.type==='area') h+=`<textarea class="form-control" name="${f.name}" rows="3" maxlength="2000" placeholder="${esc(f.ph||'Tuliskan jawaban...')}"></textarea>`;
+ else h+=`<input class="form-control" type="${f.type==='number'?'number':f.type}" ${f.type==='tel'?'maxlength="20"':'maxlength="200"'} name="${f.name}" placeholder="${esc(f.ph||'')}">`;
  return h+`<div class="hint mt-1">Mohon diisi.</div></div>`;}
 $('steps').innerHTML=SECTIONS.map((s,i)=>`<div class="step-content ${i?'d-none':''}" id="s${i}"><h4 class="section-title"><img src="${s.icon}" class="custom-icon-md" alt=""> ${s.title.toUpperCase()}</h4>${s.intro||''}${s.fields.map(fieldHtml).join('')}</div>`).join('');
 function valid(i){let ok=true,first=null;
  document.querySelectorAll('#s'+i+' .question-card').forEach(c=>{
   let good=true;if(c.dataset.req==='1'){const el=c.querySelectorAll('input,textarea');
-   good=el[0].type==='radio'?[...el].some(x=>x.checked):el[0].value.trim()!=='';}
+   good=el[0].type==='radio'?[...el].some(x=>x.checked):el[0].value.trim()!=='';
+   if(good&&c.dataset.name==='nomor_hp')good=/^[0-9+() -]{8,20}$/.test(el[0].value.trim());}
   c.classList.toggle('is-invalid-group',!good);c.querySelector('.hint').style.display=good?'none':'block';
   if(!good){ok=false;first=first||c;}});
  if(first)first.scrollIntoView({behavior:'smooth',block:'center'});return ok;}
@@ -302,14 +301,31 @@ function show(){document.querySelectorAll('.step-content').forEach((e,i)=>e.clas
  const n=SECTIONS.length,p=Math.round((cur+1)/n*100);$('stepLabel').innerText=SECTIONS[cur].title;$('stepPct').innerText=p+'%';$('bar').style.width=p+'%';
  $('prev').classList.toggle('d-none',cur===0);$('next').classList.toggle('d-none',cur===n-1);$('send').classList.toggle('d-none',cur!==n-1);window.scrollTo({top:0,behavior:'smooth'});}
 $('next').onclick=()=>{if(valid(cur)){cur++;show();}};$('prev').onclick=()=>{cur--;show();};
-$('send').onclick=async()=>{if(!valid(cur))return;$('send').disabled=true;$('send').innerText='Mengirim...';
- try{await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',body:new URLSearchParams(new FormData($('f')))});
-  $('formArea').classList.add('d-none');$('done').classList.remove('d-none');window.scrollTo(0,0);}
- catch(e){alert('Pengiriman gagal. Periksa koneksi internet lalu coba lagi.');$('send').disabled=false;$('send').innerText='Kirim Data';}};
-show();
-</script><script>
-function keMenu(){const d=document.getElementById('done');
-  const berjalan=typeof cur!=='undefined'&&cur>0&&d.classList.contains('d-none');
-  return !berjalan||confirm('Kembali ke menu? Isian yang belum dikirim akan hilang.');}
-</script>
-</body></html>
+const BULAN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+function isi(name,v){if(!v)return;const el=document.querySelector('[name="'+name+'"]');if(!el)return;
+ if(el.type==='radio'){const r=document.querySelector('[name="'+name+'"][value="'+v+'"]');if(r)r.checked=true;}else el.value=v;}
+function prefill(a){
+ isi('nama_calon_siswa',a.nama);
+ isi('jenis_kelamin',a.jenis_kelamin==='L'?'Laki-laki':a.jenis_kelamin==='P'?'Perempuan':'');
+ let tgl='';if(a.tanggal_lahir){const p=String(a.tanggal_lahir).slice(0,10).split('-');if(p.length===3)tgl=(+p[2])+' '+BULAN[+p[1]-1]+' '+p[0];}
+ isi('tempat_tanggal_lahir',[a.tempat_lahir,tgl].filter(Boolean).join(', '));
+ isi('asal_sekolah',a.asal_sekolah);}
+$('send').onclick=async()=>{if(!valid(cur))return;
+ for(let i=0;i<SECTIONS.length;i++){if(!valid(i)){cur=i;show();return;}}
+ $('send').disabled=true;$('send').innerText='Mengirim...';
+ const data={};SECTIONS.forEach(s=>s.fields.forEach(f=>{
+  if(f.type==='radio'){const c=document.querySelector('[name="'+f.name+'"]:checked');if(c)data[f.name]=c.value;}
+  else{const v=document.querySelector('[name="'+f.name+'"]').value.trim();if(v)data[f.name]=v;}}));
+ try{const r=await rpc('ortu_wawancara_kirim',{p_token:TOKEN,p_data:data});
+  if(r&&r.ok){$('formArea').classList.add('d-none');$('done').classList.remove('d-none');window.scrollTo(0,0);}
+  else if(r&&r.sudah){pesan('Sudah terkirim','Wawancara untuk ananda sudah pernah dikirim. Terima kasih.');}
+  else{alert((r&&r.pesan)||'Pengiriman gagal. Coba lagi.');$('send').disabled=false;$('send').innerText='Kirim Data';}}
+ catch(e){alert('Pengiriman gagal. Periksa koneksi internet lalu coba lagi. Isian Anda belum hilang.');$('send').disabled=false;$('send').innerText='Kirim Data';}};
+(async()=>{
+ if(!/^[0-9a-f-]{36}$/i.test(TOKEN)){pesan('Link tidak lengkap','Mohon buka halaman ini lewat link yang dikirim panitia lewat WhatsApp.');return;}
+ try{const r=await rpc('ortu_wawancara_info',{p_token:TOKEN});
+  if(!r||!r.ok){pesan('Link tidak valid','Link ini tidak dikenali. Mohon hubungi panitia untuk meminta link yang benar.');return;}
+  if(r.sudah){pesan('Sudah terkirim','Wawancara untuk ananda sudah pernah dikirim. Terima kasih.');return;}
+  prefill(r.anak||{});$('formArea').classList.remove('d-none');show();}
+ catch(e){pesan('Tidak bisa terhubung','Periksa koneksi internet lalu muat ulang halaman ini.');}})();
+</script></body></html>
