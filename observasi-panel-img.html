@@ -407,8 +407,8 @@ footer{margin-top:30px;color:#4F6F82;font-size:12px}
     <div class="logo" role="img" aria-label="Logo Insan Mandiri Greenville"></div>
     <h1>Observasi IMG Online</h1>
     <p class="sub">SMPIT–SMAIT Insan Mandiri Greenville<br>Masuk untuk Admin dan Penguji</p>
-    <label for="loginEmail">Email</label>
-    <input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com">
+    <label for="loginEmail">Email atau Username</label>
+    <input id="loginEmail" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Email atau username">
     <label for="loginPass">Password</label>
     <input id="loginPass" type="password" autocomplete="current-password" placeholder="Password">
     <button class="primary-btn" id="loginBtn" type="submit">Masuk</button>
@@ -685,7 +685,7 @@ const CURRENT_STAGE = 7;
 const BOTH = ['admin','penguji'];
 const AKSES = {
   dashboard:BOTH, peserta:['admin'], akademik:['admin'], penilaian:['admin'], quran:BOTH,
-  shalat:BOTH, seragam:BOTH, wawancara:['admin'], laporan:['admin'], banksoal:['admin']
+  shalat:BOTH, seragam:['admin'], wawancara:['admin'], laporan:['admin'], banksoal:['admin']
 };
 const ROLE_LABEL = {admin:'Admin / Panitia', penguji:'Penguji'};
 const canAccess = id => !!(me && AKSES[id] && AKSES[id].includes(me.role));
@@ -2708,7 +2708,7 @@ async function qsAdmin(act, pid){
 /* Batas nilai untuk mengubah angka menjadi level. UBAH DI SINI SAJA bila perlu.
    Urutan: batas bawah Sangat Baik, Baik, Cukup. Di bawah Cukup = Perlu Bimbingan.
    cbt = persen (0-100) dari skor maksimal; nk = rata-rata skala 1-4. */
-const LAP_BATAS = { cbt: [85, 70, 55], nk: [3.5, 2.75, 2.0] };
+const LAP_BATAS = { cbt: [80, 65, 50], nk: [3.5, 3.0, 2.5] };
 const LAP_LEVEL = ['Sangat Baik', 'Baik', 'Cukup', 'Perlu Bimbingan'];
 const lapLevel = (v, b) => (v === null || v === undefined || v === '' || isNaN(v)) ? '' : v >= b[0] ? LAP_LEVEL[0] : v >= b[1] ? LAP_LEVEL[1] : v >= b[2] ? LAP_LEVEL[2] : LAP_LEVEL[3];
 const lapCls = l => ({'Sangat Baik':'sb','Baik':'bk','Cukup':'ck','Perlu Bimbingan':'pb'}[l] || '');
@@ -3230,19 +3230,22 @@ async function enter(session){
   showApp();
 }
 
+const LOGIN_DOMAIN = 'penguji.imgo.local';
 $('loginForm').addEventListener('submit', async function(e){
   e.preventDefault();
   if(!sb){ showLogin('Tidak bisa terhubung ke server. Periksa koneksi internet lalu muat ulang halaman.'); return; }
-  const email = $('loginEmail').value.trim();
+  const masuk = $('loginEmail').value.trim();
   const pass = $('loginPass').value;
-  if(!email || !pass){ showLogin('Isi email dan password terlebih dahulu.'); return; }
+  if(!masuk || !pass){ showLogin('Isi email atau username dan password terlebih dahulu.'); return; }
+  // Username tanpa tanda @ dipetakan ke alamat internal (tidak dipakai untuk mengirim email).
+  const email = masuk.indexOf('@') >= 0 ? masuk : masuk.toLowerCase().replace(/\s+/g, '') + '@' + LOGIN_DOMAIN;
   $('loginBtn').disabled = true;
   $('loginBtn').textContent = 'Memeriksa...';
   $('loginMsg').hidden = true;
   try{
     const r = await sb.auth.signInWithPassword({email: email, password: pass});
     if(r.error || !r.data || !r.data.session){
-      showLogin('Email atau password salah.');
+      showLogin('Email/username atau password salah.');
       return;
     }
     $('loginPass').value = '';
