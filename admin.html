@@ -7,119 +7,155 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --navy: #0f2552;
-      --teal: #0d9488;
-      --teal-light: #ccfbf1;
-      --amber: #f59e0b;
-      --amber-light: #fef3c7;
-      --red: #ef4444;
-      --red-light: #fee2e2;
+      --orange: #f97316;
+      --orange-dark: #ea6c0a;
+      --orange-light: #fff7ed;
+      --orange-border: #fed7aa;
+      --blue: #38bdf8;
+      --blue-dark: #0284c7;
+      --blue-darker: #0369a1;
+      --blue-light: #e0f2fe;
+      --blue-bg: #f0f9ff;
       --green: #22c55e;
       --green-light: #dcfce7;
-      --bg: #f1f5f9;
-      --card: #ffffff;
-      --ink: #0f172a;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --ink: #0c1a2e;
       --muted: #64748b;
       --line: #e2e8f0;
+      --bg: #f0f9ff;
+      --card: #ffffff;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
 
     /* TOPBAR */
     .topbar {
-      background: var(--navy);
+      background: linear-gradient(135deg, var(--blue-darker) 0%, var(--blue-dark) 60%, var(--orange) 100%);
       color: #fff;
       padding: 0 24px;
-      height: 56px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 2px 16px rgba(2,132,199,.25);
     }
-    .topbar-brand { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 800; letter-spacing: -.3px; }
-    .topbar-brand span { color: var(--amber); }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+    .topbar-brand img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.2));
+    }
+    .topbar-brand span { color: #fed7aa; }
     .topbar-right { display: flex; align-items: center; gap: 12px; }
-    #lastRefresh { font-size: .75rem; opacity: .65; }
+    #lastRefresh { font-size: .75rem; opacity: .75; }
     .btn-refresh {
-      background: rgba(255,255,255,.12);
-      border: none;
+      background: rgba(255,255,255,.18);
+      border: 1.5px solid rgba(255,255,255,.35);
       color: #fff;
-      padding: 6px 14px;
-      border-radius: 8px;
+      padding: 6px 16px;
+      border-radius: 20px;
       font-size: .8rem;
       font-weight: 600;
       cursor: pointer;
       transition: background .15s;
+      display: flex; align-items: center; gap: 6px;
     }
-    .btn-refresh:hover { background: rgba(255,255,255,.22); }
+    .btn-refresh:hover { background: rgba(255,255,255,.28); }
 
     /* LAYOUT */
     .shell { max-width: 1100px; margin: 0 auto; padding: 24px 20px 48px; }
 
     /* CONFIG BANNER */
     #configBanner {
-      background: var(--amber-light);
-      border: 1.5px solid var(--amber);
-      border-radius: 14px;
+      background: var(--orange-light);
+      border: 1.5px solid var(--orange-border);
+      border-radius: 16px;
       padding: 16px 20px;
       margin-bottom: 24px;
       display: flex;
       align-items: flex-start;
       gap: 14px;
     }
-    #configBanner .icon { font-size: 1.4rem; flex-shrink: 0; }
-    #configBanner h3 { font-size: .9rem; font-weight: 700; margin-bottom: 8px; color: #92400e; }
+    #configBanner .icon-wrap {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--orange);
+      display: grid; place-items: center;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+    }
+    #configBanner h3 { font-size: .9rem; font-weight: 700; margin-bottom: 8px; color: #9a3412; }
     .config-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 6px; }
     .config-row input {
       flex: 1; min-width: 200px;
-      border: 1.5px solid #d97706;
-      border-radius: 8px;
-      padding: 7px 12px;
+      border: 1.5px solid var(--orange-border);
+      border-radius: 10px;
+      padding: 8px 12px;
       font-size: .82rem;
       font-family: monospace;
       background: #fff;
       color: var(--ink);
     }
+    .config-row input:focus { outline: none; border-color: var(--orange); }
     .btn-connect {
-      background: var(--navy);
+      background: var(--orange);
       color: #fff;
       border: none;
-      padding: 8px 18px;
-      border-radius: 8px;
+      padding: 9px 20px;
+      border-radius: 10px;
       font-weight: 700;
-      font-size: .82rem;
+      font-size: .85rem;
       cursor: pointer;
+      transition: background .15s;
     }
-    .btn-connect:hover { background: #1e3a8a; }
+    .btn-connect:hover { background: var(--orange-dark); }
 
     /* STAT CARDS */
-    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px; }
     .stat {
       background: var(--card);
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 18px 20px;
-      box-shadow: 0 2px 12px rgba(15,23,42,.07);
-      border-left: 4px solid transparent;
+      box-shadow: 0 2px 14px rgba(2,132,199,.08);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1.5px solid var(--line);
+      transition: transform .15s, box-shadow .15s;
     }
-    .stat.total { border-color: var(--navy); }
-    .stat.done { border-color: var(--green); }
-    .stat.pending { border-color: var(--red); }
-    .stat.wawancara { border-color: var(--teal); }
-    .stat-label { font-size: .72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
-    .stat-val { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; font-weight: 800; line-height: 1; }
-    .stat.total .stat-val { color: var(--navy); }
-    .stat.done .stat-val { color: var(--green); }
-    .stat.pending .stat-val { color: var(--red); }
-    .stat.wawancara .stat-val { color: var(--teal); }
-    .stat-sub { font-size: .72rem; color: var(--muted); margin-top: 4px; }
+    .stat:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(2,132,199,.13); }
+    .stat-icon {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      overflow: hidden;
+      display: grid; place-items: center;
+    }
+    .stat-icon img { width: 54px; height: 54px; object-fit: cover; }
+    .stat-label { font-size: .72rem; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+    .stat-val { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--blue-darker); }
+    .stat.orange .stat-val { color: var(--orange); }
+    .stat.red .stat-val { color: var(--red); }
+    .stat.green .stat-val { color: var(--green); }
+    .stat-sub { font-size: .72rem; color: var(--muted); margin-top: 3px; }
 
     /* TABS */
-    .tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
     .tab {
-      padding: 7px 18px;
-      border-radius: 20px;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 18px;
+      border-radius: 24px;
       border: 1.5px solid var(--line);
       background: var(--card);
       font-size: .82rem;
@@ -128,87 +164,124 @@
       color: var(--muted);
       transition: all .15s;
     }
-    .tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
-    .tab:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+    .tab img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+    .tab.active { background: var(--orange); color: #fff; border-color: var(--orange); box-shadow: 0 4px 12px rgba(249,115,22,.3); }
+    .tab:hover:not(.active) { border-color: var(--orange); color: var(--orange); }
 
     /* TOOLBAR */
     .toolbar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+    .search-wrap { flex: 1; min-width: 200px; position: relative; }
+    .search-wrap::before { content: '🔍'; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: .85rem; }
     .search-box {
-      flex: 1; min-width: 180px;
+      width: 100%;
       border: 1.5px solid var(--line);
-      border-radius: 10px;
-      padding: 8px 14px;
+      border-radius: 24px;
+      padding: 9px 14px 9px 36px;
       font-size: .85rem;
       font-family: 'Inter', sans-serif;
       background: var(--card);
+      transition: border-color .15s;
     }
-    .search-box:focus { outline: none; border-color: var(--navy); }
-    .filter-select {
-      border: 1.5px solid var(--line);
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-size: .82rem;
-      background: var(--card);
-      cursor: pointer;
-    }
+    .search-box:focus { outline: none; border-color: var(--blue-dark); }
 
     /* TABLE */
     .table-wrap {
       background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(15,23,42,.07);
+      border-radius: 18px;
+      box-shadow: 0 2px 14px rgba(2,132,199,.08);
       overflow: hidden;
+      border: 1.5px solid var(--line);
     }
     table { width: 100%; border-collapse: collapse; font-size: .83rem; }
-    thead { background: #f8fafc; }
-    th { padding: 12px 16px; text-align: left; font-size: .72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    thead { background: linear-gradient(90deg, var(--blue-bg), #fff7ed); }
+    th { padding: 13px 16px; text-align: left; font-size: .72rem; font-weight: 700; color: var(--blue-darker); letter-spacing: .3px; border-bottom: 2px solid var(--line); white-space: nowrap; }
     td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #f8fafc; }
+    tr:hover td { background: var(--blue-bg); }
 
     .badge {
-      display: inline-block;
-      padding: 3px 10px;
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 12px;
       border-radius: 20px;
       font-size: .72rem;
       font-weight: 700;
     }
     .badge.sudah { background: var(--green-light); color: #15803d; }
     .badge.belum { background: var(--red-light); color: #b91c1c; }
-    .badge.ya { background: var(--teal-light); color: #0f766e; }
+    .badge.ya { background: var(--blue-light); color: var(--blue-darker); }
     .badge.tidak { background: #f1f5f9; color: var(--muted); }
 
-    .empty-state {
-      text-align: center;
-      padding: 48px 20px;
-      color: var(--muted);
+    .nomor-badge {
+      display: inline-block;
+      background: var(--blue-light);
+      color: var(--blue-darker);
+      font-size: .72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
     }
-    .empty-state .icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .jenjang-badge {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .jenjang-badge.smpit { background: #ffe4e6; color: #be123c; }
+    .jenjang-badge.smait { background: #fef3c7; color: #92400e; }
+
+    .empty-state { text-align: center; padding: 56px 20px; color: var(--muted); }
+    .empty-state img { width: 64px; height: 64px; opacity: .5; margin-bottom: 12px; }
     .empty-state p { font-size: .88rem; }
 
-    /* LOADING */
-    .loading { text-align: center; padding: 40px; color: var(--muted); font-size: .88rem; }
-    .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--line); border-top-color: var(--navy); border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 10px; }
+    .loading { text-align: center; padding: 48px; color: var(--muted); font-size: .88rem; }
+    .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid var(--line); border-top-color: var(--orange); border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 12px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* SECTION HEADER */
-    .section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
-    .section-desc { font-size: .78rem; color: var(--muted); margin-bottom: 14px; }
+    .new-badge {
+      background: var(--orange);
+      color: #fff;
+      font-size: .65rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
 
-    /* NEW DATA BADGE */
-    .new-badge { background: var(--amber); color: #fff; font-size: .65rem; font-weight: 800; padding: 1px 7px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
+    .section-desc { font-size: .78rem; color: var(--muted); margin-bottom: 14px; padding: 0 2px; }
+
+    /* HEADER SECTION */
+    .page-header {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1.5px solid var(--line);
+      box-shadow: 0 2px 14px rgba(2,132,199,.06);
+    }
+    .page-header img { width: 52px; height: 52px; object-fit: contain; }
+    .page-header h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--blue-darker); margin-bottom: 2px; }
+    .page-header p { font-size: .78rem; color: var(--muted); }
 
     @media (max-width: 600px) {
       .topbar { padding: 0 14px; }
-      .shell { padding: 16px 12px 40px; }
+      .shell { padding: 14px 12px 40px; }
       th, td { padding: 10px 10px; }
+      .stats { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="topbar-brand">IMG <span>Admin</span></div>
+  <div class="topbar-brand">
+    <img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/logo_insan_mandiri_new.png" alt="Logo IMG">
+    <div>IMG <span>Admin</span></div>
+  </div>
   <div class="topbar-right">
     <span id="lastRefresh"></span>
     <button class="btn-refresh" onclick="loadAll()">↻ Refresh</button>
@@ -217,9 +290,18 @@
 
 <div class="shell">
 
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/observasi.png" alt="">
+    <div>
+      <h2>Dashboard Panitia SPMB 2027/2028</h2>
+      <p>SMPIT & SMAIT Insan Mandiri Greenville — Pantau progress peserta secara real-time</p>
+    </div>
+  </div>
+
   <!-- CONFIG -->
   <div id="configBanner">
-    <div class="icon">🔑</div>
+    <div class="icon-wrap">🔑</div>
     <div style="flex:1">
       <h3>Hubungkan ke Supabase</h3>
       <div class="config-row">
@@ -227,48 +309,89 @@
         <input id="inpKey" type="text" placeholder="Publishable key: sb_publishable_...">
         <button class="btn-connect" onclick="connect()">Hubungkan</button>
       </div>
-      <div id="configStatus" style="font-size:.75rem;margin-top:8px;color:#92400e;"></div>
+      <div id="configStatus" style="font-size:.75rem;margin-top:8px;color:#9a3412;"></div>
     </div>
   </div>
 
   <!-- STATS -->
   <div class="stats">
-    <div class="stat total"><div class="stat-label">Total Peserta</div><div class="stat-val" id="statTotal">—</div><div class="stat-sub">terdaftar</div></div>
-    <div class="stat done"><div class="stat-label">Sudah Observasi</div><div class="stat-val" id="statDone">—</div><div class="stat-sub">tes selesai</div></div>
-    <div class="stat pending"><div class="stat-label">Belum Observasi</div><div class="stat-val" id="statPending">—</div><div class="stat-sub">perlu ditindak</div></div>
-    <div class="stat wawancara"><div class="stat-label">Wawancara Ortu</div><div class="stat-val" id="statWawancara">—</div><div class="stat-sub">sudah mengisi</div></div>
+    <div class="stat">
+      <div class="stat-icon"><img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/nama_lengkap.png" alt=""></div>
+      <div>
+        <div class="stat-label">Total Peserta</div>
+        <div class="stat-val" id="statTotal">—</div>
+        <div class="stat-sub">terdaftar</div>
+      </div>
+    </div>
+    <div class="stat green">
+      <div class="stat-icon"><img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/observasi.png" alt=""></div>
+      <div>
+        <div class="stat-label">Sudah Observasi</div>
+        <div class="stat-val" id="statDone">—</div>
+        <div class="stat-sub">tes selesai</div>
+      </div>
+    </div>
+    <div class="stat red">
+      <div class="stat-icon"><img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/petunjuk.png" alt=""></div>
+      <div>
+        <div class="stat-label">Belum Observasi</div>
+        <div class="stat-val" id="statPending">—</div>
+        <div class="stat-sub">perlu ditindak</div>
+      </div>
+    </div>
+    <div class="stat orange">
+      <div class="stat-icon"><img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/wawancara_ortu.png" alt=""></div>
+      <div>
+        <div class="stat-label">Wawancara Ortu</div>
+        <div class="stat-val" id="statWawancara">—</div>
+        <div class="stat-sub">sudah mengisi</div>
+      </div>
+    </div>
   </div>
 
   <!-- TABS -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('peserta')">👥 Semua Peserta</button>
-    <button class="tab" onclick="switchTab('belum')">⏳ Belum Observasi</button>
-    <button class="tab" onclick="switchTab('wawancara')">📋 Wawancara Ortu</button>
-    <button class="tab" onclick="switchTab('baru')">🆕 Data Terbaru</button>
+    <button class="tab active" onclick="switchTab('peserta', this)">
+      <img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/nama_lengkap.png" alt=""> Semua Peserta
+    </button>
+    <button class="tab" onclick="switchTab('belum', this)">
+      <img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/petunjuk.png" alt=""> Belum Observasi
+    </button>
+    <button class="tab" onclick="switchTab('wawancara', this)">
+      <img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/wawancara_ortu.png" alt=""> Wawancara Ortu
+    </button>
+    <button class="tab" onclick="switchTab('baru', this)">
+      <img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/asal_sekolah.png" alt=""> Data Terbaru
+    </button>
   </div>
 
   <!-- TOOLBAR -->
   <div class="toolbar">
-    <input class="search-box" id="searchBox" type="text" placeholder="Cari nama peserta..." oninput="renderTable()">
+    <div class="search-wrap">
+      <input class="search-box" id="searchBox" type="text" placeholder="Cari nama peserta..." oninput="renderTable()">
+    </div>
   </div>
 
   <!-- TABLE AREA -->
   <div id="tableArea">
-    <div class="empty-state"><div class="icon">🔌</div><p>Hubungkan ke Supabase dulu untuk melihat data.</p></div>
+    <div class="empty-state">
+      <img src="https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/observasi.png" alt="">
+      <p>Hubungkan ke Supabase dulu untuk melihat data.</p>
+    </div>
   </div>
 
 </div>
 
 <script>
-  // ─── STATE ───────────────────────────────────────────
   let SUPABASE_URL = 'https://aovswqzqyuasbjedoczb.supabase.co';
   let SUPABASE_KEY = '';
   let currentTab = 'peserta';
-  let data = { peserta: [], wawancara: [], tes_jawaban: [], tes_sesi: [] };
+  let data = { peserta: [], wawancara: [], tes_sesi: [], wawancaraIds: new Set() };
   let newIds = new Set();
   let lastLoadTime = null;
 
-  // ─── CONNECT ─────────────────────────────────────────
+  const BASE = 'https://img-prog.github.io/Observasi-SMPIT-SMAIT-IMG/';
+
   function connect() {
     SUPABASE_URL = document.getElementById('inpUrl').value.trim().replace(/\/$/, '');
     SUPABASE_KEY = document.getElementById('inpKey').value.trim();
@@ -280,7 +403,6 @@
     loadAll();
   }
 
-  // ─── FETCH HELPER ────────────────────────────────────
   async function fetchTable(table, params = '') {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}&limit=1000`, {
       headers: {
@@ -293,24 +415,23 @@
     return res.json();
   }
 
-  // ─── LOAD ALL ────────────────────────────────────────
   async function loadAll() {
     if (!SUPABASE_KEY) return;
     showLoading();
     try {
       const [peserta, wawancara, tes_sesi] = await Promise.all([
-        fetchTable('peserta', 'order=created_at.desc'),
-        fetchTable('wawancara_ortu', 'select=id,nama_lengkap,created_at&order=created_at.desc'),
-        fetchTable('tes_sesi', 'select=id,peserta_id,selesai_at,created_at&order=created_at.desc'),
+        fetchTable('peserta', 'select=id,nomor_peserta,nama,jenjang,jenis_kelamin,asal_sekolah,created_at&order=created_at.desc'),
+        fetchTable('wawancara_ortu', 'select=id,peserta_id,dikirim_pada&order=dikirim_pada.desc'),
+        fetchTable('tes_sesi', 'select=id,peserta_id,created_at&order=created_at.desc'),
       ]);
 
-      // detect new (last 24h)
       const cutoff = new Date(Date.now() - 24 * 3600 * 1000);
       newIds = new Set(peserta.filter(p => new Date(p.created_at) > cutoff).map(p => p.id));
 
       data.peserta = peserta;
       data.wawancara = wawancara;
       data.tes_sesi = tes_sesi;
+      data.wawancaraIds = new Set(wawancara.map(w => w.peserta_id));
 
       updateStats();
       renderTable();
@@ -319,117 +440,130 @@
       document.getElementById('configStatus').textContent = '✅ Terhubung — ' + peserta.length + ' peserta dimuat.';
       document.getElementById('configStatus').style.color = '#065f46';
     } catch (e) {
-      document.getElementById('tableArea').innerHTML = `<div class="empty-state"><div class="icon">❌</div><p>Gagal memuat data: ${e.message}</p></div>`;
+      document.getElementById('tableArea').innerHTML = `<div class="empty-state"><img src="${BASE}petunjuk.png"><p>Gagal memuat data: ${e.message}</p></div>`;
       document.getElementById('configStatus').textContent = '❌ ' + e.message;
       document.getElementById('configStatus').style.color = '#b91c1c';
     }
   }
 
-  // ─── STATS ───────────────────────────────────────────
   function updateStats() {
-    const pesertaIds = new Set(data.peserta.map(p => p.id));
     const sudahObservasi = new Set(data.tes_sesi.map(t => t.peserta_id));
-    const sudahWawancara = new Set(data.wawancara.map(w => w.nama_lengkap?.toLowerCase().trim()));
     const done = data.peserta.filter(p => sudahObservasi.has(p.id)).length;
-
     document.getElementById('statTotal').textContent = data.peserta.length;
     document.getElementById('statDone').textContent = done;
     document.getElementById('statPending').textContent = data.peserta.length - done;
     document.getElementById('statWawancara').textContent = data.wawancara.length;
   }
 
-  // ─── TABS ────────────────────────────────────────────
-  function switchTab(tab) {
+  function switchTab(tab, el) {
     currentTab = tab;
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    event.target.classList.add('active');
+    el.classList.add('active');
     document.getElementById('searchBox').value = '';
     renderTable();
   }
 
-  // ─── RENDER TABLE ────────────────────────────────────
   function renderTable() {
     const q = document.getElementById('searchBox').value.toLowerCase();
     const sudahObservasi = new Set(data.tes_sesi.map(t => t.peserta_id));
-    const wawancaraByNama = {};
-    data.wawancara.forEach(w => { wawancaraByNama[w.nama_lengkap?.toLowerCase().trim()] = w; });
-
-    let rows = [];
+    const pesertaMap = {};
+    data.peserta.forEach(p => { pesertaMap[p.id] = p; });
 
     if (currentTab === 'peserta' || currentTab === 'belum') {
       let list = data.peserta;
       if (currentTab === 'belum') list = list.filter(p => !sudahObservasi.has(p.id));
-      if (q) list = list.filter(p => (p.nama_lengkap || p.nama || '').toLowerCase().includes(q));
+      if (q) list = list.filter(p => (p.nama || '').toLowerCase().includes(q));
 
-      const html = list.length === 0
-        ? emptyState(currentTab === 'belum' ? '🎉 Semua peserta sudah observasi!' : 'Tidak ada data.')
-        : `<table>
-          <thead><tr>
-            <th>#</th>
-            <th>Nama Lengkap</th>
-            <th>Jenjang</th>
-            <th>Observasi</th>
-            <th>Wawancara Ortu</th>
-            <th>Didaftar</th>
-          </tr></thead>
-          <tbody>${list.map((p, i) => {
-            const nama = p.nama_lengkap || p.nama || '—';
-            const sdh = sudahObservasi.has(p.id);
-            const sdww = wawancaraByNama[nama.toLowerCase().trim()];
-            const isNew = newIds.has(p.id);
-            return `<tr>
-              <td style="color:var(--muted);font-size:.75rem">${i+1}</td>
-              <td><strong>${nama}</strong>${isNew ? '<span class="new-badge">BARU</span>' : ''}</td>
-              <td>${p.jenjang || p.level || '—'}</td>
-              <td><span class="badge ${sdh ? 'sudah' : 'belum'}">${sdh ? '✓ Sudah' : '✗ Belum'}</span></td>
-              <td><span class="badge ${sdww ? 'ya' : 'tidak'}">${sdww ? '✓ Sudah' : '— Belum'}</span></td>
-              <td style="color:var(--muted);font-size:.75rem">${fmtDate(p.created_at)}</td>
-            </tr>`;
-          }).join('')}</tbody>
-        </table>`;
-      document.getElementById('tableArea').innerHTML = html;
+      if (list.length === 0) {
+        document.getElementById('tableArea').innerHTML = emptyState(
+          currentTab === 'belum' ? '🎉 Semua peserta sudah observasi!' : 'Tidak ada data.',
+          'observasi.png'
+        );
+        return;
+      }
+
+      document.getElementById('tableArea').innerHTML = `<div class="table-wrap"><table>
+        <thead><tr>
+          <th>#</th><th>No. Peserta</th><th>Nama</th><th>Jenjang</th>
+          <th>Observasi</th><th>Wawancara Ortu</th><th>Asal Sekolah</th>
+        </tr></thead>
+        <tbody>${list.map((p, i) => {
+          const sdh = sudahObservasi.has(p.id);
+          const sdww = data.wawancaraIds.has(p.id);
+          const isNew = newIds.has(p.id);
+          const jj = (p.jenjang || '').toLowerCase();
+          return `<tr>
+            <td style="color:var(--muted);font-size:.75rem">${i+1}</td>
+            <td><span class="nomor-badge">${p.nomor_peserta || '—'}</span></td>
+            <td><strong>${p.nama || '—'}</strong>${isNew ? '<span class="new-badge">BARU</span>' : ''}</td>
+            <td><span class="jenjang-badge ${jj}">${p.jenjang || '—'}</span></td>
+            <td><span class="badge ${sdh ? 'sudah' : 'belum'}">${sdh ? '✓ Sudah' : '✗ Belum'}</span></td>
+            <td><span class="badge ${sdww ? 'ya' : 'tidak'}">${sdww ? '✓ Sudah' : '— Belum'}</span></td>
+            <td style="color:var(--muted);font-size:.78rem">${p.asal_sekolah || '—'}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table></div>`;
 
     } else if (currentTab === 'wawancara') {
-      let list = data.wawancara;
-      if (q) list = list.filter(w => (w.nama_lengkap || '').toLowerCase().includes(q));
-      const html = list.length === 0
-        ? emptyState('Belum ada data wawancara ortu.')
-        : `<table>
-          <thead><tr><th>#</th><th>Nama Anak</th><th>Dikirim Pada</th></tr></thead>
-          <tbody>${list.map((w, i) => `<tr>
+      let list = data.wawancara.map(w => ({
+        ...w,
+        nama: pesertaMap[w.peserta_id]?.nama || '—',
+        nomor: pesertaMap[w.peserta_id]?.nomor_peserta || '—',
+        jenjang: pesertaMap[w.peserta_id]?.jenjang || '—',
+      }));
+      if (q) list = list.filter(w => w.nama.toLowerCase().includes(q));
+
+      if (list.length === 0) {
+        document.getElementById('tableArea').innerHTML = emptyState('Belum ada data wawancara ortu.', 'wawancara_ortu.png');
+        return;
+      }
+      document.getElementById('tableArea').innerHTML = `<div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>No. Peserta</th><th>Nama Anak</th><th>Jenjang</th><th>Dikirim Pada</th></tr></thead>
+        <tbody>${list.map((w, i) => {
+          const jj = (w.jenjang || '').toLowerCase();
+          return `<tr>
             <td style="color:var(--muted);font-size:.75rem">${i+1}</td>
-            <td><strong>${w.nama_lengkap || '—'}</strong></td>
-            <td style="color:var(--muted);font-size:.75rem">${fmtDate(w.created_at)}</td>
-          </tr>`).join('')}</tbody>
-        </table>`;
-      document.getElementById('tableArea').innerHTML = html;
+            <td><span class="nomor-badge">${w.nomor}</span></td>
+            <td><strong>${w.nama}</strong></td>
+            <td><span class="jenjang-badge ${jj}">${w.jenjang}</span></td>
+            <td style="color:var(--muted);font-size:.78rem">${fmtDate(w.dikirim_pada)}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table></div>`;
 
     } else if (currentTab === 'baru') {
       const cutoff = new Date(Date.now() - 24 * 3600 * 1000);
       let list = data.peserta.filter(p => new Date(p.created_at) > cutoff);
-      if (q) list = list.filter(p => (p.nama_lengkap || p.nama || '').toLowerCase().includes(q));
-      const html = list.length === 0
-        ? emptyState('Tidak ada peserta baru dalam 24 jam terakhir.')
-        : `<div class="section-desc">Peserta yang mendaftar dalam 24 jam terakhir (${list.length} orang)</div>
-        <table>
-          <thead><tr><th>#</th><th>Nama Lengkap</th><th>Jenjang</th><th>Observasi</th><th>Didaftar</th></tr></thead>
+      if (q) list = list.filter(p => (p.nama || '').toLowerCase().includes(q));
+
+      if (list.length === 0) {
+        document.getElementById('tableArea').innerHTML = emptyState('Tidak ada peserta baru dalam 24 jam terakhir.', 'asal_sekolah.png');
+        return;
+      }
+      document.getElementById('tableArea').innerHTML = `
+        <div class="section-desc" style="padding:0 4px 10px">Peserta baru dalam 24 jam terakhir — ${list.length} orang</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>#</th><th>No. Peserta</th><th>Nama</th><th>Jenjang</th><th>Observasi</th><th>Wawancara</th><th>Didaftar</th></tr></thead>
           <tbody>${list.map((p, i) => {
             const sdh = sudahObservasi.has(p.id);
+            const sdww = data.wawancaraIds.has(p.id);
+            const jj = (p.jenjang || '').toLowerCase();
             return `<tr>
               <td style="color:var(--muted);font-size:.75rem">${i+1}</td>
-              <td><strong>${p.nama_lengkap || p.nama || '—'}</strong> <span class="new-badge">BARU</span></td>
-              <td>${p.jenjang || p.level || '—'}</td>
+              <td><span class="nomor-badge">${p.nomor_peserta || '—'}</span></td>
+              <td><strong>${p.nama || '—'}</strong> <span class="new-badge">BARU</span></td>
+              <td><span class="jenjang-badge ${jj}">${p.jenjang || '—'}</span></td>
               <td><span class="badge ${sdh ? 'sudah' : 'belum'}">${sdh ? '✓ Sudah' : '✗ Belum'}</span></td>
-              <td style="color:var(--muted);font-size:.75rem">${fmtDate(p.created_at)}</td>
+              <td><span class="badge ${sdww ? 'ya' : 'tidak'}">${sdww ? '✓ Sudah' : '— Belum'}</span></td>
+              <td style="color:var(--muted);font-size:.78rem">${fmtDate(p.created_at)}</td>
             </tr>`;
           }).join('')}</tbody>
-        </table>`;
-      document.getElementById('tableArea').innerHTML = html;
+        </table></div>`;
     }
   }
 
-  function emptyState(msg) {
-    return `<div class="empty-state"><div class="icon">📭</div><p>${msg}</p></div>`;
+  function emptyState(msg, icon = 'observasi.png') {
+    return `<div class="empty-state"><img src="${BASE}${icon}" alt=""><p>${msg}</p></div>`;
   }
 
   function showLoading() {
@@ -441,7 +575,6 @@
     return new Date(str).toLocaleString('id-ID', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
   }
 
-  // Auto-refresh tiap 60 detik
   setInterval(() => { if (SUPABASE_KEY) loadAll(); }, 60000);
 </script>
 </body>
