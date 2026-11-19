@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin — Observasi IMG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0f2552;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --amber: #f59e0b;
+      --amber-light: #fef3c7;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --green: #22c55e;
+      --green-light: #dcfce7;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--navy);
+      color: #fff;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-brand { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 800; letter-spacing: -.3px; }
+    .topbar-brand span { color: var(--amber); }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    #lastRefresh { font-size: .75rem; opacity: .65; }
+    .btn-refresh {
+      background: rgba(255,255,255,.12);
+      border: none;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-refresh:hover { background: rgba(255,255,255,.22); }
+
+    /* LAYOUT */
+    .shell { max-width: 1100px; margin: 0 auto; padding: 24px 20px 48px; }
+
+    /* CONFIG BANNER */
+    #configBanner {
+      background: var(--amber-light);
+      border: 1.5px solid var(--amber);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    #configBanner .icon { font-size: 1.4rem; flex-shrink: 0; }
+    #configBanner h3 { font-size: .9rem; font-weight: 700; margin-bottom: 8px; color: #92400e; }
+    .config-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 6px; }
+    .config-row input {
+      flex: 1; min-width: 200px;
+      border: 1.5px solid #d97706;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: .82rem;
+      font-family: monospace;
+      background: #fff;
+      color: var(--ink);
+    }
+    .btn-connect {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: .82rem;
+      cursor: pointer;
+    }
+    .btn-connect:hover { background: #1e3a8a; }
+
+    /* STAT CARDS */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .stat {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 18px 20px;
+      box-shadow: 0 2px 12px rgba(15,23,42,.07);
+      border-left: 4px solid transparent;
+    }
+    .stat.total { border-color: var(--navy); }
+    .stat.done { border-color: var(--green); }
+    .stat.pending { border-color: var(--red); }
+    .stat.wawancara { border-color: var(--teal); }
+    .stat-label { font-size: .72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+    .stat-val { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; font-weight: 800; line-height: 1; }
+    .stat.total .stat-val { color: var(--navy); }
+    .stat.done .stat-val { color: var(--green); }
+    .stat.pending .stat-val { color: var(--red); }
+    .stat.wawancara .stat-val { color: var(--teal); }
+    .stat-sub { font-size: .72rem; color: var(--muted); margin-top: 4px; }
+
+    /* TABS */
+    .tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+    .tab {
+      padding: 7px 18px;
+      border-radius: 20px;
+      border: 1.5px solid var(--line);
+      background: var(--card);
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all .15s;
+    }
+    .tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .tab:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+
+    /* TOOLBAR */
+    .toolbar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+    .search-box {
+      flex: 1; min-width: 180px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: .85rem;
+      font-family: 'Inter', sans-serif;
+      background: var(--card);
+    }
+    .search-box:focus { outline: none; border-color: var(--navy); }
+    .filter-select {
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: .82rem;
+      background: var(--card);
+      cursor: pointer;
+    }
+
+    /* TABLE */
+    .table-wrap {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(15,23,42,.07);
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+    thead { background: #f8fafc; }
+    th { padding: 12px 16px; text-align: left; font-size: .72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+    .badge.sudah { background: var(--green-light); color: #15803d; }
+    .badge.belum { background: var(--red-light); color: #b91c1c; }
+    .badge.ya { background: var(--teal-light); color: #0f766e; }
+    .badge.tidak { background: #f1f5f9; color: var(--muted); }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--muted);
+    }
+    .empty-state .icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .empty-state p { font-size: .88rem; }
+
+    /* LOADING */
+    .loading { text-align: center; padding: 40px; color: var(--muted); font-size: .88rem; }
+    .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--line); border-top-color: var(--navy); border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 10px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* SECTION HEADER */
+    .section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
+    .section-desc { font-size: .78rem; color: var(--muted); margin-bottom: 14px; }
+
+    /* NEW DATA BADGE */
+    .new-badge { background: var(--amber); color: #fff; font-size: .65rem; font-weight: 800; padding: 1px 7px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 0 14px; }
+      .shell { padding: 16px 12px 40px; }
+      th, td { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">IMG <span>Admin</span></div>
+  <div class="topbar-right">
+    <span id="lastRefresh"></span>
+    <button class="btn-refresh" onclick="loadAll()">↻ Refresh</button>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- CONFIG -->
+  <div id="configBanner">
+    <div class="icon">🔑</div>
+    <div style="flex:1">
+      <h3>Hubungkan ke Supabase</h3>
+      <div class="config-row">
+        <input id="inpUrl" type="text" placeholder="Project URL: https://xxxx.supabase.co" value="https://aovswqzqyuasbjedoczb.supabase.co">
+        <input id="inpKey" type="text" placeholder="Publishable key: sb_publishable_...">
+        <button class="btn-connect" onclick="connect()">Hubungkan</button>
+      </div>
+      <div id="configStatus" style="font-size:.75rem;margin-top:8px;color:#92400e;"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat total"><div class="stat-label">Total Peserta</div><div class="stat-val" id="statTotal">—</div><div class="stat-sub">terdaftar</div></div>
+    <div class="stat done"><div class="stat-label">Sudah Observasi</div><div class="stat-val" id="statDone">—</div><div class="stat-sub">tes selesai</div></div>
+    <div class="stat pending"><div class="stat-label">Belum Observasi</div><div class="stat-val" id="statPending">—</div><div class="stat-sub">perlu ditindak</div></div>
+    <div class="stat wawancara"><div class="stat-label">Wawancara Ortu</div><div class="stat-val" id="statWawancara">—</div><div class="stat-sub">sudah mengisi</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('peserta')">👥 Semua Peserta</button>
+    <button class="tab" onclick="switchTab('belum')">⏳ Belum Observasi</button>
+    <button class="tab" onclick="switchTab('wawancara')">📋 Wawancara Ortu</button>
+    <button class="tab" onclick="switchTab('baru')">🆕 Data Terbaru</button>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <input class="search-box" id="searchBox" type="text" placeholder="Cari nama peserta..." oninput="renderTable()">
+  </div>
+
+  <!-- TABLE AREA -->
+  <div id="tableArea">
+    <div class="empty-state"><div class="icon">🔌</div><p>Hubungkan ke Supabase dulu untuk melihat data.</p></div>
+  </div>
+
+</div>
+
+<script>
+  // ─── STATE ───────────────────────────────────────────
+  let SUPABASE_URL = 'https://aovswqzqyuasbjedoczb.supabase.co';
+  let SUPABASE_KEY = '';
+  let currentTab = 'peserta';
+  let data = { peserta: [], wawancara: [], tes_jawaban: [], tes_sesi: [] };
+  let newIds = new Set();
+  let lastLoadTime = null;
+
+  // ─── CONNECT ─────────────────────────────────────────
+  function connect() {
+    SUPABASE_URL = document.getElementById('inpUrl').value.trim().replace(/\/$/, '');
+    SUPABASE_KEY = document.getElementById('inpKey').value.trim();
+    if (!SUPABASE_URL || !SUPABASE_KEY) {
+      document.getElementById('configStatus').textContent = '⚠ Isi URL dan API key dulu.';
+      return;
+    }
+    document.getElementById('configStatus').textContent = 'Menghubungkan...';
+    loadAll();
+  }
+
+  // ─── FETCH HELPER ────────────────────────────────────
+  async function fetchTable(table, params = '') {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}&limit=1000`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!res.ok) throw new Error(`${table}: ${res.status} ${res.statusText}`);
+    return res.json();
+  }
+
+  // ─── LOAD ALL ────────────────────────────────────────
+  async function loadAll() {
+    if (!SUPABASE_KEY) return;
+    showLoading();
+    try {
+      const [peserta, wawancara, tes_sesi] = await Promise.all([
+        fetchTable('peserta', 'order=created_at.desc'),
+        fetchTable('wawancara_ortu', 'select=id,nama_lengkap,created_at&order=created_at.desc'),
+        fetchTable('tes_sesi', 'select=id,peserta_id,selesai_at,created_at&order=created_at.desc'),
+      ]);
+
+      // detect new (last 24h)
+      const cutoff = new Date(Date.now() - 24 * 3600 * 1000);
+      newIds = new Set(peserta.filter(p => new Date(p.created_at) > cutoff).map(p => p.id));
+
+      data.peserta = peserta;
+      data.wawancara = wawancara;
+      data.tes_sesi = tes_sesi;
+
+      updateStats();
+      renderTable();
+      lastLoadTime = new Date();
+      document.getElementById('lastRefresh').textContent = 'Update: ' + lastLoadTime.toLocaleTimeString('id-ID');
+      document.getElementById('configStatus').textContent = '✅ Terhubung — ' + peserta.length + ' peserta dimuat.';
+      document.getElementById('configStatus').style.color = '#065f46';
+    } catch (e) {
+      document.getElementById('tableArea').innerHTML = `<div class="empty-state"><div class="icon">❌</div><p>Gagal memuat data: ${e.message}</p></div>`;
+      document.getElementById('configStatus').textContent = '❌ ' + e.message;
+      document.getElementById('configStatus').style.color = '#b91c1c';
+    }
+  }
+
+  // ─── STATS ───────────────────────────────────────────
+  function updateStats() {
+    const pesertaIds = new Set(data.peserta.map(p => p.id));
+    const sudahObservasi = new Set(data.tes_sesi.map(t => t.peserta_id));
+    const sudahWawancara = new Set(data.wawancara.map(w => w.nama_lengkap?.toLowerCase().trim()));
+    const done = data.peserta.filter(p => sudahObservasi.has(p.id)).length;
+
+    document.getElementById('statTotal').textContent = data.peserta.length;
+    document.getElementById('statDone').textContent = done;
+    document.getElementById('statPending').textContent = data.peserta.length - done;
+    document.getElementById('statWawancara').textContent = data.wawancara.length;
+  }
+
+  // ─── TABS ────────────────────────────────────────────
+  function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('searchBox').value = '';
+    renderTable();
+  }
+
+  // ─── RENDER TABLE ────────────────────────────────────
+  function renderTable() {
+    const q = document.getElementById('searchBox').value.toLowerCase();
+    const sudahObservasi = new Set(data.tes_sesi.map(t => t.peserta_id));
+    const wawancaraByNama = {};
+    data.wawancara.forEach(w => { wawancaraByNama[w.nama_lengkap?.toLowerCase().trim()] = w; });
+
+    let rows = [];
+
+    if (currentTab === 'peserta' || currentTab === 'belum') {
+      let list = data.peserta;
+      if (currentTab === 'belum') list = list.filter(p => !sudahObservasi.has(p.id));
+      if (q) list = list.filter(p => (p.nama_lengkap || p.nama || '').toLowerCase().includes(q));
+
+      const html = list.length === 0
+        ? emptyState(currentTab === 'belum' ? '🎉 Semua peserta sudah observasi!' : 'Tidak ada data.')
+        : `<table>
+          <thead><tr>
+            <th>#</th>
+            <th>Nama Lengkap</th>
+            <th>Jenjang</th>
+            <th>Observasi</th>
+            <th>Wawancara Ortu</th>
+            <th>Didaftar</th>
+          </tr></thead>
+          <tbody>${list.map((p, i) => {
+            const nama = p.nama_lengkap || p.nama || '—';
+            const sdh = sudahObservasi.has(p.id);
+            const sdww = wawancaraByNama[nama.toLowerCase().trim()];
+            const isNew = newIds.has(p.id);
+            return `<tr>
+              <td style="color:var(--muted);font-size:.75rem">${i+1}</td>
+              <td><strong>${nama}</strong>${isNew ? '<span class="new-badge">BARU</span>' : ''}</td>
+              <td>${p.jenjang || p.level || '—'}</td>
+              <td><span class="badge ${sdh ? 'sudah' : 'belum'}">${sdh ? '✓ Sudah' : '✗ Belum'}</span></td>
+              <td><span class="badge ${sdww ? 'ya' : 'tidak'}">${sdww ? '✓ Sudah' : '— Belum'}</span></td>
+              <td style="color:var(--muted);font-size:.75rem">${fmtDate(p.created_at)}</td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>`;
+      document.getElementById('tableArea').innerHTML = html;
+
+    } else if (currentTab === 'wawancara') {
+      let list = data.wawancara;
+      if (q) list = list.filter(w => (w.nama_lengkap || '').toLowerCase().includes(q));
+      const html = list.length === 0
+        ? emptyState('Belum ada data wawancara ortu.')
+        : `<table>
+          <thead><tr><th>#</th><th>Nama Anak</th><th>Dikirim Pada</th></tr></thead>
+          <tbody>${list.map((w, i) => `<tr>
+            <td style="color:var(--muted);font-size:.75rem">${i+1}</td>
+            <td><strong>${w.nama_lengkap || '—'}</strong></td>
+            <td style="color:var(--muted);font-size:.75rem">${fmtDate(w.created_at)}</td>
+          </tr>`).join('')}</tbody>
+        </table>`;
+      document.getElementById('tableArea').innerHTML = html;
+
+    } else if (currentTab === 'baru') {
+      const cutoff = new Date(Date.now() - 24 * 3600 * 1000);
+      let list = data.peserta.filter(p => new Date(p.created_at) > cutoff);
+      if (q) list = list.filter(p => (p.nama_lengkap || p.nama || '').toLowerCase().includes(q));
+      const html = list.length === 0
+        ? emptyState('Tidak ada peserta baru dalam 24 jam terakhir.')
+        : `<div class="section-desc">Peserta yang mendaftar dalam 24 jam terakhir (${list.length} orang)</div>
+        <table>
+          <thead><tr><th>#</th><th>Nama Lengkap</th><th>Jenjang</th><th>Observasi</th><th>Didaftar</th></tr></thead>
+          <tbody>${list.map((p, i) => {
+            const sdh = sudahObservasi.has(p.id);
+            return `<tr>
+              <td style="color:var(--muted);font-size:.75rem">${i+1}</td>
+              <td><strong>${p.nama_lengkap || p.nama || '—'}</strong> <span class="new-badge">BARU</span></td>
+              <td>${p.jenjang || p.level || '—'}</td>
+              <td><span class="badge ${sdh ? 'sudah' : 'belum'}">${sdh ? '✓ Sudah' : '✗ Belum'}</span></td>
+              <td style="color:var(--muted);font-size:.75rem">${fmtDate(p.created_at)}</td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>`;
+      document.getElementById('tableArea').innerHTML = html;
+    }
+  }
+
+  function emptyState(msg) {
+    return `<div class="empty-state"><div class="icon">📭</div><p>${msg}</p></div>`;
+  }
+
+  function showLoading() {
+    document.getElementById('tableArea').innerHTML = `<div class="loading"><div class="spinner"></div><br>Memuat data...</div>`;
+  }
+
+  function fmtDate(str) {
+    if (!str) return '—';
+    return new Date(str).toLocaleString('id-ID', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+
+  // Auto-refresh tiap 60 detik
+  setInterval(() => { if (SUPABASE_KEY) loadAll(); }, 60000);
+</script>
+</body>
+</html>
